@@ -72,10 +72,10 @@ section {
     right: 0;
     width: 50px;
     height: 50px;
-    background: var(--glass-hex);
+    background: var(--glass);
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 25px;
     display: flex;
     align-items: center;
@@ -86,7 +86,7 @@ section {
     opacity: 0;
     pointer-events: none;
     transform: translateY(-20px);
-    box-shadow: 10px 10px 30px rgba(0,0,0,0.05);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.1);
 }
 
 .search-morph-container.active {

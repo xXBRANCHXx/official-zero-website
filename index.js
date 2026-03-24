@@ -21,17 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => portal.devInput.focus(), 100);
     });
 
-    portal.devNo?.addEventListener('click', () => {
-        alert("Thanks for visiting! See you at launch.");
-    });
-
     const unlockSite = () => {
         if (portal.devInput.value === ACCESS_CODE) {
             portal.overlay.classList.add('fade-out');
             document.body.classList.remove('locked');
-            console.log("Access Granted. Welcome to ZERO v6+ Search.");
+            console.log("Access Granted.");
         } else {
-            alert("Security code failed.");
+            alert("Incorrect code.");
             portal.devInput.value = "";
         }
     };
@@ -41,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') unlockSite();
     });
 
-    // HIGH-END MORPHING SEARCH LOGIC
+    // HIGH-END MORPHING SEARCH LOGIC (WITH TOGGLE RETRACTION)
     const searchTrigger = document.getElementById('search-trigger');
     const searchPopout = document.getElementById('search-popout');
     const morphIconBox = document.getElementById('morph-icon-box');
@@ -49,27 +45,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSearch = document.getElementById('close-search');
 
     if (searchTrigger) {
-        searchTrigger.addEventListener('click', () => {
-            searchPopout.classList.remove('hide');
-            searchPopout.classList.add('active');
-            setTimeout(() => {
-                morphIconBox.style.transform = 'translateX(200px)';
+        searchTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            // If already open, retract it
+            if (searchPopout.classList.contains('active')) {
+                searchPopout.classList.remove('expanded');
+                setTimeout(() => searchPopout.classList.remove('active'), 500);
+            } else {
+                // Open sequence
+                searchPopout.classList.remove('hide');
+                searchPopout.classList.add('active');
                 setTimeout(() => {
-                    morphIconBox.style.transform = 'translateX(0)';
-                    searchPopout.classList.add('expanded');
-                    setTimeout(() => mainSearch.focus(), 400);
-                }, 400);
-            }, 300);
-        });
-    }
-
-    if (closeSearch) {
-        closeSearch.addEventListener('click', () => {
-            searchPopout.classList.remove('expanded');
-            setTimeout(() => {
-                searchPopout.classList.remove('active');
-                setTimeout(() => searchPopout.classList.add('hide'), 500);
-            }, 500);
+                    morphIconBox.style.transform = 'translateX(200px)';
+                    setTimeout(() => {
+                        morphIconBox.style.transform = 'translateX(0)';
+                        searchPopout.classList.add('expanded');
+                        setTimeout(() => mainSearch.focus(), 400);
+                    }, 400);
+                }, 300);
+            }
         });
     }
 
@@ -85,13 +80,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close on click outside
     document.addEventListener('click', (e) => {
+        // Handle dropdown
         if (moreDropdown && !moreDropdown.contains(e.target) && e.target !== moreTrigger) {
             moreDropdown.classList.remove('active');
             moreDropdown.classList.add('hide');
         }
+        // Handle search
+        if (searchPopout && !searchPopout.contains(e.target) && e.target !== searchTrigger) {
+            searchPopout.classList.remove('expanded');
+            setTimeout(() => searchPopout.classList.remove('active'), 500);
+        }
     });
 
-    // ESC to close all overlays
+    // ESC to close all
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             searchPopout?.classList.remove('expanded');
