@@ -1,0 +1,12 @@
+{
+  "name": "official-zero-website",
+  "version": "1.0.0",
+  "description": "ZERO - Zero Calorie, Premium Syrup",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}
