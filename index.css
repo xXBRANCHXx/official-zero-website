@@ -64,33 +64,81 @@ section {
     height: 32px;
 }
 
-.search-container {
-    flex: 1;
-    margin: 0 4rem;
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
     position: relative;
-    max-width: 450px;
 }
 
-.neomorph-search {
-    width: 100%;
-    background: var(--bg);
+.icon-btn {
+    background: none;
     border: none;
-    border-radius: 24px;
-    padding: 0.9rem 1.5rem 0.9rem 3.5rem;
-    outline: none;
-    box-shadow: inset 5px 5px 10px var(--shadow-dark),
-                inset -5px -5px 10px var(--shadow-light);
-    font-size: 0.95rem;
+    cursor: pointer;
+    color: var(--teal);
+    transition: var(--transition);
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+
+.icon-btn:hover {
+    background: rgba(0, 128, 128, 0.05);
+    transform: scale(1.1);
+}
+
+/* SEARCH POPOUT: OVERLAY STYLE */
+.search-popout {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--glass-hex);
+    backdrop-filter: blur(60px) saturate(250%) contrast(1.1);
+    -webkit-backdrop-filter: blur(60px) saturate(250%) contrast(1.1);
+    border-radius: 50px;
+    z-index: 1100;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-5px);
+    transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.search-popout.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.search-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.search-popout .neomorph-search {
+    flex: 1;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    font-size: 1.1rem;
+    padding: 1.2rem;
     color: var(--text);
 }
 
-.search-icon {
-    position: absolute;
-    left: 1.4rem;
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.4;
-    color: var(--teal);
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-mid);
+    padding: 0.5rem;
 }
 
 .nav-links {
