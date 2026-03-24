@@ -1,8 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Initial lock for 'Coming Soon' state
-    document.body.classList.add('locked');
-
-    // Portal Logic - RESTORED TO PREVIOUS WORKING VERSION
+// Security portal logic is scoped to ensure functionality
+const initSecurityPortal = () => {
     const overlay = document.getElementById('coming-soon-overlay');
     const devYes = document.getElementById('dev-yes');
     const devNo = document.getElementById('dev-no');
@@ -13,36 +10,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const ACCESS_CODE = "192017";
 
-    devYes.addEventListener('click', () => {
-        devCheck.classList.add('hide');
-        codePrompt.classList.remove('hide');
-        devInput.focus();
-    });
+    if (devYes && devCheck && codePrompt && devInput) {
+        devYes.addEventListener('click', () => {
+            devCheck.classList.add('hide');
+            codePrompt.classList.remove('hide');
+            setTimeout(() => devInput.focus(), 100);
+        });
+    }
 
-    devNo.addEventListener('click', () => {
-        alert("Thanks for visiting! Please come back later after our official launch.");
-    });
+    if (devNo) {
+        devNo.addEventListener('click', () => {
+            alert("Come back later when our new site is ready!");
+        });
+    }
 
     const authenticate = () => {
         if (devInput.value === ACCESS_CODE) {
             overlay.classList.add('fade-out');
             document.body.classList.remove('locked');
-            console.log("Access Granted. Welcome, ZERO Developer.");
+            console.log("Access granted.");
         } else {
-            alert("Incorrect access code. Access Denied.");
+            alert("Incorrect code.");
             devInput.value = "";
         }
     };
 
-    submitBtn.addEventListener('click', authenticate);
-    devInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') authenticate();
+    if (submitBtn) submitBtn.addEventListener('click', authenticate);
+    if (devInput) {
+        devInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') authenticate();
+        });
+    }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('locked');
+    initSecurityPortal();
+
+    // v4 Editorial Animations
+    const revealItems = document.querySelectorAll('.n-card, .witty-h1, .floating-render, .story-card, .flv-card');
+    revealItems.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(40px)';
+        el.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
     });
 
-    // High-End Reveal Logic for v4 Editorial Sections
-    const revealItems = document.querySelectorAll('.n-card, .witty-h1, .floating-render, .story-card, .flv-card');
-    
-    const revealObserver = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
@@ -51,12 +64,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.1 });
 
-    revealItems.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(40px)';
-        el.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
-        revealObserver.observe(el);
-    });
-
-    console.log("ZERO Editorial UI initialized (Portal Restored)");
+    revealItems.forEach(el => observer.observe(el));
 });
