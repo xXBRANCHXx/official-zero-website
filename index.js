@@ -1,45 +1,60 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Scroll Reveal Animation using Intersection Observer
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
+    // Lock scrolling initially
+    document.body.classList.add('locked');
+
+    // Coming Soon Logic
+    const overlay = document.getElementById('coming-soon-overlay');
+    const devYes = document.getElementById('dev-yes');
+    const devNo = document.getElementById('dev-no');
+    const devCheck = document.getElementById('developer-check');
+    const codePrompt = document.getElementById('code-prompt');
+    const devInput = document.getElementById('dev-code');
+    const submitBtn = document.getElementById('submit-code');
+
+    const ACCESS_CODE = "192017";
+
+    devYes.addEventListener('click', () => {
+        devCheck.classList.add('hide');
+        codePrompt.classList.remove('hide');
+        devInput.focus();
+    });
+
+    devNo.addEventListener('click', () => {
+        alert("Thanks for visiting! Please come back later after our official launch.");
+    });
+
+    const authenticate = () => {
+        if (devInput.value === ACCESS_CODE) {
+            overlay.classList.add('fade-out');
+            document.body.classList.remove('locked');
+            console.log("Access Granted. Welcome, ZERO Developer.");
+        } else {
+            alert("Incorrect access code. Access Denied.");
+            devInput.value = "";
+        }
     };
 
+    submitBtn.addEventListener('click', authenticate);
+    devInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') authenticate();
+    });
+
+    // Smooth scroll reveal / parallax (keeping refined logic)
+    const fadeEls = document.querySelectorAll('.feature-n-card');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1 });
 
-    // Fade-in elements
-    const fadeElements = document.querySelectorAll('.fade-in, .fade-in-up, .neomorph-card, .product-card');
-    fadeElements.forEach(el => {
-        el.classList.add('fade-in'); // Ensure base class is present
+    fadeEls.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(40px)';
+        el.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
         observer.observe(el);
-    });
-
-    // Navigation Color Change on Scroll
-    const nav = document.querySelector('.glass-nav');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            nav.style.width = '85%';
-            nav.style.top = '10px';
-        } else {
-            nav.style.width = '90%';
-            nav.style.top = '20px';
-        }
-    });
-
-    // Smooth scroll for nav links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
     });
 
     console.log("ZERO website logic initialized");

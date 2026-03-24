@@ -270,10 +270,92 @@ section {
     width: auto;
 }
 
-/* Responsiveness */
-@media (max-width: 1024px) {
-    .container { padding: 0 2rem; }
-    .hero h1 { font-size: 5rem; }
-    .search-container { display: none; }
-    .feature-row { grid-template-columns: 1fr; }
+/* Coming Soon Overlay - Full Blocker */
+.coming-soon-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(80px) saturate(200%);
+    -webkit-backdrop-filter: blur(80px) saturate(200%);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s var(--transition);
+}
+
+.coming-soon-card {
+    background: rgba(255, 255, 255, 0.85);
+    max-width: 500px;
+    width: 90%;
+    padding: 5rem 3rem;
+    border-radius: 60px;
+    box-shadow: 40px 40px 100px rgba(0,0,0,0.06);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+.coming-soon-card h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    letter-spacing: -2px;
+}
+
+.coming-soon-card p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.developer-check p, .code-prompt p {
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+}
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.n-btn.mini {
+    padding: 0.8rem 1.5rem;
+    font-size: 0.7rem;
+    border-radius: 50px;
+    box-shadow: 6px 6px 12px var(--shadow-dark),
+                -6px -6px 12px var(--shadow-light);
+}
+
+.hide {
+    display: none;
+}
+
+.neomorph-input {
+    background: var(--bg);
+    border: none;
+    border-radius: 20px;
+    padding: 1.2rem;
+    width: 100%;
+    outline: none;
+    text-align: center;
+    font-size: 1.5rem;
+    box-shadow: inset 8px 8px 16px var(--shadow-dark),
+                inset -8px -8px 16px var(--shadow-light);
+    color: var(--teal);
+}
+
+.locked {
+    overflow: hidden;
+}
+
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
 }
