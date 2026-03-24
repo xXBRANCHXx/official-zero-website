@@ -2,70 +2,75 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial lock for 'Coming Soon' state
     document.body.classList.add('locked');
 
-    // Portal Logic
-    const overlay = document.getElementById('coming-soon-overlay');
-    const devYes = document.getElementById('dev-yes');
-    const devNo = document.getElementById('dev-no');
-    const devCheck = document.getElementById('developer-check');
-    const codePrompt = document.getElementById('code-prompt');
-    const devInput = document.getElementById('dev-code');
-    const submitBtn = document.getElementById('submit-code');
+    // Portal UI Management
+    const portal = {
+        overlay: document.getElementById('coming-soon-overlay'),
+        devYes: document.getElementById('dev-yes'),
+        devNo: document.getElementById('dev-no'),
+        devCheck: document.getElementById('developer-check'),
+        codePrompt: document.getElementById('code-prompt'),
+        devInput: document.getElementById('dev-code'),
+        submitBtn: document.getElementById('submit-code')
+    };
 
     const ACCESS_CODE = "192017";
 
-    devYes?.addEventListener('click', () => {
-        devCheck.classList.add('hide');
-        codePrompt.classList.remove('hide');
-        setTimeout(() => devInput.focus(), 100);
+    portal.devYes?.addEventListener('click', () => {
+        portal.devCheck.classList.add('hide');
+        portal.codePrompt.classList.remove('hide');
+        setTimeout(() => portal.devInput.focus(), 100);
     });
 
-    devNo?.addEventListener('click', () => {
-        alert("Come back later when our new site is ready!");
+    portal.devNo?.addEventListener('click', () => {
+        alert("We value your visit. Come back at official launch!");
     });
 
     const unlockSite = () => {
-        if (devInput.value === ACCESS_CODE) {
-            overlay.classList.add('fade-out');
+        if (portal.devInput.value === ACCESS_CODE) {
+            portal.overlay.classList.add('fade-out');
             document.body.classList.remove('locked');
-            console.log("Access Granted.");
+            console.log("Access Granted. Welcome to ZERO v5.");
         } else {
-            alert("Incorrect code.");
-            devInput.value = "";
+            alert("Security code incorrect.");
+            portal.devInput.value = "";
         }
     };
 
-    submitBtn?.addEventListener('click', unlockSite);
-    devInput?.addEventListener('keypress', (e) => {
+    portal.submitBtn?.addEventListener('click', unlockSite);
+    portal.devInput?.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') unlockSite();
     });
 
-    // SEARCH POPOUT LOGIC
-    const searchTrigger = document.getElementById('search-trigger');
-    const searchPopout = document.getElementById('search-popout');
-    const closeSearch = document.getElementById('close-search');
-    const mainSearch = document.getElementById('main-search');
+    // SEARCH OVERLAY v5 LOGIC
+    const search = {
+        trigger: document.getElementById('search-trigger'),
+        overlay: document.getElementById('search-popout'),
+        close: document.getElementById('close-search'),
+        input: document.getElementById('main-search')
+    };
 
-    searchTrigger?.addEventListener('click', () => {
-        searchPopout.classList.add('active');
-        searchPopout.classList.remove('hide');
-        setTimeout(() => mainSearch.focus(), 300);
+    search.trigger?.addEventListener('click', () => {
+        search.overlay.classList.remove('hide');
+        search.overlay.classList.add('active');
+        setTimeout(() => search.input.focus(), 300);
     });
 
-    closeSearch?.addEventListener('click', () => {
-        searchPopout.classList.remove('active');
-        setTimeout(() => searchPopout.classList.add('hide'), 500);
+    search.close?.addEventListener('click', () => {
+        search.overlay.classList.add('hide');
+        search.overlay.classList.remove('active');
     });
 
-    // Close on ESC
+    // ESC to close search
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && searchPopout.classList.contains('active')) {
-            searchPopout.classList.remove('active');
-            setTimeout(() => searchPopout.classList.add('hide'), 500);
+        if (e.key === 'Escape') {
+            search.overlay.classList.add('hide');
+            search.overlay.classList.remove('active');
         }
     });
 
-    // Reveal Logic for Editorial Cards
-    const revealItems = document.querySelectorAll('.n-card, .witty-h1, .floating-render, .story-card, .flv-card');
+    // PARALLAX & REVEAL EFFECTS (Cyber-Organic)
+    const revealItems = document.querySelectorAll('.v5-card, .carousel-item, .split-txt, .product-orb');
+    
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -77,10 +82,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     revealItems.forEach(el => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(40px)';
-        el.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
+        el.style.transform = 'translateY(60px)';
+        el.style.transition = 'all 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
         revealObserver.observe(el);
     });
 
-    console.log("ZERO Editorial UI initialized");
+    // Smooth background parallax scroll
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const heroBgTxt = document.querySelector('.hero-bg-text');
+        if (heroBgTxt) {
+            heroBgTxt.style.transform = `translate(-50%, calc(-50% + ${scrolled * 0.15}px))`;
+        }
+    });
+
+    console.log("ZERO Cyber-Organic v5 initialized");
 });
