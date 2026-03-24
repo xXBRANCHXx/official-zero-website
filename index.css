@@ -59,34 +59,36 @@ section {
     align-items: center;
 }
 
-/* HIGH-END STRETCHING SEARCH */
-.search-anchor {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.search-morph-container {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: 300px; /* Stretchable */
-    height: 50px;
+/* GLOBAL GLASSMORPHIC HUB */
+.global-overlay {
+    position: fixed;
+    z-index: 1001; /* Above Nav */
+    right: 4vw;
+    top: 100px;
     background: rgba(255, 255, 255, 0.1); 
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.global-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.search-morph-container {
+    height: 50px;
+    width: 300px; /* Stretchable */
     border-radius: 25px;
     display: flex;
     align-items: center;
     overflow: hidden;
-    transition: width 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6), 
-                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.3s ease;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-10px);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+    transform: translateY(-15px);
 }
 
 .search-morph-container.active {
@@ -344,25 +346,13 @@ section {
 }
 
 .glass-dropdown {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    min-width: 250px;
-    background: rgba(255, 255, 255, 0.08); /* Match Nav Bar exactly */
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    width: 250px;
     border-radius: 30px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    z-index: 1000;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.05);
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-10px);
-    transition: var(--transition);
+    transform: translateY(-15px);
 }
 
 .glass-dropdown.active {
