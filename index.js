@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (portal.devInput.value === ACCESS_CODE) {
             portal.overlay.classList.add('fade-out');
             document.body.classList.remove('locked');
-            console.log("Access Granted. Welcome to ZERO v6.");
+            console.log("Access Granted. Welcome to ZERO v6+ Search.");
         } else {
             alert("Security code failed.");
             portal.devInput.value = "";
@@ -41,34 +41,46 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') unlockSite();
     });
 
-    // SEARCH LOGIC - FUSION UI
-    const search = {
-        trigger: document.getElementById('search-trigger'),
-        overlay: document.getElementById('search-popout'),
-        close: document.getElementById('close-search'),
-        input: document.getElementById('main-search')
-    };
+    // HIGH-END MORPHING SEARCH LOGIC
+    const searchTrigger = document.getElementById('search-trigger');
+    const searchPopout = document.getElementById('search-popout');
+    const morphIconBox = document.getElementById('morph-icon-box');
+    const mainSearch = document.getElementById('main-search');
+    const closeSearch = document.getElementById('close-search');
 
-    if (search.trigger) {
-        search.trigger.addEventListener('click', () => {
-            search.overlay.classList.remove('hide');
-            search.overlay.classList.add('active');
-            setTimeout(() => search.input.focus(), 300);
+    if (searchTrigger) {
+        searchTrigger.addEventListener('click', () => {
+            // First show the circle dropping down
+            searchPopout.classList.add('active');
+            
+            // Wait for entry, then move icon right
+            setTimeout(() => {
+                morphIconBox.style.transform = 'translateX(200px)';
+                
+                // Then move icon left and stretch the bar
+                setTimeout(() => {
+                    morphIconBox.style.transform = 'translateX(0)';
+                    searchPopout.classList.add('expanded');
+                    setTimeout(() => mainSearch.focus(), 400);
+                }, 400);
+            }, 300);
         });
     }
 
-    if (search.close) {
-        search.close.addEventListener('click', () => {
-            search.overlay.classList.add('hide');
-            search.overlay.classList.remove('active');
+    if (closeSearch) {
+        closeSearch.addEventListener('click', () => {
+            searchPopout.classList.remove('expanded');
+            setTimeout(() => {
+                searchPopout.classList.remove('active');
+            }, 500);
         });
     }
 
-    // Close on ESC
+    // ESC to close
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && search.overlay) {
-            search.overlay.classList.add('hide');
-            search.overlay.classList.remove('active');
+        if (e.key === 'Escape' && searchPopout.classList.contains('active')) {
+            searchPopout.classList.remove('expanded');
+            setTimeout(() => searchPopout.classList.remove('active'), 500);
         }
     });
 
@@ -90,6 +102,4 @@ document.addEventListener('DOMContentLoaded', () => {
         el.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
         revealObserver.observe(el);
     });
-
-    console.log("ZERO Fusion UI initialized (v6)");
 });

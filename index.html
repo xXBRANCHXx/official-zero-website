@@ -38,9 +38,19 @@
             <img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo">
         </div>
         <div class="nav-right">
-            <button id="search-trigger">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            </button>
+            <div class="search-anchor">
+                <button id="search-trigger">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <!-- Morphing Search Bar -->
+                <div id="search-popout" class="search-morph-container">
+                    <div class="search-icon-box" id="morph-icon-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </div>
+                    <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
+                    <div id="close-search" class="search-close-x">×</div>
+                </div>
+            </div>
             <ul class="nav-links">
                 <li><a href="#about">VISION</a></li>
                 <li><a href="#lab">PRODUCT</a></li>
@@ -120,11 +130,7 @@
         </div>
     </footer>
 
-    <!-- GLASS SEARCH OVERLAY -->
-    <div id="search-popout" class="search-overlay hide">
-        <input type="text" id="main-search" class="search-field" placeholder="Search the Paradox...">
-        <button id="close-search" style="position: absolute; top: 40px; right: 40px; background: none; border: none; font-size: 2rem; cursor: pointer;">×</button>
-    </div>
+    <!-- Legacy Search Overlay removed -->
 
     <script type="module" src="/index.js"></script>
 </body>
