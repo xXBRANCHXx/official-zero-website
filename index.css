@@ -92,10 +92,36 @@ section {
 
 .search-icon {
     position: absolute;
-    left: 1.2rem;
+    left: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
-    opacity: 0.3;
+    opacity: 0.4;
+    color: var(--teal);
+}
+
+.arrow {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--text-main);
+    border-bottom: 2px solid var(--text-main);
+    transform: rotate(45deg) translateY(-3px);
+    margin-left: 8px;
+    transition: var(--transition);
+}
+
+.has-dropdown:hover .arrow {
+    transform: rotate(-135deg) translateY(0);
+}
+
+.icon-wrap {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: var(--teal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Refracting Dropdown Menus */
