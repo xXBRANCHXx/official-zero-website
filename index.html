@@ -38,20 +38,22 @@
             <img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo">
         </div>
         <div class="nav-right">
-            <div class="search-anchor">
-                <button id="search-trigger">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </button>
-                <!-- Morphing Search Bar -->
-                <div id="search-popout" class="search-morph-container">
-                    <div class="search-icon-box" id="morph-icon-box">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    </div>
-                    <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
-                    <div id="close-search" class="search-close-x">×</div>
-                </div>
-            </div>
             <ul class="nav-links">
+                <!-- Grouped Search Interaction -->
+                <li>
+                    <div class="search-anchor">
+                        <button id="search-trigger" class="icon-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                        <div id="search-popout" class="search-morph-container">
+                            <div class="search-icon-box" id="morph-icon-box">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </div>
+                            <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
+                            <div id="close-search" class="search-close-x">×</div>
+                        </div>
+                    </div>
+                </li>
                 <li class="desktop-only"><a href="#about">VISION</a></li>
                 <li class="desktop-only"><a href="#lab">PRODUCT</a></li>
                 <!-- Unified 3-Dot Menu -->
