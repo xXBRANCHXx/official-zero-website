@@ -1,12 +1,15 @@
 {
   "name": "official-zero-website",
+  "private": true,
   "version": "1.0.0",
-  "description": "ZERO - Zero Calorie, Premium Syrup",
-  "main": "index.html",
+  "type": "module",
   "scripts": {
-    "start": "npx serve ."
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite"
   },
-  "dependencies": {
-    "serve": "^14.2.0"
+  "devDependencies": {
+    "vite": "^5.0.0"
   }
 }
