@@ -67,15 +67,10 @@ section {
 }
 
 .search-morph-container {
-    position: absolute;
-    top: 60px; /* Pops down */
-    right: 0;
-    width: 50px;
-    height: 50px;
-    background: var(--glass);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15); /* High-end crystalline glass */
+    backdrop-filter: blur(50px) saturate(250%) contrast(1.1);
+    -webkit-backdrop-filter: blur(50px) saturate(250%) contrast(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 25px;
     display: flex;
     align-items: center;
@@ -348,10 +343,10 @@ section {
     top: 60px;
     right: 0;
     min-width: 250px;
-    background: var(--glass);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15); /* Crystalline */
+    backdrop-filter: blur(50px) saturate(250%) contrast(1.1);
+    -webkit-backdrop-filter: blur(50px) saturate(250%) contrast(1.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 30px;
     padding: 1.5rem;
     display: flex;

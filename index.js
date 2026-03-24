@@ -37,24 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') unlockSite();
     });
 
-    // HIGH-END MORPHING SEARCH LOGIC (WITH TOGGLE RETRACTION)
+    // CRYSTALLINE MORPHING SEARCH LOGIC
     const searchTrigger = document.getElementById('search-trigger');
     const searchPopout = document.getElementById('search-popout');
     const morphIconBox = document.getElementById('morph-icon-box');
     const mainSearch = document.getElementById('main-search');
-    const closeSearch = document.getElementById('close-search');
 
     if (searchTrigger) {
         searchTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
-            
-            // If already open, retract it
             if (searchPopout.classList.contains('active')) {
                 searchPopout.classList.remove('expanded');
                 setTimeout(() => searchPopout.classList.remove('active'), 500);
             } else {
-                // Open sequence
-                searchPopout.classList.remove('hide');
                 searchPopout.classList.add('active');
                 setTimeout(() => {
                     morphIconBox.style.transform = 'translateX(200px)';
@@ -68,31 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3-DOT MORE MENU LOGIC
+    // UNIFIED MORE MENU LOGIC (Transparent Dropdown)
     const moreTrigger = document.getElementById('more-trigger');
     const moreDropdown = document.getElementById('more-dropdown');
 
     moreTrigger?.addEventListener('click', (e) => {
         e.stopPropagation();
         moreDropdown.classList.toggle('active');
-        moreDropdown.classList.toggle('hide');
     });
 
-    // Close on click outside
     document.addEventListener('click', (e) => {
-        // Handle dropdown
         if (moreDropdown && !moreDropdown.contains(e.target) && e.target !== moreTrigger) {
             moreDropdown.classList.remove('active');
-            moreDropdown.classList.add('hide');
         }
-        // Handle search
         if (searchPopout && !searchPopout.contains(e.target) && e.target !== searchTrigger) {
             searchPopout.classList.remove('expanded');
             setTimeout(() => searchPopout.classList.remove('active'), 500);
         }
     });
 
-    // ESC to close all
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             searchPopout?.classList.remove('expanded');
@@ -101,9 +90,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Reveal Trigger logic
+    // Transition Revealer
     const revealItems = document.querySelectorAll('.n-card, .dark-accent-card, .hero-h1, .hero-p, .render-v6, .flv-card-min');
-    
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
