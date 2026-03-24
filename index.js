@@ -50,14 +50,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (searchTrigger) {
         searchTrigger.addEventListener('click', () => {
-            // First show the circle dropping down
+            searchPopout.classList.remove('hide');
             searchPopout.classList.add('active');
-            
-            // Wait for entry, then move icon right
             setTimeout(() => {
                 morphIconBox.style.transform = 'translateX(200px)';
-                
-                // Then move icon left and stretch the bar
                 setTimeout(() => {
                     morphIconBox.style.transform = 'translateX(0)';
                     searchPopout.classList.add('expanded');
@@ -72,15 +68,35 @@ document.addEventListener('DOMContentLoaded', () => {
             searchPopout.classList.remove('expanded');
             setTimeout(() => {
                 searchPopout.classList.remove('active');
+                setTimeout(() => searchPopout.classList.add('hide'), 500);
             }, 500);
         });
     }
 
-    // ESC to close
+    // 3-DOT MORE MENU LOGIC
+    const moreTrigger = document.getElementById('more-trigger');
+    const moreDropdown = document.getElementById('more-dropdown');
+
+    moreTrigger?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        moreDropdown.classList.toggle('active');
+        moreDropdown.classList.toggle('hide');
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+        if (moreDropdown && !moreDropdown.contains(e.target) && e.target !== moreTrigger) {
+            moreDropdown.classList.remove('active');
+            moreDropdown.classList.add('hide');
+        }
+    });
+
+    // ESC to close all overlays
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && searchPopout.classList.contains('active')) {
-            searchPopout.classList.remove('expanded');
-            setTimeout(() => searchPopout.classList.remove('active'), 500);
+        if (e.key === 'Escape') {
+            searchPopout?.classList.remove('expanded');
+            setTimeout(() => searchPopout?.classList.remove('active'), 500);
+            moreDropdown?.classList.remove('active');
         }
     });
 
