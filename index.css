@@ -62,17 +62,30 @@ section {
 /* GLOBAL GLASSMORPHIC HUB */
 .global-overlay {
     position: fixed;
-    z-index: 1100; /* Higher priority */
+    z-index: 1100;
     right: 4vw;
     top: 100px;
-    background: rgba(255, 255, 255, 0.1); 
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    background: transparent; /* Background now handled by pseudo-element */
     box-shadow: 0 40px 100px rgba(0,0,0,0.1);
     opacity: 0;
     pointer-events: none;
     transition: var(--transition);
+    overflow: hidden; /* Required for pseudo-element clipping */
+}
+
+.global-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.15); /* Crystalline */
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: inherit;
+    z-index: -1;
 }
 
 .global-overlay.active {
@@ -356,6 +369,7 @@ section {
     opacity: 0;
     pointer-events: none;
     transition: var(--transition);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .glass-dropdown.active, .search-morph-container.active {
