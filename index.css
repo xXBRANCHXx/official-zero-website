@@ -62,7 +62,7 @@ section {
 /* GLOBAL GLASSMORPHIC HUB */
 .global-overlay {
     position: fixed;
-    z-index: 1001; /* Above Nav */
+    z-index: 1100; /* Higher priority */
     right: 4vw;
     top: 100px;
     background: rgba(255, 255, 255, 0.1); 
@@ -346,19 +346,22 @@ section {
 }
 
 .glass-dropdown {
-    width: 250px;
+    width: clamp(200px, 80vw, 300px);
     border-radius: 30px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
     transform: translateY(-15px);
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
 }
 
-.glass-dropdown.active {
+.glass-dropdown.active, .search-morph-container.active {
     opacity: 1;
     pointer-events: all;
-    transform: translateY(0);
+    transform: translateY(0) !important;
 }
 
 .glass-dropdown a {
