@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const overlay = document.getElementById('coming-soon-overlay');
     if (overlay) {
         if (sessionStorage.getItem(SESSION_KEY) === "granted") {
-            overlay.classList.add('fade-out');
+            overlay.style.display = 'none'; // Total removal from render stack
             document.body.classList.remove('locked');
         } else {
             document.body.classList.add('locked');
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (portal.devInput.value === ACCESS_CODE) {
             sessionStorage.setItem(SESSION_KEY, "granted");
             portal.overlay.classList.add('fade-out');
+            setTimeout(() => portal.overlay.style.display = 'none', 1000); 
             document.body.classList.remove('locked');
             console.log("Access Granted.");
         } else {

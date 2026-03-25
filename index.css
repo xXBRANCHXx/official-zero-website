@@ -60,7 +60,6 @@ section {
 }
 
 /* GLOBAL GLASSMORPHIC HUB */
-/* GLOBAL GLASSMORPHIC HUB */
 .global-overlay {
     position: fixed;
     z-index: 1100;
@@ -341,14 +340,17 @@ section {
     align-items: center;
 }
 
-.more-menu .icon-btn {
-    background: none;
+.icon-btn {
+    width: 44px; /* Fixed height for consistent centering */
+    height: 44px;
+    background: transparent;
     border: none;
     cursor: pointer;
-    color: var(--text); /* Black icons */
+    color: var(--text);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: var(--transition);
 }
 
 .glass-dropdown {
