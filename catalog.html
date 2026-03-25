@@ -3,36 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO — Pure Indulgence, Zero Sugar</title>
-    <meta name="description" content="ZERO Syrup. The future of sweetness without the baggage of Stevia. Lab-certified purity, zero calories.">
+    <title>ZERO — Catalog</title>
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
 </head>
-<body>
-    <!-- RETAINED: Security Wall -->
-    <div id="coming-soon-overlay" class="coming-soon-overlay">
-        <div class="coming-soon-card n-card">
-            <h1>Under <span class="teal-text">Construction.</span></h1>
-            <p>ZERO represents the future of a healthy lifestyle. Come back later to learn more about us.</p>
-            <div id="developer-check" class="developer-check">
-                <p>Are you a developer?</p>
-                <div class="btn-group">
-                    <button id="dev-yes" class="n-btn mini">yes</button>
-                    <button id="dev-no" class="n-btn mini">no</button>
-                </div>
-            </div>
-            <div id="code-prompt" class="code-prompt hide">
-                <p>Developer Access Code:</p>
-                <input type="password" id="dev-code" class="neomorph-input" placeholder="••••••">
-                <button id="submit-code" class="n-btn" style="margin-top: 2rem;">AUTHENTICATE</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- RESTORED: GLASSMORPHIC NAV -->
+<body class="catalog-page">
+    <!-- NAV (Consistent with Index) -->
     <nav class="floating-nav">
         <div class="logo">
             <a href="index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
@@ -56,7 +35,7 @@
                         <a href="index.html">HOME</a>
                         <a href="catalog.html" class="mobile-only">CATALOG</a>
                         <a href="zfit.html" class="mobile-only">ZFIT</a>
-                        <a href="#company">COMPANY INFO</a>
+                        <a href="index.html#company">COMPANY INFO</a>
                         <a href="legal.html">LEGAL INFO</a>
                     </div>
                 </li>
@@ -74,53 +53,55 @@
         <div id="close-search" class="search-close-x">×</div>
     </div>
 
-    <!-- FUSION HERO -->
-    <header class="hero-v6">
+    <!-- CATALOG CONTENT -->
+    <header style="padding-top: 200px; text-align: center;">
         <div class="container">
-            <h1 class="hero-h1">Finally, sweetness <br>without the <span class="teal-text">baggage.</span></h1>
-            <p class="hero-p">Sugar is history. Stevia is a mistake. ZERO is the lab-certified solution to a life without biological debt. One drop, zero regrets.</p>
-            <div class="hero-visual">
-                <img src="/ZERO Media/ZERO Syrup Renders/PLAIN_ZERO_Syrup_new.png" alt="ZERO Syrup" class="render-v6">
-            </div>
-            <div style="margin-top: 5rem;">
-                <a href="catalog.html" class="n-btn">VIEW FULL CATALOG</a>
-            </div>
+            <h1 style="font-size: 5rem; letter-spacing: -3px; font-weight: 900;">THE <span class="teal-text">CATALOG.</span></h1>
+            <p style="margin-top: 2rem; color: var(--text-mid); max-width: 600px; margin-inline: auto;">The future of sweetness, lab-tested and certified. No biological debt, just pure indulgence.</p>
         </div>
     </header>
 
-    <!-- COMPANY INFO (Vision) -->
-    <section id="company" class="story-fusion">
+    <section id="syrups">
         <div class="container">
-            <h2 class="section-badge" style="text-align: center; margin-bottom: 8rem;">COMPANY INFO</h2>
-            <div class="grid-v6">
-                <div class="dark-accent-card">
-                    <span class="badge">OUR MISSION</span>
-                    <h2>Indonesia, <br>Healthier.</h2>
-                    <p>Founded in 2024 by Brent Vincent and Giri Gusman, ZERO exists to make Indonesia healthier by making healthy choices easier. No spikes, no crashes, just pure fuel.</p>
+            <h2 class="section-badge">SYRUPS</h2>
+            <div class="flv-grid">
+                <div class="flv-card-min n-card">
+                    <img src="/ZERO Media/ZERO Syrup Renders/PLAIN_ZERO_Syrup_new.png" alt="Syrup">
+                    <h3>ZERO Syrup</h3>
+                    <p>Sucralose-sweetened. Described by thousands as the taste of sugar without the guilt.</p>
+                    <div class="price-tag">Rp39K — Rp69K</div>
+                    <div class="btn-cluster">
+                        <a href="https://www.tokopedia.com/jenang-gemi-official-shop/zero-sirup-keto-diet-0-kalori-bebas-gula-sugar-free-non-stevia-zero-250-ml-550ml-keto-diabetes-friendly-tanpa-gula-lemak-gluten-tersertifikasi-pirt-dan-halal-1731017005586286118" target="_blank" class="n-btn mini">TOKOPEDIA</a>
+                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank" class="n-btn mini">TIKTOK SHOP</a>
+                    </div>
                 </div>
-                <div class="n-card">
-                    <h2>Meet the Lab.</h2>
-                    <p>Led by CEO Maria Renny, our team blends global expertise. Brent nails the flavors from the US, while Giri (Bang ZERO) shows Indonesia the true impact of glucose on the body.</p>
+                <div class="flv-card-min n-card">
+                    <img src="/ZERO Media/ZERO Syrup Renders/Maple_Topping.png" alt="Maple Topping">
+                    <h3>ZERO Maple Topping</h3>
+                    <p>Thick texture, real maple extract. Zero sugar, 100% morning joy.</p>
+                    <div class="price-tag">Rp149K</div>
+                    <div class="btn-cluster">
+                        <a href="https://shopee.co.id/product/39127320/29175721394/" target="_blank" class="n-btn mini">SHOPEE</a>
+                        <a href="https://www.tokopedia.com/jenang-gemi-official-shop/550ml-sugar-free-maple-syrup-zero-foods-indonesia-1730855966505076338" target="_blank" class="n-btn mini">TOKOPEDIA</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- DECORATIVE PRODUCTS -->
-    <section id="decoration" style="padding: 12rem 0; background: var(--grey-ultra);">
+    <section id="drops" style="background: var(--grey-ultra); padding: 12rem 0;">
         <div class="container">
+            <h2 class="section-badge">DROPS</h2>
             <div class="flv-grid">
-                <div class="flv-card-min">
-                    <img src="/ZERO Media/ZERO Syrup Renders/Plain_ZERO_Syrup_Sample.png" alt="Sample" style="height: 250px;">
-                    <p style="margin-top: 1rem; opacity: 0.5;">A glimpse into the lab.</p>
-                </div>
-                <div class="flv-card-min">
-                    <img src="/ZERO Media/ZERO Syrup Renders/Zero_Drops_New_Render.png" alt="Drops" style="height: 250px;">
-                    <p style="margin-top: 1rem; opacity: 0.5;">The concentrate mission.</p>
-                </div>
-                <div class="flv-card-min">
-                    <img src="/ZERO Media/ZERO Syrup Renders/Maple_Topping.png" alt="Maple" style="height: 250px;">
-                    <p style="margin-top: 1rem; opacity: 0.5;">Sweetness reconstructed.</p>
+                <div class="flv-card-min n-card" style="background: white;">
+                    <img src="/ZERO Media/ZERO Syrup Renders/Zero_Drops.png" alt="Drops">
+                    <h3>ZERO Drops</h3>
+                    <p>Concentrated joy in a glass dropper. 5-7 drops for pure sweetness on the go.</p>
+                    <div class="price-tag">Rp20K — Rp49K</div>
+                    <div class="btn-cluster">
+                        <a href="https://www.tokopedia.com/zero-foods-indonesia/zero-drops-pemanis-tanpa-gula-zero-kalori-rasa-lebih-baik-dari-stevia-1731819296225002582" target="_blank" class="n-btn mini">TOKOPEDIA</a>
+                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn mini">WHATSAPP</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -133,7 +114,6 @@
                 <div>
                     <h2 style="font-size: 5rem; letter-spacing: -4px;">Pure science. <br>Pure sweetness.</h2>
                     <p style="margin-top: 2rem; color: var(--text-mid);">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
-                    <p style="margin-top: 1rem; font-size: 0.7rem; opacity: 0.5; max-width: 400px;">Jl. Jombor Tegal No.124 A, Jombor Lor, Sinduadi, Mlati, Sleman, Yogyakarta</p>
                 </div>
                 <div style="text-align: right;">
                     <nav style="margin-bottom: 2rem;">

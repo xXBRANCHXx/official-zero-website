@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZERO — ZFit</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
+</head>
+<body class="zfit-page">
+    <!-- NAV (Consistent with Index) -->
+    <nav class="floating-nav">
+        <div class="logo">
+            <a href="index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
+        </div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li>
+                    <div class="search-anchor">
+                        <button id="search-trigger" class="icon-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                </li>
+                <li class="desktop-only"><a href="catalog.html">CATALOG</a></li>
+                <li class="desktop-only"><a href="zfit.html">ZFIT</a></li>
+                <li class="more-menu">
+                    <button id="more-trigger" class="icon-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
+                    </button>
+                    <div id="more-dropdown" class="glass-dropdown">
+                        <a href="index.html">HOME</a>
+                        <a href="catalog.html" class="mobile-only">CATALOG</a>
+                        <a href="zfit.html" class="mobile-only">ZFIT</a>
+                        <a href="index.html#company">COMPANY INFO</a>
+                        <a href="legal.html">LEGAL INFO</a>
+                    </div>
+                </li>
+                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="padding: 0.8rem 1.5rem; border-radius: 50px; font-size: 0.7rem;">JOIN THE LAB</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Global Glassmorphic Hub (Moved for proper Backdrop Filtering) -->
+    <div id="search-popout" class="search-morph-container global-overlay">
+        <div class="search-icon-box" id="morph-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
+        <div id="close-search" class="search-close-x">×</div>
+    </div>
+
+    <!-- ZFIT CONTENT -->
+    <header style="padding-top: 200px; text-align: center;">
+        <div class="container">
+            <h1 style="font-size: 5rem; letter-spacing: -3px; font-weight: 900;">Z<span class="teal-text">FIT.</span></h1>
+            <p style="margin-top: 2rem; color: var(--text-mid); max-width: 600px; margin-inline: auto;">Beyond weight loss. Pure performance, prebiotic power, and unfiltered health efficacy.</p>
+        </div>
+    </header>
+
+    <section id="fiber">
+        <div class="container">
+            <div class="grid-v6">
+                <div class="n-card">
+                    <span class="badge" style="color: var(--teal); letter-spacing: 5px; font-weight: 800; font-size: 0.8rem;">PREBIOTIC POWER</span>
+                    <h2>ZFit Fiber Syrup</h2>
+                    <p>6g of prebiotic fiber per serving. Lemonade Pomegranate flavored or Unflavored (hides in any drink). Health doesn't have to be hard.</p>
+                    <div class="price-tag" style="margin-top: 2rem; font-size: 1.5rem; font-weight: 800;">Rp129.000</div>
+                    <div class="btn-cluster" style="margin-top: 2rem;">
+                        <a href="https://www.tokopedia.com/zero-foods-indonesia" target="_blank" class="n-btn">EXPLORE ON TOKOPEDIA</a>
+                    </div>
+                </div>
+                <div class="dark-accent-card">
+                    <span class="badge">RAW & UNFILTERED</span>
+                    <h2>ZFit ACVS</h2>
+                    <p>Apple Cider Vinegar Syrup. Raw and unfiltered with "the mother." No sugar, no struggle, just the full efficacy in every drop.</p>
+                    <div class="price-tag" style="margin-top: 2rem; font-size: 1.5rem; font-weight: 800; color: var(--white);">Rp29.500 — Rp49.500</div>
+                    <div class="btn-cluster" style="margin-top: 2rem;">
+                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="background: var(--teal); border: none; color: white; box-shadow: none;">ORDER DIRECT</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="padding: 10rem 0 5rem;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                    <h2 style="font-size: 5rem; letter-spacing: -4px;">Pure science. <br>Pure sweetness.</h2>
+                    <p style="margin-top: 2rem; color: var(--text-mid);">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
+                </div>
+                <div style="text-align: right;">
+                    <nav style="margin-bottom: 2rem;">
+                        <a href="legal.html" style="color: var(--text); font-weight: 800; font-size: 0.8rem; letter-spacing: 2px; text-decoration: none;">LEGAL INFO</a>
+                    </nav>
+                    <img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO Logo" style="height: 20px; opacity: 0.5;">
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="/index.js"></script>
+</body>
+</html>
