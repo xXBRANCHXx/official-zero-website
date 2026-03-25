@@ -12,7 +12,7 @@
     <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
 </head>
 <body>
-    <!-- RETAINED: Security Wall -->
+    <!-- Security Wall -->
     <div id="coming-soon-overlay" class="coming-soon-overlay">
         <div class="coming-soon-card n-card">
             <h1>Under <span class="teal-text">Construction.</span></h1>
@@ -32,10 +32,10 @@
         </div>
     </div>
 
-    <!-- RESTORED: GLASSMORPHIC NAV -->
+    <!-- GLASSMORPHIC NAV -->
     <nav class="floating-nav">
         <div class="logo">
-            <a href="index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
+            <a href="/index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
         </div>
         <div class="nav-right">
             <ul class="nav-links">
@@ -52,26 +52,27 @@
                     <button id="more-trigger" class="icon-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
                     </button>
-                    <div id="more-dropdown" class="glass-dropdown global-overlay">
-                        <a href="/index.html">HOME</a>
-                        <a href="/catalog.html" class="mobile-only">CATALOG</a>
-                        <a href="/zfit.html" class="mobile-only">ZFIT</a>
-                        <a href="/index.html#company">COMPANY INFO</a>
-                        <a href="/legal.html">LEGAL INFO</a>
-                    </div>
                 </li>
-                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="padding: 0.8rem 1.5rem; border-radius: 50px; font-size: 0.7rem;">JOIN THE LAB</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="font-size: 0.7rem;">JOIN THE LAB</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Global Glassmorphic Hub (Moved for proper Backdrop Filtering) -->
+    <!-- Global Glassmorphic Hub (Root-level for proper Backdrop Filtering) -->
     <div id="search-popout" class="search-morph-container global-overlay">
         <div class="search-icon-box" id="morph-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" x1="21" x2="16.65" y2="16.65"></line></svg>
         </div>
         <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
         <div id="close-search" class="search-close-x">×</div>
+    </div>
+
+    <div id="more-dropdown" class="glass-dropdown global-overlay">
+        <a href="/index.html">HOME</a>
+        <a href="/catalog.html" class="mobile-only">CATALOG</a>
+        <a href="/zfit.html" class="mobile-only">ZFIT</a>
+        <a href="/index.html#company">COMPANY INFO</a>
+        <a href="/legal.html">LEGAL INFO</a>
     </div>
 
     <!-- FUSION HERO -->
@@ -83,7 +84,7 @@
                 <img src="/ZERO Media/ZERO Syrup Renders/PLAIN_ZERO_Syrup_new.png" alt="ZERO Syrup" class="render-v6">
             </div>
             <div style="margin-top: 5rem;">
-                <a href="catalog.html" class="n-btn">VIEW FULL CATALOG</a>
+                <a href="/catalog.html" class="n-btn">VIEW FULL CATALOG</a>
             </div>
         </div>
     </header>
@@ -115,11 +116,11 @@
                     <p style="margin-top: 1rem; opacity: 0.5;">A glimpse into the lab.</p>
                 </div>
                 <div class="flv-card-min">
-                    <img src="/ZERO Media/ZERO Syrup Renders/Zero_Drops_New_Render.png" alt="Drops" style="height: 250px;">
+                    <img src="/ZERO Media/PLAIN_Drops_30ml_New_Transparent.png" alt="Drops" style="height: 250px;">
                     <p style="margin-top: 1rem; opacity: 0.5;">The concentrate mission.</p>
                 </div>
                 <div class="flv-card-min">
-                    <img src="/ZERO Media/ZERO Syrup Renders/Maple_Topping.png" alt="Maple" style="height: 250px;">
+                    <img src="/ZERO Media/Maple Topping_transparent.png" alt="Maple" style="height: 250px;">
                     <p style="margin-top: 1rem; opacity: 0.5;">Sweetness reconstructed.</p>
                 </div>
             </div>
