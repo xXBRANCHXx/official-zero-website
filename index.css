@@ -60,38 +60,28 @@ section {
 }
 
 /* GLOBAL GLASSMORPHIC HUB */
+/* GLOBAL GLASSMORPHIC HUB */
 .global-overlay {
     position: fixed;
     z-index: 1100;
     right: 4vw;
     top: 100px;
-    background: transparent; /* Background now handled by pseudo-element */
-    box-shadow: 0 40px 100px rgba(0,0,0,0.1);
-    opacity: 0;
-    pointer-events: none;
-    transition: var(--transition);
-    overflow: hidden; /* Required for pseudo-element clipping */
-}
-
-.global-overlay::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.15); /* Crystalline */
+    background: rgba(255, 255, 255, 0.1); 
     backdrop-filter: blur(40px) saturate(200%);
     -webkit-backdrop-filter: blur(40px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: inherit;
-    z-index: -1;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden; /* Force-trigger for backdrop-filter on mobile */
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .global-overlay.active {
     opacity: 1;
+    visibility: visible;
     pointer-events: all;
-    transform: translateY(0);
+    transform: translateY(0) !important;
 }
 
 .search-morph-container {
@@ -253,13 +243,14 @@ section {
     background: var(--bg);
     border: none;
     border-radius: 50px;
-    padding: 1.5rem 4rem;
+    padding: 0.8rem 2.5rem;
     font-weight: 800;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     color: var(--text);
-    box-shadow: 12px 12px 24px var(--shadow-dark),
-                -12px -12px 24px var(--shadow-light);
+    box-shadow: 8px 8px 16px var(--shadow-dark),
+                -8px -8px 16px var(--shadow-light);
     transition: var(--transition);
     cursor: pointer;
     text-decoration: none;
@@ -291,6 +282,8 @@ section {
 
 .flv-card-min {
     text-align: center;
+    padding: 2rem;
+    border-radius: 40px;
 }
 
 .flv-card-min img {
