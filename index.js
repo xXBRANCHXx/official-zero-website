@@ -1,10 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Initial lock for 'Coming Soon' state
-    document.body.classList.add('locked');
+    const ACCESS_CODE = "192017";
+    const SESSION_KEY = "zero_vault_access";
 
-    // Portal Logic
+    // Global Lock/Unlock Logic
+    const overlay = document.getElementById('coming-soon-overlay');
+    if (overlay) {
+        if (sessionStorage.getItem(SESSION_KEY) === "granted") {
+            overlay.classList.add('fade-out');
+            document.body.classList.remove('locked');
+        } else {
+            document.body.classList.add('locked');
+        }
+    }
+
+    // Portal UI Interaction
     const portal = {
-        overlay: document.getElementById('coming-soon-overlay'),
+        overlay: overlay,
         devYes: document.getElementById('dev-yes'),
         devNo: document.getElementById('dev-no'),
         devCheck: document.getElementById('developer-check'),
@@ -12,8 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         devInput: document.getElementById('dev-code'),
         submitBtn: document.getElementById('submit-code')
     };
-
-    const ACCESS_CODE = "192017";
 
     portal.devYes?.addEventListener('click', () => {
         portal.devCheck.classList.add('hide');
@@ -23,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const unlockSite = () => {
         if (portal.devInput.value === ACCESS_CODE) {
+            sessionStorage.setItem(SESSION_KEY, "granted");
             portal.overlay.classList.add('fade-out');
             document.body.classList.remove('locked');
             console.log("Access Granted.");
@@ -63,20 +73,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // UNIFIED MORE MENU LOGIC (Transparent Dropdown)
+    // UNIFIED MORE MENU LOGIC (External Global Overlay)
     const moreTrigger = document.getElementById('more-trigger');
     const moreDropdown = document.getElementById('more-dropdown');
 
-    moreTrigger?.addEventListener('click', (e) => {
-        e.stopPropagation();
-        moreDropdown.classList.toggle('active');
-    });
+    if (moreTrigger && moreDropdown) {
+        moreTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moreDropdown.classList.toggle('active');
+        });
+    }
 
+    // Global Click-out Logic
     document.addEventListener('click', (e) => {
         if (moreDropdown && !moreDropdown.contains(e.target) && e.target !== moreTrigger) {
             moreDropdown.classList.remove('active');
         }
-        if (searchPopout && !searchPopout.contains(e.target) && e.target !== searchTrigger) {
+        if (searchPopout && !searchPopout.contains(e.target) && !searchTrigger.contains(e.target)) {
             searchPopout.classList.remove('expanded');
             setTimeout(() => searchPopout.classList.remove('active'), 500);
         }
