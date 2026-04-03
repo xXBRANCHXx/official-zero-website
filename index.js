@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     const ACCESS_CODE = "192017";
     const SESSION_KEY = "zero_vault_access";
+    const closeOverlay = (element) => {
+        if (!element?.classList.contains('active')) return;
+        element.classList.remove('expanded');
+        setTimeout(() => element.classList.remove('active'), 500);
+    };
 
     // Global Lock/Unlock Logic
     const overlay = document.getElementById('coming-soon-overlay');
@@ -53,13 +58,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchPopout = document.getElementById('search-popout');
     const morphIconBox = document.getElementById('morph-icon-box');
     const mainSearch = document.getElementById('main-search');
+    const closeSearch = document.getElementById('close-search');
 
-    if (searchTrigger) {
+    if (searchTrigger && searchPopout && morphIconBox && mainSearch) {
         searchTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             if (searchPopout.classList.contains('active')) {
-                searchPopout.classList.remove('expanded');
-                setTimeout(() => searchPopout.classList.remove('active'), 500);
+                closeOverlay(searchPopout);
             } else {
                 searchPopout.classList.add('active');
                 setTimeout(() => {
@@ -74,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    closeSearch?.addEventListener('click', () => closeOverlay(searchPopout));
+
     // UNIFIED MORE MENU LOGIC (External Global Overlay)
     const moreTrigger = document.getElementById('more-trigger');
     const moreDropdown = document.getElementById('more-dropdown');
@@ -87,19 +94,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Global Click-out Logic
     document.addEventListener('click', (e) => {
-        if (moreDropdown && !moreDropdown.contains(e.target) && e.target !== moreTrigger) {
+        const clickedNode = e.target;
+
+        if (moreDropdown && !moreDropdown.contains(clickedNode) && !moreTrigger?.contains(clickedNode)) {
             moreDropdown.classList.remove('active');
         }
-        if (searchPopout && !searchPopout.contains(e.target) && !searchTrigger.contains(e.target)) {
-            searchPopout.classList.remove('expanded');
-            setTimeout(() => searchPopout.classList.remove('active'), 500);
+        if (searchPopout && !searchPopout.contains(clickedNode) && !searchTrigger?.contains(clickedNode)) {
+            closeOverlay(searchPopout);
         }
     });
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            searchPopout?.classList.remove('expanded');
-            setTimeout(() => searchPopout?.classList.remove('active'), 500);
+            closeOverlay(searchPopout);
             moreDropdown?.classList.remove('active');
         }
     });

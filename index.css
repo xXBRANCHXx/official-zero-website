@@ -4,7 +4,8 @@
     --surface: #ffffff;
     --text: #1a1a1a;
     --text-mid: #666;
-    --teal: #00df81; /* Vibrant Organic Green */
+    --teal: #008080;
+    --grey-ultra: #f4f6f8;
     --white: #ffffff;
     --shadow-light: #ffffff;
     --shadow-dark: #e8eaed;
@@ -28,6 +29,11 @@ body {
     line-height: 1.4;
 }
 
+img {
+    max-width: 100%;
+    display: block;
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
@@ -36,6 +42,25 @@ body {
 
 section {
     padding: 12rem 0;
+}
+
+.teal-text {
+    color: var(--teal);
+}
+
+.section-badge {
+    color: var(--teal);
+    letter-spacing: 4px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+}
+
+.price-tag {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--teal);
 }
 
 /* 1. RESTORED GLASSMORPHIC NAV */
@@ -289,6 +314,8 @@ section {
     height: 350px;
     margin-bottom: 3rem;
     filter: brightness(1.5) contrast(1.15);
+    object-fit: contain;
+    margin-inline: auto;
 }
 
 /* REMOVED: Static Search Overlay styles */
@@ -403,4 +430,46 @@ section {
     #search-trigger { color: var(--text); }
     .nav-links .n-btn { padding: 0.6rem 1rem !important; font-size: 0.6rem !important; }
     .search-morph-container { top: 55px; }
+}
+
+@media (max-width: 768px) {
+    section {
+        padding: 7rem 0;
+    }
+
+    .n-card,
+    .dark-accent-card,
+    .coming-soon-card {
+        border-radius: 36px;
+        padding: 3rem 1.5rem;
+    }
+
+    .hero-v6 {
+        padding-top: 10rem;
+    }
+
+    .hero-p {
+        font-size: 1.05rem;
+        margin-bottom: 3rem;
+    }
+
+    .flv-card-min img {
+        height: 240px;
+        margin-bottom: 1.5rem;
+    }
+
+    footer div[style*="justify-content: space-between"] {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 3rem;
+    }
+
+    footer div[style*="text-align: right"] {
+        text-align: left !important;
+    }
+
+    footer div[style*="justify-content: flex-end"] {
+        justify-content: flex-start !important;
+        flex-wrap: wrap;
+    }
 }

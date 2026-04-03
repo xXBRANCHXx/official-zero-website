@@ -10,7 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
 </head>
-<body class="zfit-page">
+<body class="locked zfit-page">
+    <div id="coming-soon-overlay" class="coming-soon-overlay">
+        <div class="coming-soon-card n-card">
+            <h1>Under <span class="teal-text">Construction.</span></h1>
+            <p>ZERO represents the future of a healthy lifestyle. Come back later to learn more about us.</p>
+            <div id="developer-check" class="developer-check">
+                <p>Are you a developer?</p>
+                <div class="btn-group">
+                    <button id="dev-yes" class="n-btn mini">yes</button>
+                    <button id="dev-no" class="n-btn mini">no</button>
+                </div>
+            </div>
+            <div id="code-prompt" class="code-prompt hide">
+                <p>Developer Access Code:</p>
+                <input type="password" id="dev-code" class="neomorph-input" placeholder="••••••">
+                <button id="submit-code" class="n-btn" style="margin-top: 2rem;">AUTHENTICATE</button>
+            </div>
+        </div>
+    </div>
     <!-- NAV (Consistent with Index) -->
     <nav class="floating-nav">
         <div class="logo">

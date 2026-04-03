@@ -10,30 +10,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
 </head>
-<body class="legal-page">
+<body class="locked legal-page">
+    <div id="coming-soon-overlay" class="coming-soon-overlay">
+        <div class="coming-soon-card n-card">
+            <h1>Under <span class="teal-text">Construction.</span></h1>
+            <p>ZERO represents the future of a healthy lifestyle. Come back later to learn more about us.</p>
+            <div id="developer-check" class="developer-check">
+                <p>Are you a developer?</p>
+                <div class="btn-group">
+                    <button id="dev-yes" class="n-btn mini">yes</button>
+                    <button id="dev-no" class="n-btn mini">no</button>
+                </div>
+            </div>
+            <div id="code-prompt" class="code-prompt hide">
+                <p>Developer Access Code:</p>
+                <input type="password" id="dev-code" class="neomorph-input" placeholder="••••••">
+                <button id="submit-code" class="n-btn" style="margin-top: 2rem;">AUTHENTICATE</button>
+            </div>
+        </div>
+    </div>
     <nav class="floating-nav">
         <div class="logo">
-            <a href="index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
+            <a href="/index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
         </div>
         <div class="nav-right">
             <ul class="nav-links">
-                <li class="desktop-only"><a href="catalog.html">CATALOG</a></li>
-                <li class="desktop-only"><a href="zfit.html">ZFIT</a></li>
+                <li>
+                    <div class="search-anchor">
+                        <button id="search-trigger" class="icon-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                </li>
+                <li class="desktop-only"><a href="/catalog.html">CATALOG</a></li>
+                <li class="desktop-only"><a href="/zfit.html">ZFIT</a></li>
                 <li class="more-menu">
                     <button id="more-trigger" class="icon-btn">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
                     </button>
-                    <div id="more-dropdown" class="glass-dropdown">
-                        <a href="index.html">HOME</a>
-                        <a href="catalog.html" class="mobile-only">CATALOG</a>
-                        <a href="zfit.html" class="mobile-only">ZFIT</a>
-                        <a href="index.html#company">COMPANY INFO</a>
-                        <a href="legal.html">LEGAL INFO</a>
-                    </div>
                 </li>
+                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="font-size: 0.7rem;">JOIN THE LAB</a></li>
             </ul>
         </div>
     </nav>
+
+    <div id="search-popout" class="search-morph-container global-overlay">
+        <div class="search-icon-box" id="morph-icon-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
+        <div id="close-search" class="search-close-x">×</div>
+    </div>
+
+    <div id="more-dropdown" class="glass-dropdown global-overlay">
+        <a href="/index.html">HOME</a>
+        <a href="/catalog.html" class="mobile-only">CATALOG</a>
+        <a href="/zfit.html" class="mobile-only">ZFIT</a>
+        <a href="/index.html#company">COMPANY INFO</a>
+        <a href="/legal.html">LEGAL INFO</a>
+    </div>
 
     <header style="padding-top: 200px; text-align: center;">
         <div class="container">
