@@ -8,10 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
 </head>
 <body class="locked catalog-page">
-    <!-- Security Wall -->
     <div id="coming-soon-overlay" class="coming-soon-overlay">
         <div class="coming-soon-card n-card">
             <h1>Under <span class="teal-text">Construction.</span></h1>
@@ -30,9 +28,10 @@
             </div>
         </div>
     </div>
+
     <nav class="floating-nav">
         <div class="logo">
-            <a href="/index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
+            <a href="/index.html" id="nav-logo">ZERO</a>
         </div>
         <div class="nav-right">
             <ul class="nav-links">
@@ -55,7 +54,6 @@
         </div>
     </nav>
 
-    <!-- Global Glassmorphic Hub (Moved for proper Backdrop Filtering) -->
     <div id="search-popout" class="search-morph-container global-overlay">
         <div class="search-icon-box" id="morph-icon-box">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -64,7 +62,6 @@
         <div id="close-search" class="search-close-x">×</div>
     </div>
 
-    <!-- Crystalline More Menu (Relocated for proper Backdrop Filtering) -->
     <div id="more-dropdown" class="glass-dropdown global-overlay">
         <a href="/index.html">HOME</a>
         <a href="/catalog.html" class="mobile-only">CATALOG</a>
@@ -73,77 +70,82 @@
         <a href="/legal.html">LEGAL INFO</a>
     </div>
 
-    <!-- CATALOG CONTENT -->
-    <header style="padding-top: 200px; text-align: center;">
+    <header>
         <div class="container">
             <h1 style="font-size: 5rem; letter-spacing: -3px; font-weight: 900;">THE <span class="teal-text">CATALOG.</span></h1>
-            <p style="margin-top: 2rem; color: var(--text-mid); max-width: 600px; margin-inline: auto;">The future of sweetness, lab-tested and certified. No biological debt, just pure indulgence.</p>
+            <p style="margin-top: 2rem; color: var(--text-mid); max-width: 600px; margin-inline: auto;">All product imagery has been removed. This version keeps the catalog readable as a text-first inventory while we rebuild the visual system.</p>
         </div>
     </header>
 
-    <section id="syrups">
+    <section id="syrups" class="stack-section">
         <div class="container">
-            <h2 class="section-badge">SYRUPS</h2>
-            <div class="flv-grid">
-                <div class="flv-card-min n-card">
-                    <img src="/ZERO Media/ZERO Syrup Renders/PLAIN_ZERO_Syrup_new.png" alt="Syrup">
-                    <h3>ZERO Syrup</h3>
-                    <p>Sucralose-sweetened. Described by thousands as the taste of sugar without the guilt.</p>
-                    <div class="price-tag">Rp39K — Rp69K</div>
-                    <div class="btn-cluster" style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1.5rem;">
-                        <a href="https://www.tokopedia.com/jenang-gemi-official-shop/zero-sirup-keto-diet-0-kalori-bebas-gula-sugar-free-non-stevia-zero-250-ml-550ml-keto-diabetes-friendly-tanpa-gula-lemak-gluten-tersertifikasi-pirt-dan-halal-1731017005586286118" target="_blank" class="n-btn">TOKOPEDIA</a>
-                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank" class="n-btn">TIKTOK</a>
+            <div class="section-shell">
+                <h2 class="section-badge">SYRUPS</h2>
+                <div class="panel-grid two-up">
+                    <div class="flv-card-min n-card copy-panel">
+                        <span class="eyebrow-note">CORE PRODUCT</span>
+                        <h3>ZERO Syrup</h3>
+                        <p>Sucralose-sweetened. Described by thousands as the taste of sugar without the guilt.</p>
+                        <div class="price-tag">Rp39K — Rp69K</div>
+                        <div class="btn-cluster" style="margin-top: 1.5rem;">
+                            <a href="https://www.tokopedia.com/jenang-gemi-official-shop/zero-sirup-keto-diet-0-kalori-bebas-gula-sugar-free-non-stevia-zero-250-ml-550ml-keto-diabetes-friendly-tanpa-gula-lemak-gluten-tersertifikasi-pirt-dan-halal-1731017005586286118" target="_blank" class="n-btn">TOKOPEDIA</a>
+                            <a href="https://www.tiktok.com/@zerofoods.id" target="_blank" class="n-btn">TIKTOK</a>
+                        </div>
                     </div>
-                </div>
-                <div class="flv-card-min n-card">
-                    <img src="/ZERO Media/Maple Topping_transparent.png" alt="Maple Topping">
-                    <h3>ZERO Maple Topping</h3>
-                    <p>Thick texture, real maple extract. Zero sugar, 100% morning joy.</p>
-                    <div class="price-tag">Rp149K</div>
-                    <div class="btn-cluster" style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1.5rem;">
-                        <a href="https://shopee.co.id/product/39127320/29175721394/" target="_blank" class="n-btn">SHOPEE</a>
-                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">ORDER</a>
+                    <div class="flv-card-min n-card copy-panel">
+                        <span class="eyebrow-note">TOPPING</span>
+                        <h3>ZERO Maple Topping</h3>
+                        <p>Thick texture, real maple extract. Zero sugar, 100% morning joy.</p>
+                        <div class="price-tag">Rp149K</div>
+                        <div class="btn-cluster" style="margin-top: 1.5rem;">
+                            <a href="https://shopee.co.id/product/39127320/29175721394/" target="_blank" class="n-btn">SHOPEE</a>
+                            <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">ORDER</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="drops" style="background: var(--grey-ultra); padding: 12rem 0;">
+    <section id="drops" class="stack-section" style="background: var(--grey-ultra);">
         <div class="container">
-            <h2 class="section-badge">DROPS</h2>
-            <div class="flv-grid">
-                <div class="flv-card-min n-card" style="background: white;">
-                    <img src="/ZERO Media/PLAIN_Drops_30ml_New_Transparent.png" alt="Drops">
-                    <h3>ZERO Drops</h3>
-                    <p>Concentrated joy in a glass dropper. 5-7 drops for pure sweetness on the go.</p>
-                    <div class="price-tag">Rp20K — Rp49K</div>
-                    <div class="btn-cluster" style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1.5rem;">
-                        <a href="https://www.tokopedia.com/zero-foods-indonesia/zero-drops-pemanis-tanpa-gula-zero-kalori-rasa-lebih-baik-dari-stevia-1731819296225002582" target="_blank" class="n-btn">TOKOPEDIA</a>
-                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">ORDER</a>
+            <div class="section-shell">
+                <h2 class="section-badge">DROPS</h2>
+                <div class="panel-grid two-up">
+                    <div class="flv-card-min n-card copy-panel">
+                        <span class="eyebrow-note">PORTABLE</span>
+                        <h3>ZERO Drops</h3>
+                        <p>Concentrated joy in a glass dropper. 5-7 drops for pure sweetness on the go.</p>
+                        <div class="price-tag">Rp20K — Rp49K</div>
+                        <div class="btn-cluster" style="margin-top: 1.5rem;">
+                            <a href="https://www.tokopedia.com/zero-foods-indonesia/zero-drops-pemanis-tanpa-gula-zero-kalori-rasa-lebih-baik-dari-stevia-1731819296225002582" target="_blank" class="n-btn">TOKOPEDIA</a>
+                            <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">ORDER</a>
+                        </div>
+                    </div>
+                    <div class="flv-card-min dark-accent-card copy-panel">
+                        <span class="badge">SYSTEM NOTE</span>
+                        <h3>Catalog Layout Ready</h3>
+                        <p>The remaining slot preserves the desktop rhythm and collapses cleanly to a single column on mobile. We can reuse it for featured launches, bundles, or a category intro.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer style="padding: 10rem 0 5rem;">
         <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div class="footer-shell">
                 <div>
-                    <h2 style="font-size: 5rem; letter-spacing: -4px;">Pure science. <br>Pure sweetness.</h2>
-                    <p style="margin-top: 2rem; color: var(--text-mid);">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
+                    <h2 class="footer-title">Pure science. <br>Pure sweetness.</h2>
+                    <p class="footer-meta">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
                 </div>
-                <div style="text-align: right;">
-                    <nav style="margin-bottom: 2rem;">
-                        <a href="/legal.html" style="color: var(--text); font-weight: 800; font-size: 0.8rem; letter-spacing: 2px; text-decoration: none;">LEGAL INFO</a>
-                    </nav>
-                    <div style="margin-bottom: 4rem; display: flex; gap: 3rem; justify-content: flex-end;">
-                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank" style="text-decoration: none; color: var(--text); font-weight: 800; font-size: 0.8rem; letter-spacing: 2px;">INSTAGRAM</a>
-                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank" style="text-decoration: none; color: var(--text); font-weight: 800; font-size: 0.8rem; letter-spacing: 2px;">TIKTOK</a>
+                <div>
+                    <a href="/legal.html" class="footer-legal">LEGAL INFO</a>
+                    <div class="footer-links">
+                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank">INSTAGRAM</a>
+                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank">TIKTOK</a>
                     </div>
-                    <img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO Logo" style="height: 20px; opacity: 0.5;">
+                    <span class="footer-mark">ZERO</span>
                 </div>
             </div>
         </div>

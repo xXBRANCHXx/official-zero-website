@@ -9,10 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
 </head>
 <body>
-    <!-- Security Wall -->
     <div id="coming-soon-overlay" class="coming-soon-overlay">
         <div class="coming-soon-card n-card">
             <h1>Under <span class="teal-text">Construction.</span></h1>
@@ -32,10 +30,9 @@
         </div>
     </div>
 
-    <!-- GLASSMORPHIC NAV -->
     <nav class="floating-nav">
         <div class="logo">
-            <a href="/index.html" style="text-decoration:none;"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" id="nav-logo"></a>
+            <a href="/index.html" id="nav-logo">ZERO</a>
         </div>
         <div class="nav-right">
             <ul class="nav-links">
@@ -58,10 +55,9 @@
         </div>
     </nav>
 
-    <!-- Global Glassmorphic Hub (Root-level for proper Backdrop Filtering) -->
     <div id="search-popout" class="search-morph-container global-overlay">
         <div class="search-icon-box" id="morph-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" x1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </div>
         <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
         <div id="close-search" class="search-close-x">×</div>
@@ -75,87 +71,90 @@
         <a href="/legal.html">LEGAL INFO</a>
     </div>
 
-    <!-- FUSION HERO -->
     <header class="hero-v6">
         <div class="container">
-            <h1 class="hero-h1">Finally, sweetness <br>without the <span class="teal-text">baggage.</span></h1>
-            <p class="hero-p">Sugar is history. Stevia is a mistake. ZERO is the lab-certified solution to a life without biological debt. One drop, zero regrets.</p>
-            <div class="hero-visual">
-                <img src="/ZERO Media/ZERO Syrup Renders/PLAIN_ZERO_Syrup_new.png" alt="ZERO Syrup" class="render-v6">
-            </div>
-            <div style="margin-top: 5rem;">
-                <a href="/catalog.html" class="n-btn">VIEW FULL CATALOG</a>
+            <div class="hero-shell">
+                <div class="hero-panel">
+                    <h1 class="hero-h1">A clean layout for the next <span class="teal-text">ZERO.</span></h1>
+                    <p class="hero-p">All imagery has been removed so we can rebuild the website structure from first principles. This pass keeps the homepage readable, full-screen, and stable on mobile before new creative direction is added.</p>
+                    <div class="btn-cluster" style="justify-content: center;">
+                        <a href="/catalog.html" class="n-btn">VIEW FULL CATALOG</a>
+                        <a href="#company" class="n-btn">REVIEW LAYOUT</a>
+                    </div>
+                </div>
+                <div class="layout-note">
+                    <strong>Layout Reset</strong>
+                    <p>The homepage is now text-first: fixed navigation, one clear hero message, stacked full-screen sections, and responsive card grids that collapse cleanly on smaller screens.</p>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- COMPANY INFO (Vision) -->
-    <section id="company" class="story-fusion">
+    <section id="company" class="stack-section">
         <div class="container">
-            <h2 class="section-badge" style="text-align: center; margin-bottom: 8rem;">COMPANY INFO</h2>
-            <div class="grid-v6">
-                <!-- Our Mission Cluster -->
-                <div class="dark-accent-card">
-                    <span class="badge">OUR MISSION</span>
-                    <h2>Indonesia, <br>Healthier.</h2>
-                    <p>Founded in 2024 by Brent Vincent and Giri Gusman, ZERO exists to make Indonesia healthier by making healthy choices easier. No spikes, no crashes, just pure fuel.</p>
-                </div>
-
-                <!-- Laboratory Location Cluster -->
-                <div class="n-card" style="padding: 2rem; display: flex; flex-direction: column;">
-                    <h2>Meet the Lab.</h2>
-                    <p style="margin-bottom: 2rem;">Led by CEO Maria Renny, our team blends global expertise. Brent nails the flavors from the US, while Giri (Bang ZERO) shows Indonesia the true impact of glucose on the body.</p>
-                    
-                    <!-- Interactive Map Hub -->
-                    <div class="map-crystalline-container" style="flex-grow: 1; min-height: 250px; border-radius: 25px; overflow: hidden; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-                        <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.256247754674!2d110.3606764!3d-7.7629555!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a584090b83e8b%3A0xe5a3c9a44485c292!2sJl.%20Jombor%20Tegal%20No.124%20A%2C%20Jombor%20Lor%2C%20Sinduadi%2C%20Mlati%2C%20Sleman%2C%20Daerah%20Istimewa%20Yogyakarta%2055284!5e0!3m2!1sen!2sid!4v1711364170397!5m2!1sen!2sid" 
-                            width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
+            <div class="section-shell">
+                <h2 class="section-badge" style="text-align: center; margin-bottom: 3rem;">COMPANY INFO</h2>
+                <div class="grid-v6">
+                    <div class="dark-accent-card">
+                        <span class="badge">OUR MISSION</span>
+                        <h2>Indonesia, <br>Healthier.</h2>
+                        <p>Founded in 2024 by Brent Vincent and Giri Gusman, ZERO exists to make Indonesia healthier by making healthy choices easier. No spikes, no crashes, just pure fuel.</p>
+                    </div>
+                    <div class="n-card text-cluster">
+                        <span class="eyebrow-note">TEAM + LOCATION</span>
+                        <h2>Meet the Lab.</h2>
+                        <p>Led by CEO Maria Renny, the team combines product development, flavor work, and local market insight. The section is intentionally reduced to copy so we can decide later whether location should return as a map, an editorial block, or something else entirely.</p>
+                        <ul class="text-list">
+                            <li><strong>Base</strong> Sleman, Yogyakarta.</li>
+                            <li><strong>Focus</strong> Sugar-free systems, flavor development, and health-forward consumer products.</li>
+                            <li><strong>Current goal</strong> Validate information hierarchy on mobile before adding imagery back.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- DECORATIVE PRODUCTS -->
-    <section id="decoration" style="padding: 12rem 0; background: var(--grey-ultra);">
+    <section id="decoration" class="stack-section" style="background: var(--grey-ultra);">
         <div class="container">
-            <div class="flv-grid">
-                <div class="flv-card-min">
-                    <img src="/ZERO Media/ZERO Syrup Images/Group Photo ZERO Syrup.png" alt="ZERO Syrup collection" style="height: 250px;">
-                    <p style="margin-top: 1rem; opacity: 0.5;">A glimpse into the lab.</p>
-                </div>
-                <div class="flv-card-min">
-                    <img src="/ZERO Media/PLAIN_Drops_30ml_New_Transparent.png" alt="Drops" style="height: 250px;">
-                    <p style="margin-top: 1rem; opacity: 0.5;">The concentrate mission.</p>
-                </div>
-                <div class="flv-card-min">
-                    <img src="/ZERO Media/Maple Topping_transparent.png" alt="Maple" style="height: 250px;">
-                    <p style="margin-top: 1rem; opacity: 0.5;">Sweetness reconstructed.</p>
+            <div class="section-shell">
+                <h2 class="section-badge">NEXT BUILD</h2>
+                <div class="panel-grid">
+                    <div class="flv-card-min n-card copy-panel">
+                        <span class="eyebrow-note">01</span>
+                        <h3>Hero Composition</h3>
+                        <p>The first screen already fills the device cleanly. Next we can decide whether it should become product-led, founder-led, or campaign-led.</p>
+                    </div>
+                    <div class="flv-card-min n-card copy-panel">
+                        <span class="eyebrow-note">02</span>
+                        <h3>Section Rhythm</h3>
+                        <p>Every section now has enough vertical space to breathe on mobile without relying on large images to create balance.</p>
+                    </div>
+                    <div class="flv-card-min n-card copy-panel">
+                        <span class="eyebrow-note">03</span>
+                        <h3>Content Blocks</h3>
+                        <p>Cards collapse into a single column on smaller screens, so future product modules will stay legible and full-width.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer style="padding: 10rem 0 5rem;">
         <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+            <div class="footer-shell">
                 <div>
-                    <h2 style="font-size: 5rem; letter-spacing: -4px;">Pure science. <br>Pure sweetness.</h2>
-                    <p style="margin-top: 2rem; color: var(--text-mid);">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
+                    <h2 class="footer-title">Pure science. <br>Pure sweetness.</h2>
+                    <p class="footer-meta">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
                     <p style="margin-top: 1rem; font-size: 0.7rem; opacity: 0.5; max-width: 400px;">Jl. Jombor Tegal No.124 A, Jombor Lor, Sinduadi, Mlati, Sleman, Yogyakarta</p>
                 </div>
-                <div style="text-align: right;">
-                    <nav style="margin-bottom: 2rem;">
-                        <a href="/legal.html" style="color: var(--text); font-weight: 800; font-size: 0.8rem; letter-spacing: 2px; text-decoration: none;">LEGAL INFO</a>
-                    </nav>
-                    <div style="margin-bottom: 4rem; display: flex; gap: 3rem; justify-content: flex-end;">
-                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank" style="text-decoration: none; color: var(--text); font-weight: 800; font-size: 0.8rem; letter-spacing: 2px;">INSTAGRAM</a>
-                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank" style="text-decoration: none; color: var(--text); font-weight: 800; font-size: 0.8rem; letter-spacing: 2px;">TIKTOK</a>
+                <div>
+                    <a href="/legal.html" class="footer-legal">LEGAL INFO</a>
+                    <div class="footer-links">
+                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank">INSTAGRAM</a>
+                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank">TIKTOK</a>
                     </div>
-                    <img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO Logo" style="height: 20px; opacity: 0.5;">
+                    <span class="footer-mark">ZERO</span>
                 </div>
             </div>
         </div>
