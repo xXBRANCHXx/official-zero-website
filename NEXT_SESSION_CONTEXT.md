@@ -19,7 +19,9 @@ Important workflow:
 Current design direction:
 - Homepage should feel close to `linear.app` in structure and polish, but not as a literal clone.
 - The site has now been shifted into a dark presentation.
-- Teal-blue remains an accent color, not a full-page color wash.
+- The dark base should stay neutral rather than teal-tinted.
+- Teal-blue remains a restrained accent color and should read a bit more neon when used.
+- The menu and top-level chrome now lean glassmorphic.
 - Images should fade into the dark background with CSS gradients and scroll reveals.
 - Mobile behavior matters first: full-width sections, no horizontal overflow, clean stacking.
 
