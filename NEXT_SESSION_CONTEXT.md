@@ -18,10 +18,9 @@ Important workflow:
 
 Current design direction:
 - Homepage should feel close to `linear.app` in structure and polish, but not as a literal clone.
-- Global background should stay neutral white and soft gray.
-- Teal-blue is only a minor accent color, not a page-wide wash.
-- Images should fade into the white background with CSS gradients and scroll reveals.
-- Some black or near-black cards are acceptable as occasional contrast accents.
+- The site has now been shifted into a dark presentation.
+- Teal-blue remains an accent color, not a full-page color wash.
+- Images should fade into the dark background with CSS gradients and scroll reveals.
 - Mobile behavior matters first: full-width sections, no horizontal overflow, clean stacking.
 
 Current product/content sources:
