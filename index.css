@@ -378,8 +378,8 @@ section {
 }
 
 .hero-v6 {
-    min-height: 100vh;
-    padding: 8.5rem 0 3rem;
+    min-height: auto;
+    padding: 7.5rem 0 1.75rem;
     position: relative;
 }
 
@@ -395,7 +395,7 @@ section {
 
 .hero-shell {
     display: grid;
-    gap: 2.5rem;
+    gap: 1.5rem;
 }
 
 .hero-panel {
@@ -431,7 +431,7 @@ section {
 
 .hero-p {
     max-width: 700px;
-    margin: 0 auto 2rem;
+    margin: 0 auto 1.5rem;
     font-size: 1.15rem;
     color: var(--text-mid);
 }
@@ -502,7 +502,7 @@ section {
     --story-left-opacity: 0;
     --story-center-opacity: 0;
     --story-right-opacity: 0;
-    --story-spread: min(31vw, 24rem);
+    --story-spread: min(28vw, 21rem);
     position: relative;
     min-height: 76vh;
     border-radius: 36px;
@@ -537,9 +537,9 @@ section {
 
 .story-product {
     position: absolute;
-    top: 52%;
+    top: 66%;
     left: 50%;
-    width: min(22vw, 270px);
+    width: min(19vw, 230px);
     z-index: 2;
     transition: transform 160ms linear;
 }
@@ -554,34 +554,41 @@ section {
 .story-syrup {
     transform: translate(
         calc(-50% - (var(--story-spread) * var(--story-progress))),
-        calc(-50% - (1.6rem * var(--story-progress)))
+        calc(-50% - (0.8rem * var(--story-progress)))
     ) rotate(calc(-9deg * var(--story-progress)));
 }
 
 .story-drops {
-    width: min(13vw, 150px);
+    width: min(10vw, 112px);
     z-index: 3;
-    transform: translate(-50%, calc(-48% + (1rem * var(--story-progress)))) rotate(calc(2deg * var(--story-progress)));
+    transform: translate(-50%, calc(-48% + (0.4rem * var(--story-progress)))) rotate(calc(2deg * var(--story-progress)));
 }
 
 .story-topping {
-    width: min(20vw, 235px);
+    width: min(17vw, 205px);
     transform: translate(
         calc(-50% + (var(--story-spread) * var(--story-progress))),
-        calc(-50% - (0.8rem * var(--story-progress)))
+        calc(-50% - (0.4rem * var(--story-progress)))
     ) rotate(calc(8deg * var(--story-progress)));
 }
 
 .story-copy {
     position: absolute;
-    top: 16%;
-    width: min(26%, 300px);
-    z-index: 1;
+    top: 14%;
+    width: min(25%, 280px);
+    z-index: 4;
     display: grid;
     gap: 0.7rem;
     opacity: 0;
     pointer-events: none;
     transition: opacity 180ms linear, transform 180ms linear;
+    padding: 1rem 1.05rem;
+    border-radius: 22px;
+    background: rgba(10, 14, 20, 0.62);
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.26);
 }
 
 .story-copy strong {
@@ -615,8 +622,9 @@ section {
 }
 
 .story-copy-center {
+    top: 20%;
     left: 50%;
-    width: min(24%, 280px);
+    width: min(24%, 260px);
     transform:
         translateX(-50%)
         translateY(calc(30px - (30px * var(--story-center-opacity))));
@@ -1103,7 +1111,7 @@ section {
     .catalog-page header,
     .zfit-page header,
     .legal-page header {
-        padding-top: 7rem;
+        padding-top: 6.5rem;
     }
 
     .hero-p {
@@ -1131,6 +1139,17 @@ section {
     .showcase-panel,
     .journey-panel {
         padding: 0.8rem;
+    }
+
+    .search-morph-container,
+    .search-morph-container.expanded,
+    .glass-dropdown {
+        width: calc(100vw - 2rem);
+    }
+
+    .global-overlay {
+        right: 1rem;
+        left: 1rem;
     }
 
     .stack-section,

@@ -36,9 +36,42 @@
             <a href="/index.html" id="nav-logo">ZERO</a>
         </div>
         <div class="nav-right">
-            <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn primary">Order on WhatsApp</a>
+            <ul class="nav-links">
+                <li>
+                    <div class="search-anchor">
+                        <button id="search-trigger" class="icon-btn" aria-label="Open search">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                </li>
+                <li class="desktop-only"><a href="/catalog.html">Catalog</a></li>
+                <li class="desktop-only"><a href="/zfit.html">ZFit</a></li>
+                <li class="desktop-only"><a href="#experience">About</a></li>
+                <li class="more-menu">
+                    <button id="more-trigger" class="icon-btn" aria-label="Open menu">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
+                    </button>
+                </li>
+                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn primary">Order on WhatsApp</a></li>
+            </ul>
         </div>
     </nav>
+
+    <div id="search-popout" class="search-morph-container global-overlay">
+        <div class="search-icon-box" id="morph-icon-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <input type="text" id="main-search" class="search-input-field" placeholder="Search ZERO">
+        <div id="close-search" class="search-close-x">×</div>
+    </div>
+
+    <div id="more-dropdown" class="glass-dropdown global-overlay">
+        <a href="/index.html">Home</a>
+        <a href="/catalog.html" class="mobile-only">Catalog</a>
+        <a href="/zfit.html" class="mobile-only">ZFit</a>
+        <a href="#experience">About</a>
+        <a href="/legal.html">Legal Info</a>
+    </div>
 
     <header class="hero-v6">
         <div class="container">

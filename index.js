@@ -53,6 +53,61 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') unlockSite();
     });
 
+    // Search and more menu logic
+    const searchTrigger = document.getElementById('search-trigger');
+    const searchPopout = document.getElementById('search-popout');
+    const morphIconBox = document.getElementById('morph-icon-box');
+    const mainSearch = document.getElementById('main-search');
+    const closeSearch = document.getElementById('close-search');
+    const moreTrigger = document.getElementById('more-trigger');
+    const moreDropdown = document.getElementById('more-dropdown');
+
+    if (searchTrigger && searchPopout && morphIconBox && mainSearch) {
+        searchTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (searchPopout.classList.contains('active')) {
+                closeOverlay(searchPopout);
+            } else {
+                searchPopout.classList.add('active');
+                setTimeout(() => {
+                    morphIconBox.style.transform = 'translateX(200px)';
+                    setTimeout(() => {
+                        morphIconBox.style.transform = 'translateX(0)';
+                        searchPopout.classList.add('expanded');
+                        setTimeout(() => mainSearch.focus(), 400);
+                    }, 400);
+                }, 300);
+            }
+        });
+    }
+
+    closeSearch?.addEventListener('click', () => closeOverlay(searchPopout));
+
+    if (moreTrigger && moreDropdown) {
+        moreTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            moreDropdown.classList.toggle('active');
+        });
+    }
+
+    document.addEventListener('click', (e) => {
+        const clickedNode = e.target;
+
+        if (moreDropdown && !moreDropdown.contains(clickedNode) && !moreTrigger?.contains(clickedNode)) {
+            moreDropdown.classList.remove('active');
+        }
+        if (searchPopout && !searchPopout.contains(clickedNode) && !searchTrigger?.contains(clickedNode)) {
+            closeOverlay(searchPopout);
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeOverlay(searchPopout);
+            moreDropdown?.classList.remove('active');
+        }
+    });
+
     // Pinned Product Story
     const storyTrack = document.getElementById('product-story-track');
     const storyStage = document.getElementById('product-story-stage');
