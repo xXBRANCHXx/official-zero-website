@@ -21,7 +21,8 @@ Current design direction:
 - The site has now been shifted into a dark presentation.
 - The dark base should stay neutral rather than teal-tinted.
 - Teal-blue remains a restrained accent color and should read a bit more neon when used.
-- The menu and top-level chrome now lean glassmorphic.
+- The old menu/search chrome has been removed from the homepage in favor of a simpler top bar.
+- The homepage now includes a pinned product-scroll section built around transparent renders for Syrup, Drops, and Maple Topping.
 - Images should fade into the dark background with CSS gradients and scroll reveals.
 - Mobile behavior matters first: full-width sections, no horizontal overflow, clean stacking.
 

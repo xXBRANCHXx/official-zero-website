@@ -53,66 +53,39 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') unlockSite();
     });
 
-    // CRYSTALLINE MORPHING SEARCH LOGIC
-    const searchTrigger = document.getElementById('search-trigger');
-    const searchPopout = document.getElementById('search-popout');
-    const morphIconBox = document.getElementById('morph-icon-box');
-    const mainSearch = document.getElementById('main-search');
-    const closeSearch = document.getElementById('close-search');
+    // Pinned Product Story
+    const storyTrack = document.getElementById('product-story-track');
+    const storyStage = document.getElementById('product-story-stage');
+    const isCompactViewport = () => window.matchMedia('(max-width: 768px)').matches;
 
-    if (searchTrigger && searchPopout && morphIconBox && mainSearch) {
-        searchTrigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (searchPopout.classList.contains('active')) {
-                closeOverlay(searchPopout);
-            } else {
-                searchPopout.classList.add('active');
-                setTimeout(() => {
-                    morphIconBox.style.transform = 'translateX(200px)';
-                    setTimeout(() => {
-                        morphIconBox.style.transform = 'translateX(0)';
-                        searchPopout.classList.add('expanded');
-                        setTimeout(() => mainSearch.focus(), 400);
-                    }, 400);
-                }, 300);
+    if (storyTrack && storyStage) {
+        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+        const updateStoryProgress = () => {
+            if (isCompactViewport()) {
+                storyStage.style.setProperty('--story-progress', '1');
+                storyStage.style.setProperty('--story-left-opacity', '1');
+                storyStage.style.setProperty('--story-center-opacity', '1');
+                storyStage.style.setProperty('--story-right-opacity', '1');
+                return;
             }
-        });
+
+            const rect = storyTrack.getBoundingClientRect();
+            const distance = storyTrack.offsetHeight - window.innerHeight;
+            const progress = distance <= 0 ? 0 : clamp((-rect.top) / distance, 0, 1);
+
+            storyStage.style.setProperty('--story-progress', progress.toFixed(4));
+            storyStage.style.setProperty('--story-left-opacity', clamp(progress * 2.8, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-center-opacity', clamp((progress - 0.18) * 2.8, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-right-opacity', clamp((progress - 0.36) * 2.8, 0, 1).toFixed(4));
+        };
+
+        updateStoryProgress();
+        window.addEventListener('scroll', updateStoryProgress, { passive: true });
+        window.addEventListener('resize', updateStoryProgress);
     }
-
-    closeSearch?.addEventListener('click', () => closeOverlay(searchPopout));
-
-    // UNIFIED MORE MENU LOGIC (External Global Overlay)
-    const moreTrigger = document.getElementById('more-trigger');
-    const moreDropdown = document.getElementById('more-dropdown');
-
-    if (moreTrigger && moreDropdown) {
-        moreTrigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            moreDropdown.classList.toggle('active');
-        });
-    }
-
-    // Global Click-out Logic
-    document.addEventListener('click', (e) => {
-        const clickedNode = e.target;
-
-        if (moreDropdown && !moreDropdown.contains(clickedNode) && !moreTrigger?.contains(clickedNode)) {
-            moreDropdown.classList.remove('active');
-        }
-        if (searchPopout && !searchPopout.contains(clickedNode) && !searchTrigger?.contains(clickedNode)) {
-            closeOverlay(searchPopout);
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeOverlay(searchPopout);
-            moreDropdown?.classList.remove('active');
-        }
-    });
 
     // Transition Revealer
-    const revealItems = document.querySelectorAll('.n-card, .dark-accent-card, .hero-h1, .hero-p, .flv-card-min, .metric-strip, .app-frame, .feature-wireframe, .showcase-panel, .journey-card, .timeline-card, .footer-shell, .image-card, .render-card');
+    const revealItems = document.querySelectorAll('.n-card, .dark-accent-card, .hero-h1, .hero-p, .flv-card-min, .metric-strip, .feature-wireframe, .showcase-panel, .journey-card, .timeline-card, .footer-shell');
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
