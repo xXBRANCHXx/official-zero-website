@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="coming-soon-overlay" class="coming-soon-overlay">
@@ -18,14 +18,14 @@
             <div id="developer-check" class="developer-check">
                 <p>Are you a developer?</p>
                 <div class="btn-group">
-                    <button id="dev-yes" class="n-btn mini">yes</button>
-                    <button id="dev-no" class="n-btn mini">no</button>
+                    <button id="dev-yes" class="n-btn">yes</button>
+                    <button id="dev-no" class="n-btn">no</button>
                 </div>
             </div>
             <div id="code-prompt" class="code-prompt hide">
                 <p>Developer Access Code:</p>
                 <input type="password" id="dev-code" class="neomorph-input" placeholder="••••••">
-                <button id="submit-code" class="n-btn" style="margin-top: 2rem;">AUTHENTICATE</button>
+                <button id="submit-code" class="n-btn primary" style="margin-top: 1rem;">Authenticate</button>
             </div>
         </div>
     </div>
@@ -38,121 +38,294 @@
             <ul class="nav-links">
                 <li>
                     <div class="search-anchor">
-                        <button id="search-trigger" class="icon-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <button id="search-trigger" class="icon-btn" aria-label="Open search">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </button>
                     </div>
                 </li>
-                <li class="desktop-only"><a href="/catalog.html">CATALOG</a></li>
-                <li class="desktop-only"><a href="/zfit.html">ZFIT</a></li>
+                <li class="desktop-only"><a href="/catalog.html">Catalog</a></li>
+                <li class="desktop-only"><a href="/zfit.html">ZFit</a></li>
+                <li class="desktop-only"><a href="#experience">Experience</a></li>
                 <li class="more-menu">
-                    <button id="more-trigger" class="icon-btn">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
+                    <button id="more-trigger" class="icon-btn" aria-label="Open menu">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
                     </button>
                 </li>
-                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="font-size: 0.7rem;">JOIN THE LAB</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn primary">Join the Lab</a></li>
             </ul>
         </div>
     </nav>
 
     <div id="search-popout" class="search-morph-container global-overlay">
         <div class="search-icon-box" id="morph-icon-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </div>
-        <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
+        <input type="text" id="main-search" class="search-input-field" placeholder="Search ZERO">
         <div id="close-search" class="search-close-x">×</div>
     </div>
 
     <div id="more-dropdown" class="glass-dropdown global-overlay">
-        <a href="/index.html">HOME</a>
-        <a href="/catalog.html" class="mobile-only">CATALOG</a>
-        <a href="/zfit.html" class="mobile-only">ZFIT</a>
-        <a href="/index.html#company">COMPANY INFO</a>
-        <a href="/legal.html">LEGAL INFO</a>
+        <a href="/index.html">Home</a>
+        <a href="/catalog.html" class="mobile-only">Catalog</a>
+        <a href="/zfit.html" class="mobile-only">ZFit</a>
+        <a href="#experience">Experience</a>
+        <a href="/legal.html">Legal Info</a>
     </div>
 
     <header class="hero-v6">
         <div class="container">
             <div class="hero-shell">
                 <div class="hero-panel">
-                    <h1 class="hero-h1">A clean layout for the next <span class="teal-text">ZERO.</span></h1>
-                    <p class="hero-p">All imagery has been removed so we can rebuild the website structure from first principles. This pass keeps the homepage readable, full-screen, and stable on mobile before new creative direction is added.</p>
-                    <div class="btn-cluster" style="justify-content: center;">
-                        <a href="/catalog.html" class="n-btn">VIEW FULL CATALOG</a>
-                        <a href="#company" class="n-btn">REVIEW LAYOUT</a>
+                    <div class="announcement-pill"><strong>New direction</strong> Linear-style structure, rebuilt in light mode.</div>
+                    <h1 class="hero-h1">Product pages for ZERO that feel precise, calm, and <span class="teal-text">obsessively clear.</span></h1>
+                    <p class="hero-p">This pass shifts the website toward the same clean hierarchy and product framing you see on <a href="https://linear.app/" target="_blank">Linear</a>, but translated into a bright white system for ZERO.</p>
+                    <div class="btn-cluster">
+                        <a href="/catalog.html" class="n-btn primary">View Catalog</a>
+                        <a href="#experience" class="n-btn">Explore Layout</a>
                     </div>
                 </div>
-                <div class="layout-note">
-                    <strong>Layout Reset</strong>
-                    <p>The homepage is now text-first: fixed navigation, one clear hero message, stacked full-screen sections, and responsive card grids that collapse cleanly on smaller screens.</p>
+
+                <div class="metric-strip">
+                    <div class="metric-item">
+                        <strong>Positioning</strong>
+                        <span>Clean consumer health brand</span>
+                    </div>
+                    <div class="metric-item">
+                        <strong>Theme</strong>
+                        <span>White, soft borders, quiet contrast</span>
+                    </div>
+                    <div class="metric-item">
+                        <strong>Mobile</strong>
+                        <span>Single-column first, full-width sections</span>
+                    </div>
+                    <div class="metric-item">
+                        <strong>Goal</strong>
+                        <span>Editorial clarity before imagery returns</span>
+                    </div>
+                </div>
+
+                <div class="app-frame">
+                    <div class="app-shell">
+                        <div class="app-toolbar">
+                            <div class="toolbar-dots">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="toolbar-search">zerofoods.id / homepage system</div>
+                        </div>
+                        <div class="app-body">
+                            <aside class="app-sidebar">
+                                <div class="sidebar-label">Navigation</div>
+                                <div class="sidebar-list">
+                                    <div class="sidebar-item active">Overview</div>
+                                    <div class="sidebar-item">Syrups</div>
+                                    <div class="sidebar-item">Drops</div>
+                                    <div class="sidebar-item">ZFit</div>
+                                    <div class="sidebar-item">Legal</div>
+                                </div>
+                            </aside>
+                            <div class="app-main">
+                                <div class="main-intro">
+                                    <div>
+                                        <h3>ZERO Homepage System</h3>
+                                        <p>A landing page structure focused on message, hierarchy, and product framing instead of visual clutter.</p>
+                                    </div>
+                                    <div class="status-chip">Light Mode Prototype</div>
+                                </div>
+                                <div class="cards-row">
+                                    <div class="mini-panel">
+                                        <strong>Message</strong>
+                                        <span>No sugar. No noise.</span>
+                                        <p>Lead with one strong promise and one clear call to action.</p>
+                                    </div>
+                                    <div class="mini-panel">
+                                        <strong>Offer</strong>
+                                        <span>Catalog, Drops, ZFit</span>
+                                        <p>Keep each line of business legible as a separate product surface.</p>
+                                    </div>
+                                    <div class="mini-panel">
+                                        <strong>Motion</strong>
+                                        <span>Quiet reveals</span>
+                                        <p>Minimal transitions so the page feels deliberate rather than flashy.</p>
+                                    </div>
+                                </div>
+                                <div class="board-panel">
+                                    <div class="board-header">
+                                        <h4>Homepage modules</h4>
+                                        <span class="status-chip">Responsive by default</span>
+                                    </div>
+                                    <div class="board-grid">
+                                        <div class="board-column">
+                                            <span>Hero</span>
+                                            <div class="task-card">
+                                                <strong>Core promise</strong>
+                                                <small>One sharp headline for sugar-free sweetness.</small>
+                                            </div>
+                                            <div class="task-card">
+                                                <strong>Primary CTA</strong>
+                                                <small>Send traffic directly to catalog or WhatsApp.</small>
+                                            </div>
+                                        </div>
+                                        <div class="board-column">
+                                            <span>Experience</span>
+                                            <div class="task-card">
+                                                <strong>Clean comparisons</strong>
+                                                <small>Position products without a long wall of copy.</small>
+                                            </div>
+                                            <div class="task-card">
+                                                <strong>Structured proof</strong>
+                                                <small>Use short cards instead of dense sections.</small>
+                                            </div>
+                                        </div>
+                                        <div class="board-column">
+                                            <span>Scale</span>
+                                            <div class="task-card">
+                                                <strong>Future campaigns</strong>
+                                                <small>Add launches and flavors without breaking layout.</small>
+                                            </div>
+                                            <div class="task-card">
+                                                <strong>Mobile flow</strong>
+                                                <small>Everything collapses into one readable stack.</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <section id="company" class="stack-section">
+    <section id="experience" class="timeline-section">
         <div class="container">
-            <div class="section-shell">
-                <h2 class="section-badge" style="text-align: center; margin-bottom: 3rem;">COMPANY INFO</h2>
-                <div class="grid-v6">
-                    <div class="dark-accent-card">
-                        <span class="badge">OUR MISSION</span>
-                        <h2>Indonesia, <br>Healthier.</h2>
-                        <p>Founded in 2024 by Brent Vincent and Giri Gusman, ZERO exists to make Indonesia healthier by making healthy choices easier. No spikes, no crashes, just pure fuel.</p>
+            <div class="section-heading">
+                <span class="section-badge">Experience</span>
+                <h2>Designed like a product interface, not a brochure.</h2>
+                <p>The composition now follows a Linear-style rhythm: short navigation, one centered hero, framed content surfaces, then a sequence of modular sections that explain the product without drowning the page.</p>
+            </div>
+
+            <div class="feature-layout">
+                <div class="feature-wireframe">
+                    <div class="wireframe-stack">
+                        <div class="wireframe-card">
+                            <strong>Framing</strong>
+                            <p>Every block lives inside a quiet bordered surface so the eye always knows where the next message starts.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Typography</strong>
+                            <p>Large headline, restrained body copy, and compact labels for the same editorial feel Linear uses.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Spacing</strong>
+                            <p>Long vertical breathing room keeps each section premium and reduces clutter on mobile.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Contrast</strong>
+                            <p>White surfaces replace the original dark treatment while preserving a sharp product-software aesthetic.</p>
+                        </div>
                     </div>
-                    <div class="n-card text-cluster">
-                        <span class="eyebrow-note">TEAM + LOCATION</span>
-                        <h2>Meet the Lab.</h2>
-                        <p>Led by CEO Maria Renny, the team combines product development, flavor work, and local market insight. The section is intentionally reduced to copy so we can decide later whether location should return as a map, an editorial block, or something else entirely.</p>
-                        <ul class="text-list">
-                            <li><strong>Base</strong> Sleman, Yogyakarta.</li>
-                            <li><strong>Focus</strong> Sugar-free systems, flavor development, and health-forward consumer products.</li>
-                            <li><strong>Current goal</strong> Validate information hierarchy on mobile before adding imagery back.</li>
-                        </ul>
+                </div>
+
+                <div class="showcase-panel">
+                    <div class="showcase-header">
+                        <h3>What this changes</h3>
+                        <div class="showcase-badge">Homepage Focus</div>
+                    </div>
+                    <div class="showcase-list">
+                        <div class="showcase-row">
+                            <div>
+                                <strong>Cleaner value proposition</strong>
+                                <span>The hero now behaves like a focused product launch page.</span>
+                            </div>
+                            <em>Active</em>
+                        </div>
+                        <div class="showcase-row">
+                            <div>
+                                <strong>Better mobile flow</strong>
+                                <span>Sections collapse without side scrolling or oversized dead space.</span>
+                            </div>
+                            <em>Active</em>
+                        </div>
+                        <div class="showcase-row">
+                            <div>
+                                <strong>Reusable system</strong>
+                                <span>The same treatment can be pushed into catalog, ZFit, and future campaign pages.</span>
+                            </div>
+                            <em>Ready</em>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="decoration" class="stack-section" style="background: var(--grey-ultra);">
+    <section class="timeline-section">
         <div class="container">
-            <div class="section-shell">
-                <h2 class="section-badge">NEXT BUILD</h2>
-                <div class="panel-grid">
-                    <div class="flv-card-min n-card copy-panel">
-                        <span class="eyebrow-note">01</span>
-                        <h3>Hero Composition</h3>
-                        <p>The first screen already fills the device cleanly. Next we can decide whether it should become product-led, founder-led, or campaign-led.</p>
-                    </div>
-                    <div class="flv-card-min n-card copy-panel">
-                        <span class="eyebrow-note">02</span>
-                        <h3>Section Rhythm</h3>
-                        <p>Every section now has enough vertical space to breathe on mobile without relying on large images to create balance.</p>
-                    </div>
-                    <div class="flv-card-min n-card copy-panel">
-                        <span class="eyebrow-note">03</span>
-                        <h3>Content Blocks</h3>
-                        <p>Cards collapse into a single column on smaller screens, so future product modules will stay legible and full-width.</p>
-                    </div>
+            <div class="section-heading">
+                <span class="section-badge">Structure</span>
+                <h2>A layout system built for multiple ZERO product lines.</h2>
+                <p>Instead of relying on imagery to create interest, the page now uses modular content containers that can hold syrup flavors, drops, lab proof, founders, or product comparisons without changing the visual language.</p>
+            </div>
+
+            <div class="journey-grid">
+                <div class="journey-card">
+                    <strong>Catalog</strong>
+                    <p>Give syrups and toppings clear entry points with the same clean framing as the homepage.</p>
+                </div>
+                <div class="journey-card">
+                    <strong>ZFit</strong>
+                    <p>Support functional products with a more clinical, system-like presentation rather than lifestyle clutter.</p>
+                </div>
+                <div class="journey-card">
+                    <strong>Campaigns</strong>
+                    <p>Launch new flavors or bundles inside the same interface language without redesigning from scratch.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer style="padding: 10rem 0 5rem;">
+    <section class="timeline-section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-badge">Narrative</span>
+                <h2>From first impression to repeat purchase, the page now has a cleaner sequence.</h2>
+                <p>The homepage moves from promise, to product system, to credibility, then to action. That structure is closer to Linear’s landing page discipline, just translated into a consumer brand context.</p>
+            </div>
+
+            <div class="timeline-grid">
+                <div class="timeline-card">
+                    <strong>01. Hero</strong>
+                    <p>Open with one sharp promise and a clean product interface frame that immediately establishes confidence.</p>
+                </div>
+                <div class="timeline-card">
+                    <strong>02. Explanation</strong>
+                    <p>Use short, bordered modules to explain how the brand works and why the layout feels intentional.</p>
+                </div>
+                <div class="timeline-card">
+                    <strong>03. Conversion</strong>
+                    <p>End in a simple set of choices: explore the catalog, open ZFit, or message the team directly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="padding: 3rem 0 5rem;">
         <div class="container">
             <div class="footer-shell">
                 <div>
-                    <h2 class="footer-title">Pure science. <br>Pure sweetness.</h2>
-                    <p class="footer-meta">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
-                    <p style="margin-top: 1rem; font-size: 0.7rem; opacity: 0.5; max-width: 400px;">Jl. Jombor Tegal No.124 A, Jombor Lor, Sinduadi, Mlati, Sleman, Yogyakarta</p>
+                    <span class="section-badge">ZERO</span>
+                    <h2 class="footer-title">Quiet design. <br>Sharper product focus.</h2>
+                    <p class="footer-meta">jakarta@zerofoods.id<br>Made by zerofoods.id</p>
                 </div>
                 <div>
-                    <a href="/legal.html" class="footer-legal">LEGAL INFO</a>
+                    <a href="/legal.html" class="footer-legal">Legal Info</a>
                     <div class="footer-links">
-                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank">INSTAGRAM</a>
-                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank">TIKTOK</a>
+                        <a href="/catalog.html">Catalog</a>
+                        <a href="/zfit.html">ZFit</a>
+                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank">Instagram</a>
                     </div>
                     <span class="footer-mark">ZERO</span>
                 </div>
