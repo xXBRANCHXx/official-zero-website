@@ -119,7 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const storyState = {
             revealProgress: 0,
             locked: false,
-            touchY: null
+            touchY: null,
+            lockDirection: 0
         };
 
         const setStoryLock = (locked) => {
@@ -136,11 +137,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const distance = Math.max(storyTrack.offsetHeight - viewportHeight, 1);
             const scrollProgress = clamp((-trackRect.top) / distance, 0, 1);
             const stagePinned = trackRect.top <= 0 && trackRect.bottom >= viewportHeight;
-            return { viewportHeight, trackRect, stageRect, scrollProgress, stagePinned };
+            const stageCentered = Math.abs((stageRect.top + stageRect.height / 2) - (viewportHeight / 2)) <= viewportHeight * 0.08;
+            return { viewportHeight, trackRect, stageRect, scrollProgress, stagePinned, stageCentered };
         };
 
         const applyStoryVisuals = () => {
-            const { scrollProgress, stagePinned } = getStoryMetrics();
+            const { scrollProgress, stagePinned, stageCentered } = getStoryMetrics();
             const entryProgress = clamp(scrollProgress / 0.18, 0, 1);
             const exitProgress = clamp((scrollProgress - 0.78) / 0.22, 0, 1);
             let sectionDarkness = entryProgress;
@@ -160,9 +162,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const revealIncomplete = storyState.revealProgress > 0 && storyState.revealProgress < 1;
             const shouldLock =
                 stagePinned &&
-                scrollProgress >= 0.12 &&
+                stageCentered &&
+                scrollProgress >= 0.08 &&
                 scrollProgress <= 0.78 &&
-                (storyState.revealProgress < 1 || revealIncomplete);
+                (
+                    (storyState.lockDirection >= 0 && storyState.revealProgress < 1) ||
+                    (storyState.lockDirection < 0 && revealIncomplete)
+                );
 
             setStoryLock(shouldLock);
 
@@ -202,10 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const handleStoryWheel = (event) => {
             if (isCompactViewport()) return;
 
-            const { scrollProgress, stagePinned } = getStoryMetrics();
-            const inCaptureZone = stagePinned && scrollProgress >= 0.12 && scrollProgress <= 0.78;
+            const { scrollProgress, stagePinned, stageCentered } = getStoryMetrics();
+            const inCaptureZone = stagePinned && stageCentered && scrollProgress >= 0.08 && scrollProgress <= 0.78;
             if (!inCaptureZone) {
                 setStoryLock(false);
+                storyState.lockDirection = 0;
                 return;
             }
 
@@ -215,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (movingDown && storyState.revealProgress < 1) {
                 event.preventDefault();
+                storyState.lockDirection = 1;
                 setStoryLock(true);
                 nudgeStoryProgress(step);
                 return;
@@ -222,16 +230,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (movingUp && storyState.revealProgress > 0) {
                 event.preventDefault();
+                storyState.lockDirection = -1;
                 setStoryLock(true);
                 nudgeStoryProgress(-step);
                 return;
             }
 
             if (movingDown && storyState.revealProgress >= 1) {
+                storyState.lockDirection = 0;
                 setStoryLock(false);
             }
 
             if (movingUp && storyState.revealProgress <= 0 && scrollProgress <= 0.14) {
+                storyState.lockDirection = 0;
                 setStoryLock(false);
             }
         };
@@ -243,12 +254,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (downKeys.includes(event.key) && storyState.revealProgress < 1) {
                 event.preventDefault();
+                storyState.lockDirection = 1;
                 nudgeStoryProgress(0.09);
                 return;
             }
 
             if (upKeys.includes(event.key) && storyState.revealProgress > 0) {
                 event.preventDefault();
+                storyState.lockDirection = -1;
                 nudgeStoryProgress(-0.09);
             }
         };
@@ -263,10 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentY = event.touches[0]?.clientY;
             if (typeof currentY !== 'number') return;
 
-            const { scrollProgress, stagePinned } = getStoryMetrics();
-            const inCaptureZone = stagePinned && scrollProgress >= 0.12 && scrollProgress <= 0.78;
+            const { scrollProgress, stagePinned, stageCentered } = getStoryMetrics();
+            const inCaptureZone = stagePinned && stageCentered && scrollProgress >= 0.08 && scrollProgress <= 0.78;
             if (!inCaptureZone) {
                 setStoryLock(false);
+                storyState.lockDirection = 0;
                 storyState.touchY = currentY;
                 return;
             }
@@ -276,6 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (deltaY > 0 && storyState.revealProgress < 1) {
                 event.preventDefault();
+                storyState.lockDirection = 1;
                 setStoryLock(true);
                 nudgeStoryProgress(clamp(Math.abs(deltaY) * 0.0035, 0.04, 0.12));
                 return;
@@ -283,11 +298,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (deltaY < 0 && storyState.revealProgress > 0) {
                 event.preventDefault();
+                storyState.lockDirection = -1;
                 setStoryLock(true);
                 nudgeStoryProgress(-clamp(Math.abs(deltaY) * 0.0035, 0.04, 0.12));
                 return;
             }
 
+            storyState.lockDirection = 0;
             setStoryLock(false);
         };
 
