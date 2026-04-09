@@ -131,16 +131,16 @@ section {
     padding: 0;
     text-decoration: none;
     overflow: hidden;
-    width: 122px;
-    height: 24px;
+    width: 126px;
+    height: 30px;
 }
 
 #nav-logo img {
     display: block;
-    width: 144px;
-    height: auto;
-    max-width: none;
-    transform: translate(-1px, 0.5px);
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
 .nav-right {
@@ -956,18 +956,24 @@ section {
 
 .footer-brand-flood {
     position: absolute;
-    right: 2%;
-    bottom: -12%;
-    width: min(54vw, 760px);
+    left: 50%;
+    bottom: -16%;
+    width: min(58vw, 820px);
+    height: min(20vw, 260px);
+    transform: translateX(-50%);
     opacity: 0.12;
     pointer-events: none;
     z-index: 0;
+    overflow: hidden;
 }
 
 .footer-brand-flood img {
     display: block;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    transform: translateY(36%);
 }
 
 .footer-title {
@@ -1216,8 +1222,7 @@ section {
     }
 
     #nav-logo img {
-        width: 120px;
-        transform: translate(-1px, 0.5px);
+        width: 100%;
     }
 
     .n-card,
@@ -1320,9 +1325,10 @@ section {
     }
 
     .footer-brand-flood {
-        right: -22%;
-        bottom: -2%;
-        width: 112vw;
+        left: 50%;
+        bottom: -18%;
+        width: 118vw;
+        height: 34vw;
         opacity: 0.1;
     }
 }
