@@ -163,6 +163,31 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', updateStoryProgress);
     }
 
+    const testimonialsTrack = document.getElementById('testimonials-track');
+    const testimonialsRail = document.getElementById('testimonials-rail');
+
+    if (testimonialsTrack && testimonialsRail) {
+        const updateTestimonialsPosition = () => {
+            if (isCompactViewport()) {
+                testimonialsRail.style.transform = 'translate3d(0, 0, 0)';
+                return;
+            }
+
+            const rect = testimonialsTrack.getBoundingClientRect();
+            const distance = Math.max(testimonialsTrack.offsetHeight - window.innerHeight, 1);
+            const progress = clamp((-rect.top) / distance, 0, 1);
+            const maxShift = Math.max(testimonialsRail.scrollWidth - window.innerWidth, 0);
+            const startOffset = Math.min(window.innerWidth * 0.16, 220);
+            const translateX = startOffset - (progress * (maxShift + startOffset));
+
+            testimonialsRail.style.transform = `translate3d(${translateX.toFixed(1)}px, 0, 0)`;
+        };
+
+        updateTestimonialsPosition();
+        window.addEventListener('scroll', updateTestimonialsPosition, { passive: true });
+        window.addEventListener('resize', updateTestimonialsPosition);
+    }
+
     // Pronounced but lightweight parallax layers
     const parallaxLayers = Array.from(document.querySelectorAll('[data-parallax]'));
     if (parallaxLayers.length) {
