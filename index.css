@@ -54,6 +54,30 @@ section {
     padding: 7rem 0;
 }
 
+.product-story-section,
+.timeline-section {
+    --section-darkness: 0;
+    position: relative;
+    isolation: isolate;
+}
+
+.product-story-section::before,
+.timeline-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #000000;
+    opacity: var(--section-darkness);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.product-story-section > *,
+.timeline-section > * {
+    position: relative;
+    z-index: 1;
+}
+
 .teal-text {
     color: #233041;
 }
@@ -628,21 +652,24 @@ section {
 }
 
 .product-story-track {
-    height: 270vh;
+    height: 320vh;
     position: relative;
 }
 
 .product-story-sticky {
     position: sticky;
     top: 0;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
 }
 
 .product-story-shell {
     width: 100%;
-    padding: 1.5rem 0 2rem;
+    height: 100vh;
+    padding: 0;
+    display: flex;
+    align-items: center;
 }
 
 .product-story-stage {
@@ -671,7 +698,7 @@ section {
     position: absolute;
     inset: 0;
     background: #05080c;
-    opacity: var(--story-darkness);
+    opacity: calc(var(--story-darkness) * 0.96);
     pointer-events: none;
     z-index: 1;
 }
@@ -763,18 +790,18 @@ section {
     font-size: 0.76rem;
     letter-spacing: 0.18rem;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.7);
+    color: color-mix(in srgb, rgba(95, 107, 122, 0.94) calc((1 - var(--section-darkness)) * 100%), rgba(255, 255, 255, 0.72) calc(var(--section-darkness) * 100%));
 }
 
 .story-copy h3 {
     font-size: clamp(1.4rem, 2vw, 2rem);
     line-height: 1.02;
-    color: #f8fafc;
+    color: color-mix(in srgb, #111827 calc((1 - var(--section-darkness)) * 100%), #f8fafc calc(var(--section-darkness) * 100%));
 }
 
 .story-copy p,
 .story-copy span {
-    color: rgba(226, 232, 240, 0.84);
+    color: color-mix(in srgb, rgba(95, 107, 122, 0.94) calc((1 - var(--section-darkness)) * 100%), rgba(226, 232, 240, 0.84) calc(var(--section-darkness) * 100%));
 }
 
 .story-copy span {
@@ -813,12 +840,16 @@ section {
 }
 
 .story-instruction {
-    margin-top: 1rem;
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    transform: translateX(-50%);
     text-align: center;
-    color: var(--text-soft);
+    color: color-mix(in srgb, rgba(95, 107, 122, 0.94) calc((1 - var(--section-darkness)) * 100%), rgba(226, 232, 240, 0.72) calc(var(--section-darkness) * 100%));
     font-size: 0.86rem;
     letter-spacing: 0.08rem;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .mini-panel,
@@ -931,6 +962,18 @@ section {
     font-size: 1.05rem;
 }
 
+.timeline-section .section-badge,
+.product-story-section .section-badge,
+.timeline-section .section-heading p,
+.product-story-section .section-heading p {
+    color: color-mix(in srgb, #5f6b7a calc((1 - var(--section-darkness)) * 100%), rgba(226, 232, 240, 0.82) calc(var(--section-darkness) * 100%));
+}
+
+.timeline-section .section-heading h2,
+.product-story-section .section-heading h2 {
+    color: color-mix(in srgb, #111827 calc((1 - var(--section-darkness)) * 100%), #f8fafc calc(var(--section-darkness) * 100%));
+}
+
 .feature-layout {
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
@@ -966,6 +1009,43 @@ section {
 .timeline-card p {
     margin-top: 0.55rem;
     color: var(--text-mid);
+}
+
+.timeline-section .wireframe-card,
+.timeline-section .showcase-panel,
+.timeline-section .journey-card,
+.timeline-section .timeline-card {
+    background: color-mix(in srgb, rgba(255, 255, 255, 0.84) calc((1 - var(--section-darkness)) * 100%), rgba(12, 18, 24, 0.78) calc(var(--section-darkness) * 100%));
+    border-color: color-mix(in srgb, rgba(17, 24, 39, 0.08) calc((1 - var(--section-darkness)) * 100%), rgba(255, 255, 255, 0.12) calc(var(--section-darkness) * 100%));
+    box-shadow: 0 22px 44px rgba(15, 23, 42, calc(0.06 + (0.12 * var(--section-darkness))));
+}
+
+.timeline-section .wireframe-card strong,
+.timeline-section .showcase-panel strong,
+.timeline-section .journey-card strong,
+.timeline-section .timeline-card strong,
+.timeline-section .showcase-panel h3,
+.timeline-section .showcase-row strong {
+    color: color-mix(in srgb, #111827 calc((1 - var(--section-darkness)) * 100%), #f8fafc calc(var(--section-darkness) * 100%));
+}
+
+.timeline-section .wireframe-card p,
+.timeline-section .journey-card p,
+.timeline-section .timeline-card p,
+.timeline-section .showcase-row span,
+.timeline-section .showcase-row em,
+.timeline-section .showcase-badge {
+    color: color-mix(in srgb, #5f6b7a calc((1 - var(--section-darkness)) * 100%), rgba(226, 232, 240, 0.78) calc(var(--section-darkness) * 100%));
+}
+
+.timeline-section .showcase-row {
+    background: color-mix(in srgb, rgba(255, 255, 255, 0.94) calc((1 - var(--section-darkness)) * 100%), rgba(255, 255, 255, 0.05) calc(var(--section-darkness) * 100%));
+    border-color: color-mix(in srgb, rgba(17, 24, 39, 0.08) calc((1 - var(--section-darkness)) * 100%), rgba(255, 255, 255, 0.1) calc(var(--section-darkness) * 100%));
+}
+
+.timeline-section .showcase-badge {
+    background: color-mix(in srgb, rgba(17, 24, 39, 0.05) calc((1 - var(--section-darkness)) * 100%), rgba(255, 255, 255, 0.08) calc(var(--section-darkness) * 100%));
+    border-color: color-mix(in srgb, rgba(17, 24, 39, 0.08) calc((1 - var(--section-darkness)) * 100%), rgba(255, 255, 255, 0.12) calc(var(--section-darkness) * 100%));
 }
 
 .showcase-panel {
@@ -1457,7 +1537,7 @@ section {
 
     .product-story-sticky {
         position: static;
-        min-height: auto;
+        height: auto;
     }
 
     .product-story-stage {
@@ -1510,7 +1590,10 @@ section {
     }
 
     .story-instruction {
+        position: static;
+        transform: none;
         font-size: 0.78rem;
+        white-space: normal;
     }
 
     .footer-brand-flood {

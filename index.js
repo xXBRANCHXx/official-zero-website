@@ -108,13 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const easedPeak = (progress, exponent = 1) => {
+        const wave = Math.sin(clamp(progress, 0, 1) * Math.PI);
+        return Math.pow(Math.max(0, wave), exponent);
+    };
+
     // Pinned Product Story
     const storyTrack = document.getElementById('product-story-track');
     const storyStage = document.getElementById('product-story-stage');
     const isCompactViewport = () => window.matchMedia('(max-width: 768px)').matches;
 
     if (storyTrack && storyStage) {
-        const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
         const updateStoryProgress = () => {
             if (isCompactViewport()) {
                 storyStage.style.setProperty('--story-progress', '1');
@@ -124,13 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 storyStage.style.setProperty('--story-syrup-opacity', '1');
                 storyStage.style.setProperty('--story-drops-opacity', '1');
                 storyStage.style.setProperty('--story-topping-opacity', '1');
-                storyStage.style.setProperty('--story-darkness', '1');
+                storyStage.style.setProperty('--story-darkness', '0');
+                storyTrack.closest('.product-story-section')?.style.setProperty('--section-darkness', '0');
                 return;
             }
 
             const rect = storyTrack.getBoundingClientRect();
             const distance = storyTrack.offsetHeight - window.innerHeight;
             const progress = distance <= 0 ? 0 : clamp((-rect.top) / distance, 0, 1);
+            const sectionDarkness = easedPeak(progress, 0.9);
+            const stageDarkness = easedPeak(progress, 1.18);
 
             storyStage.style.setProperty('--story-progress', progress.toFixed(4));
             storyStage.style.setProperty('--story-left-opacity', clamp((progress - 0.22) * 3.2, 0, 1).toFixed(4));
@@ -139,12 +147,42 @@ document.addEventListener('DOMContentLoaded', () => {
             storyStage.style.setProperty('--story-syrup-opacity', clamp((progress - 0.06) * 3.6, 0, 1).toFixed(4));
             storyStage.style.setProperty('--story-drops-opacity', clamp((progress - 0.18) * 3.6, 0, 1).toFixed(4));
             storyStage.style.setProperty('--story-topping-opacity', clamp((progress - 0.28) * 3.6, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-darkness', clamp((progress - 0.02) * 1.25, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-darkness', stageDarkness.toFixed(4));
+            storyTrack.closest('.product-story-section')?.style.setProperty('--section-darkness', sectionDarkness.toFixed(4));
         };
 
         updateStoryProgress();
         window.addEventListener('scroll', updateStoryProgress, { passive: true });
         window.addEventListener('resize', updateStoryProgress);
+    }
+
+    // Section black-to-white transitions
+    const tonalSections = Array.from(document.querySelectorAll('.timeline-section'));
+    if (tonalSections.length) {
+        let tonalRaf = 0;
+
+        const updateSectionTones = () => {
+            tonalRaf = 0;
+            const viewportHeight = window.innerHeight || 1;
+
+            tonalSections.forEach((section) => {
+                const rect = section.getBoundingClientRect();
+                const totalTravel = rect.height + viewportHeight;
+                const progress = totalTravel <= 0 ? 0 : clamp((viewportHeight - rect.top) / totalTravel, 0, 1);
+                const darkness = easedPeak(progress, 0.82);
+
+                section.style.setProperty('--section-darkness', darkness.toFixed(4));
+            });
+        };
+
+        const requestToneFrame = () => {
+            if (tonalRaf) return;
+            tonalRaf = window.requestAnimationFrame(updateSectionTones);
+        };
+
+        updateSectionTones();
+        window.addEventListener('scroll', requestToneFrame, { passive: true });
+        window.addEventListener('resize', requestToneFrame);
     }
 
     // Pronounced but lightweight parallax layers
