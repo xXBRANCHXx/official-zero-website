@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 storyStage.style.setProperty('--story-syrup-opacity', '1');
                 storyStage.style.setProperty('--story-drops-opacity', '1');
                 storyStage.style.setProperty('--story-topping-opacity', '1');
-                storyStage.style.setProperty('--story-darkness', '0.88');
+                storyStage.style.setProperty('--story-darkness', '1');
                 return;
             }
 
@@ -133,13 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const progress = distance <= 0 ? 0 : clamp((-rect.top) / distance, 0, 1);
 
             storyStage.style.setProperty('--story-progress', progress.toFixed(4));
-            storyStage.style.setProperty('--story-left-opacity', clamp(progress * 2.8, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-center-opacity', clamp((progress - 0.18) * 2.8, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-right-opacity', clamp((progress - 0.36) * 2.8, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-syrup-opacity', clamp((progress - 0.04) * 3.2, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-drops-opacity', clamp((progress - 0.16) * 3, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-topping-opacity', clamp((progress - 0.28) * 3, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-darkness', clamp((progress - 0.08) * 1.2, 0, 0.92).toFixed(4));
+            storyStage.style.setProperty('--story-left-opacity', clamp((progress - 0.22) * 3.2, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-center-opacity', clamp((progress - 0.36) * 3.4, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-right-opacity', clamp((progress - 0.48) * 3.4, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-syrup-opacity', clamp((progress - 0.06) * 3.6, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-drops-opacity', clamp((progress - 0.18) * 3.6, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-topping-opacity', clamp((progress - 0.28) * 3.6, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-darkness', clamp((progress - 0.02) * 1.25, 0, 1).toFixed(4));
         };
 
         updateStoryProgress();

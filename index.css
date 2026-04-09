@@ -656,50 +656,39 @@ section {
     min-height: 76vh;
     border-radius: 36px;
     border: 1px solid rgba(17, 24, 39, 0.08);
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255, 255, 255, calc(0.92 - (0.92 * var(--story-darkness)))),
-            rgba(241, 244, 243, calc(0.98 - (0.95 * var(--story-darkness))))
-        ),
-        linear-gradient(
-            180deg,
-            rgba(9, 15, 22, calc(var(--story-darkness) * 0.92)),
-            rgba(4, 8, 13, calc(var(--story-darkness) * 0.98))
-        );
+    background: #f2f5f3;
     box-shadow: var(--shadow);
     overflow: hidden;
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
+}
+
+.product-story-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #05080c;
+    opacity: var(--story-darkness);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .product-story-stage::before {
     content: "";
     position: absolute;
     inset: 0;
-    background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 16%, rgba(255, 255, 255, 0) 84%, rgba(255, 255, 255, 0.03)),
-        linear-gradient(180deg, rgba(255, 255, 255, calc(0.08 - (0.08 * var(--story-darkness)))), rgba(255, 255, 255, 0) 22%),
-        radial-gradient(circle at 72% 42%, rgba(29, 191, 211, calc(var(--story-darkness) * 0.18)), rgba(29, 191, 211, 0) 28%);
+    background: rgba(255, 255, 255, 0.04);
     pointer-events: none;
+    z-index: 0;
 }
 
 .story-aura {
-    position: absolute;
-    inset: 8% 10% auto;
-    height: 58%;
-    background:
-        radial-gradient(circle at 28% 56%, rgba(255, 255, 255, calc(0.12 - (0.1 * var(--story-darkness)))), rgba(255, 255, 255, 0) 34%),
-        radial-gradient(circle at 75% 44%, rgba(29, 191, 211, calc(var(--story-darkness) * 0.28)), rgba(29, 191, 211, 0) 36%);
-    filter: blur(34px);
-    pointer-events: none;
+    display: none;
 }
 
 .story-product {
     position: absolute;
     top: 62%;
     z-index: 2;
-    transition: transform 160ms linear, opacity 180ms linear, filter 180ms linear;
+    transition: transform 120ms linear, opacity 140ms linear;
     opacity: 0;
 }
 
@@ -707,46 +696,46 @@ section {
     display: block;
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 24px 38px rgba(15, 23, 42, calc(0.16 + (0.16 * var(--story-darkness)))));
+    filter: drop-shadow(0 24px 38px rgba(15, 23, 42, 0.22));
 }
 
 .story-syrup {
-    left: 32%;
-    width: min(30vw, 380px);
+    left: 33%;
+    width: min(30vw, 390px);
     opacity: var(--story-syrup-opacity);
     transform:
         translate(
-            calc(-50% - (10vw * (1 - var(--story-progress)))),
-            calc(-50% - (2.4rem * var(--story-progress)))
+            calc(-50% - (8vw * (1 - var(--story-progress)))),
+            calc(-50% - (1rem * var(--story-progress)))
         )
-        rotate(calc(-7deg + (2deg * var(--story-progress))));
+        rotate(0deg);
 }
 
 .story-drops {
-    left: 73%;
-    top: 38%;
-    width: min(11vw, 138px);
+    left: 73.5%;
+    top: 36%;
+    width: min(11vw, 132px);
     z-index: 3;
     opacity: var(--story-drops-opacity);
     transform:
         translate(
-            calc(-50% + (8vw * (1 - var(--story-progress)))),
-            calc(-50% - (3.8rem * var(--story-progress)))
+            calc(-50% + (6vw * (1 - var(--story-progress)))),
+            calc(-50% - (1rem * var(--story-progress)))
         )
-        rotate(calc(10deg - (4deg * var(--story-progress))));
+        rotate(0deg);
 }
 
 .story-topping {
-    left: 73%;
-    top: 74%;
-    width: min(18vw, 228px);
+    left: 73.5%;
+    top: 72%;
+    width: min(17vw, 210px);
     opacity: var(--story-topping-opacity);
     transform:
         translate(
-            calc(-50% + (8vw * (1 - var(--story-progress)))),
-            calc(-50% - (2.1rem * var(--story-progress)))
+            calc(-50% + (6vw * (1 - var(--story-progress)))),
+            calc(-50% - (1rem * var(--story-progress)))
         )
-        rotate(calc(8deg - (3deg * var(--story-progress))));
+        rotate(0deg);
 }
 
 .story-copy {
@@ -755,50 +744,32 @@ section {
     width: min(25%, 280px);
     z-index: 4;
     display: grid;
-    gap: 0.7rem;
+    gap: 0.45rem;
     opacity: 0;
     pointer-events: none;
     transition: opacity 180ms linear, transform 180ms linear;
-    padding: 1rem 1.05rem;
-    border-radius: 22px;
-    background: rgba(255, 255, 255, calc(0.78 - (0.42 * var(--story-darkness))));
-    border: 1px solid rgba(17, 24, 39, calc(0.08 + (0.12 * var(--story-darkness))));
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
-}
-
-.story-copy-dark {
-    background: linear-gradient(180deg, rgba(24, 31, 41, 0.92), rgba(14, 19, 27, 0.94));
-    border-color: rgba(17, 24, 39, 0.18);
-    box-shadow: 0 22px 44px rgba(15, 23, 42, 0.18);
-}
-
-.story-copy-dark strong,
-.story-copy-dark h3 {
-    color: #f8fafc;
-}
-
-.story-copy-dark p,
-.story-copy-dark span {
-    color: rgba(226, 232, 240, 0.82);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .story-copy strong {
     font-size: 0.76rem;
     letter-spacing: 0.18rem;
     text-transform: uppercase;
-    color: #25384a;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .story-copy h3 {
     font-size: clamp(1.4rem, 2vw, 2rem);
     line-height: 1.02;
+    color: #f8fafc;
 }
 
 .story-copy p,
 .story-copy span {
-    color: var(--text-mid);
+    color: rgba(226, 232, 240, 0.84);
 }
 
 .story-copy span {
@@ -810,15 +781,15 @@ section {
 
 .story-copy-left {
     left: 6%;
-    top: 17%;
+    top: 22%;
     width: min(26%, 300px);
     opacity: var(--story-left-opacity);
     transform: translateY(calc(30px - (30px * var(--story-left-opacity))));
 }
 
 .story-copy-center {
-    top: 13%;
-    left: 73%;
+    top: 12%;
+    left: 61%;
     width: min(20%, 240px);
     transform:
         translateX(-50%)
@@ -829,7 +800,7 @@ section {
 
 .story-copy-right {
     right: 8%;
-    top: 62%;
+    top: 63%;
     width: min(22%, 250px);
     text-align: left;
     opacity: var(--story-right-opacity);
