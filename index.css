@@ -90,9 +90,9 @@ section {
     padding: 0.9rem 1rem;
     border: 1px solid rgba(17, 24, 39, 0.08);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.42);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
     display: flex;
     align-items: center;
@@ -389,7 +389,6 @@ section {
     min-height: auto;
     padding: 8.25rem 0 2.5rem;
     position: relative;
-    overflow: hidden;
 }
 
 .hero-v6::before,
@@ -427,6 +426,54 @@ section {
     background:
         linear-gradient(180deg, rgba(9, 20, 30, 0.22), rgba(9, 20, 30, 0.08)),
         linear-gradient(135deg, rgba(29, 191, 211, 0.24), rgba(29, 191, 211, 0.08));
+}
+
+.product-lines-section {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.product-lines-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+.product-lines-parallax {
+    inset: -14% 0;
+}
+
+.product-lines-parallax .parallax-image {
+    height: 130%;
+    transform: translate3d(0, 0, 0) scale(1.22);
+    filter: grayscale(1) blur(3px);
+    opacity: 0.46;
+}
+
+.product-lines-overlay {
+    background:
+        linear-gradient(180deg, rgba(7, 18, 26, 0.72), rgba(7, 18, 26, 0.54)),
+        linear-gradient(135deg, rgba(29, 191, 211, 0.58), rgba(29, 191, 211, 0.34));
+}
+
+.product-lines-section .section-badge,
+.product-lines-section .section-heading p,
+.product-lines-section .journey-card p {
+    color: rgba(241, 245, 249, 0.82);
+}
+
+.product-lines-section .section-heading h2,
+.product-lines-section .journey-card strong {
+    color: #f8fafc;
+}
+
+.product-lines-section .journey-card,
+.product-lines-section .journey-card-dark {
+    background: rgba(9, 18, 26, 0.56);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 22px 42px rgba(4, 10, 16, 0.22);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .hero-shell,
@@ -1028,19 +1075,6 @@ section {
     overflow: hidden;
 }
 
-.footer-section .parallax-image {
-    height: 132%;
-    transform: translate3d(0, 0, 0) scale(1.38);
-    filter: grayscale(1) blur(10px);
-    opacity: 0.18;
-}
-
-.footer-section .parallax-overlay {
-    background:
-        linear-gradient(180deg, rgba(8, 14, 20, 0.68), rgba(8, 14, 20, 0.54)),
-        linear-gradient(135deg, rgba(29, 191, 211, 0.18), rgba(29, 191, 211, 0.08));
-}
-
 .footer-shell {
     position: relative;
     padding: 0;
@@ -1316,7 +1350,7 @@ section {
         min-height: 420px;
     }
 
-    .parallax-image {
+    .product-lines-parallax .parallax-image {
         transform: translate3d(0, 0, 0) scale(1.24);
     }
 }
@@ -1399,14 +1433,14 @@ section {
         justify-content: center;
     }
 
-    .parallax-media {
+    .product-lines-parallax {
         inset: -4% 0;
     }
 
-    .parallax-image {
-        height: 112%;
-        filter: grayscale(1) blur(6px);
-        opacity: 0.22;
+    .product-lines-parallax .parallax-image {
+        height: 116%;
+        filter: grayscale(1) blur(2px);
+        opacity: 0.42;
     }
 
     .product-story-sticky {
