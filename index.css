@@ -247,6 +247,135 @@ section {
     box-shadow: 0 0 0 6px rgba(29, 191, 211, 0.18);
 }
 
+body.cart-drawer-open {
+    overflow: hidden;
+}
+
+.zero-cart-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1190;
+    background: rgba(15, 23, 42, 0.34);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition), visibility var(--transition);
+}
+
+.zero-cart-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.zero-cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1200;
+    width: min(430px, 100vw);
+    height: 100vh;
+    padding: 6.25rem 1.25rem 1.25rem;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto auto;
+    gap: 1rem;
+    background: rgba(248, 250, 252, 0.96);
+    border-left: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: -28px 0 60px rgba(15, 23, 42, 0.16);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transform: translateX(104%);
+    transition: transform var(--transition);
+}
+
+.zero-cart-drawer.active {
+    transform: translateX(0);
+}
+
+.zero-cart-drawer-head,
+.zero-cart-summary,
+.zero-cart-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.zero-cart-drawer-head {
+    align-items: flex-start;
+}
+
+.zero-cart-drawer h2 {
+    margin: 0.35rem 0 0;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+}
+
+.zero-cart-close {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.zero-cart-close span {
+    font-size: 1.7rem;
+    line-height: 1;
+}
+
+.zero-cart-items {
+    display: grid;
+    gap: 0.75rem;
+    overflow-y: auto;
+    align-content: start;
+    padding-right: 0.2rem;
+}
+
+.zero-cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.95rem 1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+}
+
+.zero-cart-item strong,
+.zero-cart-summary strong {
+    display: block;
+    color: var(--text);
+}
+
+.zero-cart-item span,
+.zero-cart-summary span,
+.zero-cart-note,
+.zero-cart-empty {
+    color: var(--text-soft);
+    font-size: 0.86rem;
+}
+
+.zero-cart-summary {
+    align-items: flex-end;
+    padding-top: 0.2rem;
+    border-top: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.zero-cart-actions {
+    align-items: stretch;
+}
+
+.zero-cart-actions .n-btn {
+    flex: 1 1 0;
+}
+
+.zero-cart-note,
+.zero-cart-empty,
+.syrup-side-note .syrup-checkout-note {
+    line-height: 1.5;
+}
+
 .nav-links a {
     text-decoration: none;
     font-size: 0.82rem;
@@ -1205,6 +1334,11 @@ section {
     color: rgba(226, 232, 240, 0.78);
 }
 
+.journey-card .n-btn,
+.journey-card-dark .n-btn {
+    margin-top: 1rem;
+}
+
 .timeline-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -1264,6 +1398,12 @@ section {
     gap: 0.75rem;
 }
 
+.syrup-size-selector {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
 .syrup-choice-card,
 .syrup-size-chip {
     border: 1px solid rgba(17, 24, 39, 0.08);
@@ -1278,6 +1418,13 @@ section {
 .syrup-size-chip:hover {
     transform: translateY(-1px);
     border-color: rgba(46, 146, 127, 0.22);
+}
+
+.syrup-size-chip:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .syrup-choice-card.active,
@@ -1336,6 +1483,10 @@ section {
     position: sticky;
     top: 7rem;
     align-self: start;
+}
+
+.syrup-side-note {
+    min-height: 100%;
 }
 
 .syrup-cart-panel.cart-panel-flash .showcase-panel-dark {
@@ -1973,6 +2124,15 @@ section {
         width: 1.35rem;
         height: 1.35rem;
         font-size: 0.7rem;
+    }
+
+    .zero-cart-drawer {
+        width: 100vw;
+        padding: 5.75rem 1rem 1rem;
+    }
+
+    .zero-cart-actions {
+        flex-direction: column;
     }
 
     .nav-links > li:last-child .n-btn {
