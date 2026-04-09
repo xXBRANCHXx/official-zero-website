@@ -1178,6 +1178,177 @@ section {
     margin-top: 1rem;
 }
 
+.syrup-builder-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    gap: 1rem;
+}
+
+.syrup-configurator {
+    display: grid;
+    gap: 1rem;
+}
+
+.syrup-chooser-panel {
+    display: grid;
+    gap: 1.2rem;
+}
+
+.syrup-panel-label {
+    display: inline-block;
+    margin-bottom: 0.85rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+    color: var(--text-soft);
+}
+
+.syrup-flavor-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.syrup-choice-card,
+.syrup-size-chip {
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.86);
+    padding: 0.95rem 1rem;
+    text-align: left;
+    transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.syrup-choice-card:hover,
+.syrup-size-chip:hover {
+    transform: translateY(-1px);
+    border-color: rgba(46, 146, 127, 0.22);
+}
+
+.syrup-choice-card.active,
+.syrup-size-chip.active {
+    border-color: rgba(46, 146, 127, 0.44);
+    background: rgba(46, 146, 127, 0.08);
+    box-shadow: 0 14px 28px rgba(46, 146, 127, 0.1);
+}
+
+.syrup-choice-card span,
+.syrup-size-chip span,
+.syrup-cart-item span,
+.syrup-cart-footer span {
+    display: block;
+    color: var(--text-soft);
+    font-size: 0.78rem;
+}
+
+.syrup-choice-card strong,
+.syrup-size-chip strong {
+    display: block;
+    font-size: 0.98rem;
+    color: var(--text);
+}
+
+.syrup-selection-copy {
+    color: var(--text-mid);
+}
+
+.syrup-visual-shell {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid rgba(17, 24, 39, 0.06);
+}
+
+.syrup-visual-shell img {
+    display: block;
+    width: min(100%, 280px);
+    height: auto;
+    filter: drop-shadow(0 22px 32px rgba(15, 23, 42, 0.12));
+}
+
+.syrup-size-summary {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    color: var(--text-soft);
+}
+
+.syrup-cart-panel {
+    position: sticky;
+    top: 7rem;
+    align-self: start;
+}
+
+.syrup-cart-items {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.syrup-cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 0.95rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.syrup-cart-item strong,
+.syrup-cart-footer strong {
+    display: block;
+    color: #f8fafc;
+}
+
+.syrup-cart-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.syrup-cart-controls button {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8fafc;
+}
+
+.syrup-cart-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.4rem;
+}
+
+.syrup-checkout-link {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.syrup-checkout-link.disabled {
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.syrup-checkout-note,
+.syrup-cart-empty {
+    color: rgba(226, 232, 240, 0.76);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.hide {
+    display: none;
+}
+
 .testimonials-section {
     position: relative;
     overflow: hidden;
@@ -1640,6 +1811,7 @@ section {
     .hero-shell,
     .page-hero-grid,
     .feature-layout,
+    .syrup-builder-layout,
     .journey-grid,
     .timeline-grid,
     .testimonials-meta,
@@ -1671,6 +1843,10 @@ section {
 
     .product-lines-parallax .parallax-image {
         transform: translate3d(0, 0, 0) scale(1.24);
+    }
+
+    .syrup-cart-panel {
+        position: static;
     }
 }
 
@@ -1996,8 +2172,31 @@ section {
     .flv-grid,
     .timeline-grid,
     .journey-grid,
-    .feature-layout {
+    .feature-layout,
+    .syrup-flavor-grid {
         gap: 0.9rem;
+    }
+
+    .syrup-visual-shell {
+        min-height: 240px;
+    }
+
+    .syrup-visual-shell img {
+        width: min(72vw, 240px);
+    }
+
+    .syrup-choice-card,
+    .syrup-size-chip {
+        padding: 0.85rem 0.9rem;
+    }
+
+    .syrup-cart-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .syrup-cart-controls {
+        align-self: flex-end;
     }
 
     .testimonials-meta {
@@ -2122,6 +2321,21 @@ section {
     .testimonial-card-wide {
         padding: 1.2rem;
         border-radius: 22px;
+    }
+
+    .syrup-flavor-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .syrup-cart-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .syrup-cart-footer .n-btn,
+    .syrup-checkout-link,
+    #add-syrup-to-cart {
+        width: 100%;
     }
 
     .testimonial-stars {

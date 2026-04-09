@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO — Legal Info</title>
+    <title>ZERO — Syrup Builder</title>
     <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
+    <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-vkGUdDj_.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-D6oJO1pq.css">
 </head>
-<body class="locked legal-page">
+<body class="locked syrup-page">
     <div id="coming-soon-overlay" class="coming-soon-overlay">
         <div class="coming-soon-card n-card">
             <h1>Under <span class="teal-text">Construction.</span></h1>
@@ -48,6 +47,7 @@
                 </li>
                 <li class="desktop-only"><a href="/catalog.html">Catalog</a></li>
                 <li class="desktop-only"><a href="/zfit.html">ZFit</a></li>
+                <li class="desktop-only"><a href="/legal.html">Legal Info</a></li>
                 <li class="more-menu">
                     <button id="more-trigger" class="icon-btn" aria-label="Open menu">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
@@ -69,111 +69,99 @@
         <a href="/index.html">Home</a>
         <a href="/catalog.html" class="mobile-only">Catalog</a>
         <a href="/zfit.html" class="mobile-only">ZFit</a>
-        <a href="/index.html#experience">About</a>
         <a href="/legal.html">Legal Info</a>
     </div>
 
     <header class="page-hero">
         <div class="parallax-media" data-parallax data-parallax-speed="0.42" data-parallax-scale="1.32" aria-hidden="true">
-            <img class="parallax-image" src="/ZERO Media/ZERO Syrup Images/Fruit Variants ZERO Syrup.png" alt="">
+            <img class="parallax-image" src="/ZERO Media/ZERO Syrup Images/Coffee Variants ZERO Syrup.png" alt="">
         </div>
         <div class="parallax-overlay" aria-hidden="true"></div>
         <div class="container">
             <div class="page-hero-grid">
                 <div class="page-hero-copy">
-                    <div class="hero-kicker">Company Info</div>
-                    <h1 class="page-hero-title">Built to Make Health Easier.</h1>
-                    <p class="page-hero-subtitle">ZERO Foods Indonesia was founded in 2024 with one goal: make healthy choices easier. This page keeps the company details, contact points, and supporting documents in one place.</p>
+                    <div class="hero-kicker">Syrup Builder</div>
+                    <h1 class="page-hero-title">Build Your ZERO Syrup Order.</h1>
+                    <p class="page-hero-subtitle">Choose from the full syrup lineup, pick a bottle size, add several items to the cart, and send the finished order to WhatsApp with itemized pricing already written into the message.</p>
                     <div class="page-hero-facts">
-                        <span>Founded: 2024</span>
-                        <span>Phone: +62 858-4283-3973</span>
-                        <span>Base: Sleman, Yogyakarta</span>
+                        <span>50ml: Rp10K</span>
+                        <span>250ml: Rp39K</span>
+                        <span>550ml: Rp69K</span>
                     </div>
                     <div class="btn-cluster">
-                        <a href="/Information/Zero Company Information.pdf" target="_blank" class="n-btn primary">Open Company PDF</a>
-                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">Contact WhatsApp</a>
+                        <a href="#syrup-builder" class="n-btn primary">Start Building</a>
+                        <a href="/catalog.html" class="n-btn">Back To Catalog</a>
                     </div>
                 </div>
                 <div class="page-hero-visual">
-                    <img class="page-hero-image" src="/ZERO Media/ZERO Syrup Images/Group Photo ZERO Syrup.png" alt="ZERO product lineup">
+                    <img class="page-hero-image" src="/ZERO Media/ZERO Syrup Renders/Plain.png" alt="ZERO Syrup bottle">
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="timeline-section">
+    <section id="syrup-builder" class="timeline-section syrup-builder-section">
         <div class="container">
             <div class="section-heading">
-                <span class="section-badge">Company Details</span>
-                <h2>Everything Important, In One Place.</h2>
-                <p>This page keeps the key operating information in the same visual system as the rest of the site: company basics, leadership, contact points, and supporting documents.</p>
+                <span class="section-badge">ZERO Syrup</span>
+                <h2>Flavor, Size, Then Cart.</h2>
+                <p>Pricing is fixed by bottle size across the syrup range: 50ml sample at Rp10K, 250ml at Rp39K, and 550ml at Rp69K.</p>
             </div>
 
-            <div class="timeline-grid">
-                <div class="timeline-card">
-                    <strong>Address</strong>
-                    <p>Jl. Jombor Tegal No.124 A, Jombor Lor, Sinduadi, Kec. Mlati, Kabupaten Sleman, DI Yogyakarta 55284.</p>
-                </div>
-                <div class="timeline-card">
-                    <strong>Leadership</strong>
-                    <p>Founders Brent Vincent and Giri Gusman, CEO Maria Renny, and CMO Branch Vincent.</p>
-                </div>
-                <div class="timeline-card">
-                    <strong>Channels</strong>
-                    <p>WhatsApp, Instagram, TikTok, Facebook, and YouTube operate under the ZERO identity.</p>
-                </div>
-            </div>
+            <div class="syrup-builder-layout">
+                <div class="syrup-configurator">
+                    <div class="showcase-panel">
+                        <div class="showcase-header">
+                            <div>
+                                <span class="showcase-badge" id="selected-flavor-group">Coffee Flavors</span>
+                                <h3 id="selected-flavor-name">Plain</h3>
+                            </div>
+                            <strong id="selected-syrup-price">Rp39.000</strong>
+                        </div>
+                        <p class="syrup-selection-copy" id="selected-flavor-description">No added flavor, just sweetness.</p>
+                        <div class="syrup-visual-shell">
+                            <img id="selected-flavor-image" src="/ZERO Media/ZERO Syrup Renders/Plain.png" alt="Plain ZERO Syrup render">
+                        </div>
+                        <div class="syrup-size-summary" id="selected-size-note">250ml · Most popular</div>
+                    </div>
 
-            <div class="page-action-row legal-action-row">
-                <div class="showcase-panel">
-                    <div class="showcase-header">
+                    <div class="feature-wireframe syrup-chooser-panel">
                         <div>
-                            <span class="showcase-badge">Documents</span>
-                            <h3>Reference files for company and product information.</h3>
+                            <strong class="syrup-panel-label">Choose A Flavor</strong>
+                            <div id="syrup-flavor-grid" class="syrup-flavor-grid"></div>
                         </div>
-                    </div>
-                    <div class="showcase-list">
-                        <div class="showcase-row">
-                            <div>
-                                <strong>Company PDF</strong>
-                                <span>Overview of the company, brand mission, and operating details.</span>
-                            </div>
-                            <em>Primary</em>
+                        <div>
+                            <strong class="syrup-panel-label">Choose A Size</strong>
+                            <div id="syrup-size-selector" class="syrup-size-selector"></div>
                         </div>
-                        <div class="showcase-row">
-                            <div>
-                                <strong>Information folder</strong>
-                                <span>Holds supporting PDFs and product references used across the site.</span>
-                            </div>
-                            <em>Source</em>
+                        <div class="btn-cluster">
+                            <button type="button" id="add-syrup-to-cart" class="n-btn primary">Add To Cart</button>
                         </div>
-                    </div>
-                    <div class="btn-cluster">
-                        <a href="/Information/Zero Company Information.pdf" target="_blank" class="n-btn primary">Open Company PDF</a>
-                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">Contact WhatsApp</a>
                     </div>
                 </div>
 
-                <div class="feature-wireframe">
-                    <div class="wireframe-stack">
-                        <div class="wireframe-card">
-                            <strong>Mission</strong>
-                            <p>Make healthier choices easier in Indonesia through better-tasting sugar-free products.</p>
+                <aside class="syrup-cart-panel">
+                    <div class="showcase-panel showcase-panel-dark">
+                        <div class="showcase-header">
+                            <div>
+                                <span class="showcase-badge">Cart</span>
+                                <h3>Your Syrup Order</h3>
+                            </div>
+                            <strong id="syrup-cart-count">0 items</strong>
                         </div>
-                        <div class="wireframe-card">
-                            <strong>Base</strong>
-                            <p>Operations run from Sleman, Yogyakarta with marketplace and social channels supporting sales.</p>
+                        <p id="syrup-cart-empty" class="syrup-cart-empty">Your cart is empty. Add flavors and sizes to start the order.</p>
+                        <div id="syrup-cart-items" class="syrup-cart-items"></div>
+                        <div class="syrup-cart-footer">
+                            <div>
+                                <span>Total</span>
+                                <strong id="syrup-cart-total">Rp0</strong>
+                            </div>
+                            <button type="button" id="syrup-clear-cart" class="n-btn">Clear Cart</button>
                         </div>
-                        <div class="wireframe-card">
-                            <strong>Support</strong>
-                            <p>WhatsApp remains the clearest direct path for orders, questions, and repeat customer contact.</p>
-                        </div>
-                        <div class="wireframe-card">
-                            <strong>Reference</strong>
-                            <p>Company and product PDFs stay available as supporting material rather than replacing the site.</p>
-                        </div>
+                        <a id="syrup-whatsapp-checkout" class="n-btn primary syrup-checkout-link disabled" href="#" target="_blank" aria-disabled="true">Checkout On WhatsApp</a>
+                        <p class="syrup-checkout-note">The WhatsApp message includes item names, sizes, quantities, prices, total, and a note telling the customer not to delete the order text.</p>
                     </div>
-                </div>
+                </aside>
             </div>
         </div>
     </section>
@@ -186,11 +174,11 @@
             <div class="container footer-inner">
                 <div>
                     <span class="section-badge">ZERO</span>
-                    <h2 class="footer-title">Keep ZERO Close.</h2>
+                    <h2 class="footer-title">Healthy choices, <br>made easier.</h2>
                     <p class="footer-meta">+62 858-4283-3973<br>Jl. Jombor Tegal No.124 A, Sleman, Yogyakarta</p>
                 </div>
                 <div>
-                    <a href="/Information/Zero Company Information.pdf" target="_blank" class="footer-legal">Company PDF</a>
+                    <a href="/legal.html" class="footer-legal">Legal Info</a>
                     <div class="footer-links">
                         <a href="https://www.instagram.com/zerofoods.id/" target="_blank">Instagram</a>
                         <a href="https://www.tiktok.com/@zerofoods.id" target="_blank">TikTok</a>
@@ -201,5 +189,7 @@
         </div>
     </footer>
 
+    <script type="module" src="/index.js"></script>
+    <script type="module" src="/syrup.js"></script>
 </body>
 </html>
