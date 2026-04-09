@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const emptyState = document.getElementById('syrup-cart-empty');
     const checkoutLink = document.getElementById('syrup-whatsapp-checkout');
     const clearCartButton = document.getElementById('syrup-clear-cart');
+    const cartPanel = document.getElementById('syrup-cart-panel');
+    const cartBubble = document.getElementById('syrup-cart-bubble');
+    const cartBadge = document.getElementById('syrup-cart-badge');
 
     let selectedFlavorId = syrupFlavors[0].id;
     let selectedSizeId = syrupSizes[1].id;
@@ -104,6 +107,12 @@ document.addEventListener('DOMContentLoaded', () => {
         checkoutLink.href = `https://api.whatsapp.com/send?phone=${whatsappPhone}&text=${buildMessage()}`;
     };
 
+    const syncCartBubble = (count) => {
+        if (!cartBadge || !cartBubble) return;
+        cartBadge.textContent = String(count);
+        cartBubble.classList.toggle('has-items', count > 0);
+    };
+
     const updateSelectionPanel = () => {
         const flavor = findFlavor(selectedFlavorId);
         const size = findSize(selectedSizeId);
@@ -133,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             emptyState.classList.remove('hide');
             cartCount.textContent = '0 items';
             cartTotal.textContent = formatPrice(0);
+            syncCartBubble(0);
             syncCheckoutLink();
             return;
         }
@@ -163,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cartCount.textContent = `${count} item${count === 1 ? '' : 's'}`;
         cartTotal.textContent = formatPrice(total);
+        syncCartBubble(count);
         syncCheckoutLink();
     };
 
@@ -245,6 +256,19 @@ document.addEventListener('DOMContentLoaded', () => {
         cart = [];
         saveCart(cart);
         renderCart();
+    });
+
+    cartBubble?.addEventListener('click', () => {
+        if (!cartPanel) return;
+        cartPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        cartPanel.classList.remove('cart-panel-flash');
+        requestAnimationFrame(() => {
+            cartPanel.classList.add('cart-panel-flash');
+        });
+    });
+
+    cartPanel?.addEventListener('animationend', () => {
+        cartPanel.classList.remove('cart-panel-flash');
     });
 
     updateSelectionPanel();

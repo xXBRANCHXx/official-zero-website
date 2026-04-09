@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZERO — Syrup Builder</title>
+    <title>ZERO — Order Syrup</title>
     <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
     <link rel="stylesheet" href="index.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,6 +48,12 @@
                 <li class="desktop-only"><a href="/catalog.html">Catalog</a></li>
                 <li class="desktop-only"><a href="/zfit.html">ZFit</a></li>
                 <li class="desktop-only"><a href="/legal.html">Legal Info</a></li>
+                <li class="syrup-cart-bubble-slot">
+                    <button id="syrup-cart-bubble" class="syrup-cart-bubble" type="button" aria-label="Open cart and checkout">
+                        <span class="syrup-cart-bubble-label">Cart</span>
+                        <span id="syrup-cart-badge" class="syrup-cart-badge">0</span>
+                    </button>
+                </li>
                 <li class="more-menu">
                     <button id="more-trigger" class="icon-btn" aria-label="Open menu">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
@@ -80,8 +86,8 @@
         <div class="container">
             <div class="page-hero-grid">
                 <div class="page-hero-copy">
-                    <div class="hero-kicker">Syrup Builder</div>
-                    <h1 class="page-hero-title">Build Your ZERO Syrup Order.</h1>
+                    <div class="hero-kicker">ZERO Syrup</div>
+                    <h1 class="page-hero-title">Order ZERO Syrup.</h1>
                     <p class="page-hero-subtitle">Choose from the full syrup lineup, pick a bottle size, add several items to the cart, and send the finished order to WhatsApp with itemized pricing already written into the message.</p>
                     <div class="page-hero-facts">
                         <span>50ml: Rp10K</span>
@@ -140,7 +146,7 @@
                     </div>
                 </div>
 
-                <aside class="syrup-cart-panel">
+                <aside id="syrup-cart-panel" class="syrup-cart-panel">
                     <div class="showcase-panel showcase-panel-dark">
                         <div class="showcase-header">
                             <div>
