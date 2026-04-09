@@ -1129,15 +1129,82 @@ section {
 .testimonials-section {
     position: relative;
     overflow: hidden;
+    background:
+        radial-gradient(circle at 18% 26%, rgba(182, 219, 205, 0.28), transparent 32%),
+        radial-gradient(circle at 82% 34%, rgba(24, 32, 43, 0.1), transparent 26%),
+        linear-gradient(180deg, #f6f7f3 0%, #eef2eb 100%);
+    border-top: 1px solid rgba(17, 24, 39, 0.06);
+    border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+}
+
+.testimonials-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.testimonials-glow {
+    position: absolute;
+    width: min(34vw, 420px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    filter: blur(50px);
+    opacity: 0.42;
+}
+
+.testimonials-glow-left {
+    left: -6%;
+    top: 16%;
+    background: rgba(175, 218, 197, 0.7);
+}
+
+.testimonials-glow-right {
+    right: -8%;
+    bottom: 12%;
+    background: rgba(22, 32, 42, 0.12);
 }
 
 .testimonials-heading {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.testimonials-meta {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+}
+
+.testimonials-meta-card {
+    padding: 0.95rem 1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: grid;
+    gap: 0.22rem;
+}
+
+.testimonials-meta-card span {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+    color: var(--text-soft);
+}
+
+.testimonials-meta-card strong {
+    font-size: 0.96rem;
+    line-height: 1.2;
+    color: var(--text);
 }
 
 .testimonials-track {
     position: relative;
-    height: 200vh;
+    height: 280vh;
     overflow: hidden;
 }
 
@@ -1151,8 +1218,10 @@ section {
 }
 
 .testimonials-shell {
+    position: relative;
+    z-index: 1;
     width: 100%;
-    padding: 1rem 0 4rem;
+    padding: 1.2rem 0 4.5rem;
     overflow: hidden;
 }
 
@@ -1167,25 +1236,27 @@ section {
 }
 
 .testimonial-card {
+    position: relative;
     width: min(30rem, 72vw);
     max-width: min(30rem, 72vw);
     min-height: 20rem;
-    padding: 1.4rem;
+    padding: 1.45rem;
     border-radius: 28px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(247, 248, 250, 0.9) 100%);
-    border: 1px solid rgba(17, 24, 39, 0.08);
-    box-shadow: 0 24px 50px rgba(15, 23, 42, 0.1);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 248, 0.92) 100%);
+    border: 1px solid rgba(17, 24, 39, 0.07);
+    box-shadow: 0 26px 52px rgba(15, 23, 42, 0.1);
     display: grid;
     align-content: space-between;
     gap: 1.2rem;
+    overflow: hidden;
 }
 
 .testimonial-card:nth-child(odd) {
-    transform: translateY(-1rem);
+    transform: translateY(-0.8rem) rotate(-1.1deg);
 }
 
 .testimonial-card:nth-child(even) {
-    transform: translateY(1.25rem);
+    transform: translateY(1.1rem) rotate(1deg);
 }
 
 .testimonial-card-dark {
@@ -1197,6 +1268,17 @@ section {
 .testimonial-card-wide {
     width: min(34rem, 82vw);
     max-width: min(34rem, 82vw);
+}
+
+.testimonial-mark {
+    position: absolute;
+    top: 0.55rem;
+    right: 1rem;
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(17, 24, 39, 0.08);
+    font-weight: 700;
+    pointer-events: none;
 }
 
 .testimonial-source {
@@ -1232,6 +1314,10 @@ section {
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.1);
     color: rgba(226, 232, 240, 0.74);
+}
+
+.testimonial-card-dark .testimonial-mark {
+    color: rgba(255, 255, 255, 0.08);
 }
 
 .testimonial-card-dark p,
@@ -1503,6 +1589,7 @@ section {
     .feature-layout,
     .journey-grid,
     .timeline-grid,
+    .testimonials-meta,
     .board-grid,
     .grid-v6,
     .panel-grid,
@@ -1722,6 +1809,12 @@ section {
     .testimonial-card:nth-child(odd),
     .testimonial-card:nth-child(even) {
         transform: none;
+    }
+
+    .testimonial-mark {
+        top: 0.5rem;
+        right: 0.8rem;
+        font-size: 3.6rem;
     }
 
     .testimonial-card p {
