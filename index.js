@@ -175,7 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const rect = testimonialsTrack.getBoundingClientRect();
             const distance = Math.max(testimonialsTrack.offsetHeight - window.innerHeight, 1);
-            const progress = clamp((-rect.top) / distance, 0, 1);
+            const leadIn = window.innerHeight * 0.62;
+            const progress = clamp((leadIn - rect.top) / (distance + leadIn), 0, 1);
             const maxShift = Math.max(testimonialsRail.scrollWidth - window.innerWidth, 0);
             const startOffset = Math.min(window.innerWidth * 0.16, 220);
             const translateX = startOffset - (progress * (maxShift + startOffset));
