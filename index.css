@@ -125,16 +125,32 @@ section {
 }
 
 #nav-logo {
-    text-decoration: none;
-    font-weight: 900;
-    font-size: 0.95rem;
-    letter-spacing: 0.32rem;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     padding: 0.65rem 0.9rem;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.34);
     border: 1px solid rgba(17, 24, 39, 0.08);
+    text-decoration: none;
+}
+
+#nav-logo img {
+    display: block;
+    width: auto;
+    height: 18px;
+}
+
+.hero-brand-mark {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.15rem;
+}
+
+.hero-brand-mark img {
+    width: auto;
+    height: clamp(28px, 3.8vw, 42px);
+    opacity: 0.88;
 }
 
 .nav-right {
@@ -1173,6 +1189,14 @@ section {
 
     .hero-p {
         font-size: 1rem;
+    }
+
+    #nav-logo img {
+        height: 16px;
+    }
+
+    .hero-brand-mark img {
+        height: 28px;
     }
 
     .n-card,
