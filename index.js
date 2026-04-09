@@ -139,6 +139,42 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', updateStoryProgress);
     }
 
+    // Pronounced but lightweight parallax layers
+    const parallaxLayers = Array.from(document.querySelectorAll('[data-parallax]'));
+    if (parallaxLayers.length) {
+        let rafId = 0;
+
+        const updateParallax = () => {
+            rafId = 0;
+            const viewportHeight = window.innerHeight || 1;
+
+            parallaxLayers.forEach((layer) => {
+                const rect = layer.parentElement?.getBoundingClientRect();
+                if (!rect) return;
+
+                const centerOffset = (rect.top + rect.height / 2) - viewportHeight / 2;
+                const normalized = Math.max(-1.3, Math.min(1.3, centerOffset / viewportHeight));
+                const speed = Number(layer.dataset.parallaxSpeed || 0.3);
+                const scale = Number(layer.dataset.parallaxScale || 1.32);
+                const translateY = normalized * viewportHeight * speed * -1;
+                const image = layer.querySelector('.parallax-image');
+
+                if (image) {
+                    image.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(${scale})`;
+                }
+            });
+        };
+
+        const requestParallaxFrame = () => {
+            if (rafId) return;
+            rafId = window.requestAnimationFrame(updateParallax);
+        };
+
+        updateParallax();
+        window.addEventListener('scroll', requestParallaxFrame, { passive: true });
+        window.addEventListener('resize', requestParallaxFrame);
+    }
+
     // Transition Revealer
     const revealItems = document.querySelectorAll('.n-card, .dark-accent-card, .hero-h1, .hero-p, .flv-card-min, .metric-strip, .feature-wireframe, .showcase-panel, .journey-card, .timeline-card, .footer-shell');
     const revealObserver = new IntersectionObserver((entries) => {
