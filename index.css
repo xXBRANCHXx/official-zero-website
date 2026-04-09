@@ -422,6 +422,10 @@ section {
     pointer-events: none;
 }
 
+.page-hero::before {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.68), rgba(255, 255, 255, 0.28));
+}
+
 .parallax-media {
     position: absolute;
     inset: -8% 0;
@@ -448,6 +452,15 @@ section {
     background:
         linear-gradient(180deg, rgba(9, 20, 30, 0.22), rgba(9, 20, 30, 0.08)),
         linear-gradient(135deg, rgba(29, 191, 211, 0.24), rgba(29, 191, 211, 0.08));
+}
+
+.page-hero .parallax-overlay {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.14));
+}
+
+.page-hero .parallax-image {
+    filter: grayscale(1) blur(10px);
+    opacity: 0.14;
 }
 
 .product-lines-section {
@@ -531,6 +544,12 @@ section {
     letter-spacing: 0.12rem;
     text-transform: uppercase;
     padding: 0;
+}
+
+.page-hero .hero-kicker,
+.page-hero .page-hero-subtitle,
+.page-hero .page-hero-facts span {
+    color: #31455c;
 }
 
 .hero-h1,
