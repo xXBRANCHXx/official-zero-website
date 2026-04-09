@@ -9,8 +9,8 @@
     --text-mid: #5f6b7a;
     --text-soft: #8a93a3;
     --accent: #1dbfd3;
-    --accent-soft: rgba(29, 191, 211, 0.12);
-    --accent-strong: #0f98ac;
+    --accent-soft: rgba(29, 191, 211, 0.08);
+    --accent-strong: #16889a;
     --shadow: 0 24px 80px rgba(15, 23, 42, 0.08);
     --shadow-soft: 0 12px 32px rgba(15, 23, 42, 0.06);
     --glass: rgba(255, 255, 255, 0.7);
@@ -34,7 +34,7 @@ html {
 
 body {
     background:
-        radial-gradient(circle at top, rgba(29, 191, 211, 0.08), rgba(246, 248, 247, 0) 26%),
+        radial-gradient(circle at top, rgba(17, 24, 39, 0.03), rgba(246, 248, 247, 0) 26%),
         linear-gradient(180deg, #fcfdfc 0%, #f3f6f4 42%, #eef2f0 100%);
     color: var(--text);
     overflow-x: hidden;
@@ -55,7 +55,7 @@ section {
 }
 
 .teal-text {
-    color: var(--accent);
+    color: #233041;
 }
 
 .section-badge,
@@ -67,7 +67,7 @@ section {
     font-weight: 800;
     letter-spacing: 0.18rem;
     text-transform: uppercase;
-    color: var(--accent-strong);
+    color: #5f6b7a;
 }
 
 .section-badge {
@@ -76,7 +76,7 @@ section {
 
 .price-tag {
     margin-top: 0.85rem;
-    color: var(--accent-strong);
+    color: #25384a;
     font-size: 1rem;
     font-weight: 800;
 }
@@ -90,7 +90,7 @@ section {
     padding: 0.9rem 1rem;
     border: 1px solid rgba(17, 24, 39, 0.08);
     border-radius: 999px;
-    background: var(--glass);
+    background: rgba(255, 255, 255, 0.42);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
@@ -107,7 +107,7 @@ section {
     inset: 1px;
     border-radius: inherit;
     background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.28) 34%, rgba(255, 255, 255, 0.08) 100%);
+        linear-gradient(135deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.14) 34%, rgba(255, 255, 255, 0.04) 100%);
     pointer-events: none;
 }
 
@@ -115,7 +115,7 @@ section {
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 18%, rgba(255, 255, 255, 0) 82%, rgba(255, 255, 255, 0.22));
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 18%, rgba(255, 255, 255, 0) 82%, rgba(255, 255, 255, 0.14));
     pointer-events: none;
 }
 
@@ -133,7 +133,7 @@ section {
     align-items: center;
     padding: 0.65rem 0.9rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.34);
     border: 1px solid rgba(17, 24, 39, 0.08);
 }
 
@@ -162,7 +162,7 @@ section {
 
 .nav-links a:hover,
 .nav-links a:focus-visible {
-    background: rgba(255, 255, 255, 0.74);
+    background: rgba(255, 255, 255, 0.42);
     color: var(--text);
     outline: none;
 }
@@ -185,7 +185,7 @@ section {
 #search-trigger:hover,
 .icon-btn:hover {
     color: var(--text);
-    background: rgba(255, 255, 255, 0.74);
+    background: rgba(255, 255, 255, 0.42);
     border-color: rgba(17, 24, 39, 0.08);
 }
 
@@ -220,7 +220,7 @@ section {
 .search-morph-container {
     width: min(420px, calc(100vw - 2rem));
     height: 52px;
-    background: rgba(255, 255, 255, 0.94);
+    background: rgba(255, 255, 255, 0.48);
     border: 1px solid rgba(17, 24, 39, 0.08);
     border-radius: 999px;
     box-shadow: var(--shadow-soft);
@@ -279,7 +279,7 @@ section {
     width: min(260px, calc(100vw - 2rem));
     padding: 0.55rem;
     border-radius: 24px;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.52);
     border: 1px solid rgba(17, 24, 39, 0.08);
     box-shadow: var(--shadow-soft);
     display: flex;
@@ -300,7 +300,7 @@ section {
 }
 
 .glass-dropdown a:hover {
-    background: var(--surface-soft);
+    background: rgba(255, 255, 255, 0.44);
     color: var(--text);
 }
 
@@ -332,7 +332,7 @@ section {
     background: var(--accent);
     border-color: var(--accent);
     color: #ffffff;
-    box-shadow: 0 0 0 1px rgba(29, 191, 211, 0.1), 0 10px 32px rgba(29, 191, 211, 0.16);
+    box-shadow: 0 0 0 1px rgba(29, 191, 211, 0.08), 0 10px 24px rgba(29, 191, 211, 0.12);
 }
 
 .n-btn.primary:hover {
@@ -374,7 +374,7 @@ section {
     font-weight: 800;
     letter-spacing: 0.18rem;
     text-transform: uppercase;
-    color: var(--accent-strong);
+    color: #5f6b7a;
 }
 
 .hero-v6 {
@@ -388,7 +388,7 @@ section {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at 50% 0%, rgba(29, 191, 211, 0.08), rgba(255, 255, 255, 0) 42%),
+        radial-gradient(circle at 50% 0%, rgba(17, 24, 39, 0.03), rgba(255, 255, 255, 0) 42%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
     pointer-events: none;
 }
@@ -419,7 +419,7 @@ section {
 }
 
 .announcement-pill strong {
-    color: var(--accent-strong);
+    color: #25384a;
 }
 
 .hero-h1 {
@@ -508,7 +508,7 @@ section {
     border-radius: 36px;
     border: 1px solid rgba(17, 24, 39, 0.08);
     background:
-        radial-gradient(circle at top, rgba(29, 191, 211, 0.08), rgba(255, 255, 255, 0) 26%),
+        radial-gradient(circle at top, rgba(17, 24, 39, 0.03), rgba(255, 255, 255, 0) 26%),
         linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(241, 244, 243, 0.96));
     box-shadow: var(--shadow);
     overflow: hidden;
@@ -530,7 +530,7 @@ section {
     position: absolute;
     inset: 8% 15% auto;
     height: 48%;
-    background: radial-gradient(circle, rgba(29, 191, 211, 0.12), rgba(29, 191, 211, 0) 62%);
+    background: radial-gradient(circle, rgba(17, 24, 39, 0.06), rgba(17, 24, 39, 0) 62%);
     filter: blur(28px);
     pointer-events: none;
 }
@@ -595,7 +595,7 @@ section {
     font-size: 0.76rem;
     letter-spacing: 0.18rem;
     text-transform: uppercase;
-    color: var(--accent-strong);
+    color: #25384a;
 }
 
 .story-copy h3 {
@@ -810,9 +810,9 @@ section {
 .showcase-badge {
     padding: 0.4rem 0.7rem;
     border-radius: 999px;
-    background: var(--accent-soft);
-    border: 1px solid rgba(55, 238, 252, 0.14);
-    color: var(--accent-strong);
+    background: rgba(17, 24, 39, 0.05);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    color: #5f6b7a;
     font-size: 0.75rem;
     font-weight: 800;
 }
@@ -848,7 +848,7 @@ section {
     font-size: 0.78rem;
     font-weight: 800;
     letter-spacing: 0.12rem;
-    color: var(--accent-strong);
+    color: #5f6b7a;
     text-transform: uppercase;
 }
 
@@ -1039,7 +1039,7 @@ section {
 }
 
 .neomorph-input:focus {
-    outline: 2px solid rgba(55, 238, 252, 0.24);
+    outline: 2px solid rgba(17, 24, 39, 0.12);
     outline-offset: 2px;
 }
 
