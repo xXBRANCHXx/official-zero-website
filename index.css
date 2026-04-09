@@ -128,29 +128,16 @@ section {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.65rem 0.9rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.34);
-    border: 1px solid rgba(17, 24, 39, 0.08);
+    padding: 0;
     text-decoration: none;
+    overflow: hidden;
 }
 
 #nav-logo img {
     display: block;
     width: auto;
-    height: 18px;
-}
-
-.hero-brand-mark {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.15rem;
-}
-
-.hero-brand-mark img {
-    width: auto;
-    height: clamp(28px, 3.8vw, 42px);
-    opacity: 0.88;
+    height: 22px;
+    transform: translateY(0.5px);
 }
 
 .nav-right {
@@ -940,22 +927,49 @@ section {
 }
 
 .footer-shell {
+    position: relative;
     padding: 2rem;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 2rem;
+    overflow: hidden;
+    background: linear-gradient(180deg, #16202a 0%, #0f161e 100%);
+    border-color: rgba(17, 24, 39, 0.18);
+    box-shadow: 0 24px 54px rgba(15, 23, 42, 0.16);
+}
+
+.footer-shell > * {
+    position: relative;
+    z-index: 1;
+}
+
+.footer-brand-flood {
+    position: absolute;
+    right: -3%;
+    bottom: -16%;
+    width: min(52vw, 620px);
+    opacity: 0.14;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.footer-brand-flood img {
+    display: block;
+    width: 100%;
+    height: auto;
 }
 
 .footer-title {
     font-size: clamp(2.4rem, 6vw, 4.5rem);
     line-height: 0.94;
     letter-spacing: -0.07em;
+    color: #f8fafc;
 }
 
 .footer-meta {
     margin-top: 1rem;
-    color: var(--text-mid);
+    color: rgba(226, 232, 240, 0.78);
 }
 
 .footer-links {
@@ -969,7 +983,7 @@ section {
 .footer-links a,
 .footer-legal {
     text-decoration: none;
-    color: var(--text-mid);
+    color: rgba(226, 232, 240, 0.78);
     font-size: 0.8rem;
     font-weight: 800;
     letter-spacing: 0.12rem;
@@ -982,7 +996,7 @@ section {
     font-size: 0.85rem;
     font-weight: 900;
     letter-spacing: 0.3rem;
-    color: var(--text-soft);
+    color: rgba(226, 232, 240, 0.54);
 }
 
 .grid-v6,
@@ -1195,10 +1209,6 @@ section {
         height: 16px;
     }
 
-    .hero-brand-mark img {
-        height: 28px;
-    }
-
     .n-card,
     .dark-accent-card,
     .feature-wireframe,
@@ -1297,5 +1307,12 @@ section {
 
     .story-instruction {
         font-size: 0.78rem;
+    }
+
+    .footer-brand-flood {
+        right: -18%;
+        bottom: -6%;
+        width: 88vw;
+        opacity: 0.12;
     }
 }
