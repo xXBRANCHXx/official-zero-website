@@ -648,14 +648,25 @@ section {
     --story-left-opacity: 0;
     --story-center-opacity: 0;
     --story-right-opacity: 0;
-    --story-spread: min(28vw, 21rem);
+    --story-syrup-opacity: 0;
+    --story-drops-opacity: 0;
+    --story-topping-opacity: 0;
+    --story-darkness: 0;
     position: relative;
     min-height: 76vh;
     border-radius: 36px;
     border: 1px solid rgba(17, 24, 39, 0.08);
     background:
-        radial-gradient(circle at top, rgba(17, 24, 39, 0.03), rgba(255, 255, 255, 0) 26%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(241, 244, 243, 0.96));
+        linear-gradient(
+            180deg,
+            rgba(255, 255, 255, calc(0.92 - (0.92 * var(--story-darkness)))),
+            rgba(241, 244, 243, calc(0.98 - (0.95 * var(--story-darkness))))
+        ),
+        linear-gradient(
+            180deg,
+            rgba(9, 15, 22, calc(var(--story-darkness) * 0.92)),
+            rgba(4, 8, 13, calc(var(--story-darkness) * 0.98))
+        );
     box-shadow: var(--shadow);
     overflow: hidden;
     backdrop-filter: blur(28px);
@@ -668,59 +679,79 @@ section {
     inset: 0;
     background:
         linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 16%, rgba(255, 255, 255, 0) 84%, rgba(255, 255, 255, 0.03)),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0) 22%);
+        linear-gradient(180deg, rgba(255, 255, 255, calc(0.08 - (0.08 * var(--story-darkness)))), rgba(255, 255, 255, 0) 22%),
+        radial-gradient(circle at 72% 42%, rgba(29, 191, 211, calc(var(--story-darkness) * 0.18)), rgba(29, 191, 211, 0) 28%);
     pointer-events: none;
 }
 
 .story-aura {
     position: absolute;
-    inset: 8% 15% auto;
-    height: 48%;
-    background: radial-gradient(circle, rgba(17, 24, 39, 0.06), rgba(17, 24, 39, 0) 62%);
-    filter: blur(28px);
+    inset: 8% 10% auto;
+    height: 58%;
+    background:
+        radial-gradient(circle at 28% 56%, rgba(255, 255, 255, calc(0.12 - (0.1 * var(--story-darkness)))), rgba(255, 255, 255, 0) 34%),
+        radial-gradient(circle at 75% 44%, rgba(29, 191, 211, calc(var(--story-darkness) * 0.28)), rgba(29, 191, 211, 0) 36%);
+    filter: blur(34px);
     pointer-events: none;
 }
 
 .story-product {
     position: absolute;
-    top: 66%;
-    left: 50%;
-    width: min(19vw, 230px);
+    top: 62%;
     z-index: 2;
-    transition: transform 160ms linear;
+    transition: transform 160ms linear, opacity 180ms linear, filter 180ms linear;
+    opacity: 0;
 }
 
 .story-product img {
     display: block;
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 24px 38px rgba(15, 23, 42, 0.16));
+    filter: drop-shadow(0 24px 38px rgba(15, 23, 42, calc(0.16 + (0.16 * var(--story-darkness)))));
 }
 
 .story-syrup {
-    transform: translate(
-        calc(-50% - (var(--story-spread) * var(--story-progress))),
-        calc(-50% - (0.8rem * var(--story-progress)))
-    ) rotate(calc(-9deg * var(--story-progress)));
+    left: 32%;
+    width: min(30vw, 380px);
+    opacity: var(--story-syrup-opacity);
+    transform:
+        translate(
+            calc(-50% - (10vw * (1 - var(--story-progress)))),
+            calc(-50% - (2.4rem * var(--story-progress)))
+        )
+        rotate(calc(-7deg + (2deg * var(--story-progress))));
 }
 
 .story-drops {
-    width: min(10vw, 112px);
+    left: 73%;
+    top: 38%;
+    width: min(11vw, 138px);
     z-index: 3;
-    transform: translate(-50%, calc(-48% + (0.4rem * var(--story-progress)))) rotate(calc(2deg * var(--story-progress)));
+    opacity: var(--story-drops-opacity);
+    transform:
+        translate(
+            calc(-50% + (8vw * (1 - var(--story-progress)))),
+            calc(-50% - (3.8rem * var(--story-progress)))
+        )
+        rotate(calc(10deg - (4deg * var(--story-progress))));
 }
 
 .story-topping {
-    width: min(17vw, 205px);
-    transform: translate(
-        calc(-50% + (var(--story-spread) * var(--story-progress))),
-        calc(-50% - (0.4rem * var(--story-progress)))
-    ) rotate(calc(8deg * var(--story-progress)));
+    left: 73%;
+    top: 74%;
+    width: min(18vw, 228px);
+    opacity: var(--story-topping-opacity);
+    transform:
+        translate(
+            calc(-50% + (8vw * (1 - var(--story-progress)))),
+            calc(-50% - (2.1rem * var(--story-progress)))
+        )
+        rotate(calc(8deg - (3deg * var(--story-progress))));
 }
 
 .story-copy {
     position: absolute;
-    top: 14%;
+    top: 12%;
     width: min(25%, 280px);
     z-index: 4;
     display: grid;
@@ -730,8 +761,8 @@ section {
     transition: opacity 180ms linear, transform 180ms linear;
     padding: 1rem 1.05rem;
     border-radius: 22px;
-    background: rgba(255, 255, 255, 0.78);
-    border: 1px solid rgba(17, 24, 39, 0.08);
+    background: rgba(255, 255, 255, calc(0.78 - (0.42 * var(--story-darkness))));
+    border: 1px solid rgba(17, 24, 39, calc(0.08 + (0.12 * var(--story-darkness))));
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
@@ -779,24 +810,28 @@ section {
 
 .story-copy-left {
     left: 6%;
+    top: 17%;
+    width: min(26%, 300px);
     opacity: var(--story-left-opacity);
     transform: translateY(calc(30px - (30px * var(--story-left-opacity))));
 }
 
 .story-copy-center {
-    top: 20%;
-    left: 50%;
-    width: min(24%, 260px);
+    top: 13%;
+    left: 73%;
+    width: min(20%, 240px);
     transform:
         translateX(-50%)
         translateY(calc(30px - (30px * var(--story-center-opacity))));
     opacity: var(--story-center-opacity);
-    text-align: center;
+    text-align: left;
 }
 
 .story-copy-right {
-    right: 6%;
-    text-align: right;
+    right: 8%;
+    top: 62%;
+    width: min(22%, 250px);
+    text-align: left;
     opacity: var(--story-right-opacity);
     transform: translateY(calc(30px - (30px * var(--story-right-opacity))));
 }
