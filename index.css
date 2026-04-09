@@ -1353,6 +1353,99 @@ body.cart-drawer-open {
     margin-top: 1rem;
 }
 
+.catalog-products-section {
+    position: relative;
+}
+
+.catalog-product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.catalog-product-card {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    border-radius: 28px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+}
+
+.catalog-product-media {
+    min-height: 270px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background:
+        radial-gradient(circle at top, rgba(29, 191, 211, 0.18), transparent 52%),
+        linear-gradient(180deg, rgba(248, 250, 252, 0.95), rgba(235, 241, 245, 0.88));
+    border-bottom: 1px solid rgba(17, 24, 39, 0.06);
+}
+
+.catalog-product-media img {
+    display: block;
+    width: min(100%, 230px);
+    height: auto;
+    filter: drop-shadow(0 22px 32px rgba(15, 23, 42, 0.14));
+}
+
+.catalog-product-copy {
+    display: grid;
+    align-content: start;
+    gap: 0.9rem;
+    padding: 1.35rem;
+}
+
+.catalog-product-copy h3 {
+    font-size: 1.35rem;
+    line-height: 1.1;
+}
+
+.catalog-product-copy p {
+    color: var(--text-mid);
+}
+
+.catalog-price-block {
+    display: grid;
+    gap: 0.2rem;
+    padding: 0.9rem 1rem;
+    border-radius: 18px;
+    background: rgba(17, 24, 39, 0.04);
+    border: 1px solid rgba(17, 24, 39, 0.06);
+}
+
+.catalog-price-block strong {
+    font-size: 1.15rem;
+    color: var(--text);
+}
+
+.catalog-price-block span {
+    color: var(--text-soft);
+    font-size: 0.84rem;
+}
+
+.catalog-product-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.catalog-product-meta span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0.45rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    color: var(--text-soft);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
 .page-action-row {
     display: grid;
     grid-template-columns: 1.05fr 0.95fr;
@@ -2042,6 +2135,7 @@ body.cart-drawer-open {
     .hero-shell,
     .page-hero-grid,
     .feature-layout,
+    .catalog-product-grid,
     .syrup-builder-layout,
     .journey-grid,
     .timeline-grid,
@@ -2074,6 +2168,10 @@ body.cart-drawer-open {
 
     .product-lines-parallax .parallax-image {
         transform: translate3d(0, 0, 0) scale(1.24);
+    }
+
+    .catalog-product-media {
+        min-height: 240px;
     }
 
     .syrup-cart-panel {
