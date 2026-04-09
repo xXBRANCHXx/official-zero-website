@@ -18,12 +18,11 @@ Important workflow:
 
 Current design direction:
 - Homepage should feel close to `linear.app` in structure and polish, but not as a literal clone.
-- The site has now been shifted into a dark presentation.
-- The dark base should stay neutral rather than teal-tinted.
-- Teal-blue remains a restrained accent color and should read a bit more neon when used.
-- The old menu/search chrome has been removed from the homepage in favor of a simpler top bar.
-- The homepage now includes a pinned product-scroll section built around transparent renders for Syrup, Drops, and Maple Topping.
-- Images should fade into the dark background with CSS gradients and scroll reveals.
+- The site has now been shifted back into a bright white health-brand presentation.
+- Teal-blue remains an accent color, but the page should stay mostly white and neutral.
+- Navigation and search are active again on the homepage.
+- The homepage includes a pinned product-scroll section built around transparent renders for Syrup, Drops, and Maple Topping.
+- Images and glass surfaces should feel airy and clean rather than dark or heavy.
 - Mobile behavior matters first: full-width sections, no horizontal overflow, clean stacking.
 
 Current product/content sources:
