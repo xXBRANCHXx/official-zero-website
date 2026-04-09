@@ -32,6 +32,11 @@ html {
     scroll-behavior: smooth;
 }
 
+html.story-scroll-locked,
+body.story-scroll-locked {
+    overflow: hidden;
+}
+
 body {
     background:
         radial-gradient(circle at top, rgba(17, 24, 39, 0.03), rgba(246, 248, 247, 0) 26%),
