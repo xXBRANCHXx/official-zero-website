@@ -591,6 +591,22 @@ section {
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.1);
 }
 
+.story-copy-dark {
+    background: linear-gradient(180deg, rgba(24, 31, 41, 0.92), rgba(14, 19, 27, 0.94));
+    border-color: rgba(17, 24, 39, 0.18);
+    box-shadow: 0 22px 44px rgba(15, 23, 42, 0.18);
+}
+
+.story-copy-dark strong,
+.story-copy-dark h3 {
+    color: #f8fafc;
+}
+
+.story-copy-dark p,
+.story-copy-dark span {
+    color: rgba(226, 232, 240, 0.82);
+}
+
 .story-copy strong {
     font-size: 0.76rem;
     letter-spacing: 0.18rem;
@@ -800,6 +816,33 @@ section {
     gap: 0.9rem;
 }
 
+.showcase-panel-dark {
+    background: linear-gradient(180deg, #18202b 0%, #121821 100%);
+    border-color: rgba(17, 24, 39, 0.18);
+    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.16);
+}
+
+.showcase-panel-dark h3,
+.showcase-panel-dark strong {
+    color: #f8fafc;
+}
+
+.showcase-panel-dark .showcase-badge {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: rgba(226, 232, 240, 0.84);
+}
+
+.showcase-panel-dark .showcase-row {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.showcase-panel-dark .showcase-row span,
+.showcase-panel-dark .showcase-row em {
+    color: rgba(226, 232, 240, 0.78);
+}
+
 .showcase-header {
     display: flex;
     align-items: center;
@@ -856,6 +899,20 @@ section {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
+}
+
+.journey-card-dark {
+    background: linear-gradient(180deg, #17202a 0%, #121820 100%);
+    border-color: rgba(17, 24, 39, 0.18);
+    box-shadow: 0 22px 42px rgba(15, 23, 42, 0.14);
+}
+
+.journey-card-dark strong {
+    color: rgba(241, 245, 249, 0.92);
+}
+
+.journey-card-dark p {
+    color: rgba(226, 232, 240, 0.78);
 }
 
 .timeline-grid {
