@@ -1377,22 +1377,21 @@ body.cart-drawer-open {
 }
 
 .catalog-detail-media {
-    min-height: 420px;
+    min-height: 520px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
-    border-radius: 28px;
-    background: rgba(248, 250, 252, 0.96);
-    border: 1px solid rgba(17, 24, 39, 0.06);
-    box-shadow: 0 24px 48px rgba(15, 23, 42, 0.08);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
 }
 
 .catalog-detail-media img {
     display: block;
-    width: min(100%, 320px);
+    width: min(100%, 470px);
     height: auto;
-    filter: drop-shadow(0 22px 32px rgba(15, 23, 42, 0.14));
+    filter: drop-shadow(0 28px 42px rgba(15, 23, 42, 0.16));
 }
 
 .catalog-detail-copy {
@@ -2183,7 +2182,7 @@ body.cart-drawer-open {
     }
 
     .catalog-detail-media {
-        min-height: 300px;
+        min-height: 360px;
     }
 
     .syrup-cart-panel {
