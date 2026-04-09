@@ -61,6 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSearch = document.getElementById('close-search');
     const moreTrigger = document.getElementById('more-trigger');
     const moreDropdown = document.getElementById('more-dropdown');
+    const cartBubble = document.getElementById('syrup-cart-bubble');
+    const cartBadge = document.getElementById('syrup-cart-badge');
+    const syrupCartKey = 'zero_syrup_cart_v1';
 
     if (searchTrigger && searchPopout && morphIconBox && mainSearch) {
         searchTrigger.addEventListener('click', (e) => {
@@ -107,6 +110,26 @@ document.addEventListener('DOMContentLoaded', () => {
             moreDropdown?.classList.remove('active');
         }
     });
+
+    if (cartBubble && cartBadge) {
+        let count = 0;
+
+        try {
+            const cart = JSON.parse(localStorage.getItem(syrupCartKey) || '[]');
+            count = cart.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0);
+        } catch {
+            count = 0;
+        }
+
+        cartBadge.textContent = String(count);
+        cartBubble.classList.toggle('has-items', count > 0);
+
+        if (!document.body.classList.contains('syrup-page')) {
+            cartBubble.addEventListener('click', () => {
+                window.location.href = '/syrup.html?cart=open#syrup-cart-panel';
+            });
+        }
+    }
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 

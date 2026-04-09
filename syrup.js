@@ -113,6 +113,15 @@ document.addEventListener('DOMContentLoaded', () => {
         cartBubble.classList.toggle('has-items', count > 0);
     };
 
+    const spotlightCartPanel = () => {
+        if (!cartPanel) return;
+        cartPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        cartPanel.classList.remove('cart-panel-flash');
+        requestAnimationFrame(() => {
+            cartPanel.classList.add('cart-panel-flash');
+        });
+    };
+
     const updateSelectionPanel = () => {
         const flavor = findFlavor(selectedFlavorId);
         const size = findSize(selectedSizeId);
@@ -259,12 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     cartBubble?.addEventListener('click', () => {
-        if (!cartPanel) return;
-        cartPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        cartPanel.classList.remove('cart-panel-flash');
-        requestAnimationFrame(() => {
-            cartPanel.classList.add('cart-panel-flash');
-        });
+        spotlightCartPanel();
     });
 
     cartPanel?.addEventListener('animationend', () => {
@@ -273,4 +277,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateSelectionPanel();
     renderCart();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('cart') === 'open' || window.location.hash === '#syrup-cart-panel') {
+        requestAnimationFrame(() => {
+            spotlightCartPanel();
+        });
+    }
 });
