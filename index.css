@@ -1225,20 +1225,17 @@ section {
     overflow: hidden;
 }
 
-.testimonial-card:nth-child(odd) {
-    transform: translateY(-0.8rem);
-}
-
-.testimonial-card:nth-child(even) {
-    transform: translateY(1.1rem);
-}
-
 .testimonial-card-dark {
     background: rgba(17, 24, 39, 0.78);
     border-color: rgba(255, 255, 255, 0.08);
     box-shadow:
         0 24px 54px rgba(15, 23, 42, 0.14),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.testimonial-card-wide {
+    width: min(29rem, 70vw);
+    max-width: min(29rem, 70vw);
 }
 
 .testimonial-mark {
