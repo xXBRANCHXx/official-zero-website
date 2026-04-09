@@ -162,8 +162,8 @@ section {
 
 #nav-logo img {
     display: block;
-    width: 148px;
-    height: 148px;
+    width: 142px;
+    height: 142px;
     max-width: none;
     object-fit: cover;
     object-position: center 34%;
@@ -1718,8 +1718,8 @@ section {
     }
 
     #nav-logo img {
-        width: 132px;
-        height: 132px;
+        width: 126px;
+        height: 126px;
     }
 
     .n-card,
