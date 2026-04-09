@@ -167,6 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const testimonialsRail = document.getElementById('testimonials-rail');
 
     if (testimonialsTrack && testimonialsRail) {
+        let testimonialsManualOffset = 0;
+
         const updateTestimonialsPosition = () => {
             if (isCompactViewport()) {
                 testimonialsRail.style.transform = 'translate3d(0, 0, 0)';
@@ -180,10 +182,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const progress = 1 - Math.pow(1 - rawProgress, 1.35);
             const maxShift = Math.max(testimonialsRail.scrollWidth - window.innerWidth, 0);
             const startOffset = Math.min(window.innerWidth * 0.16, 220);
-            const translateX = startOffset - (progress * (maxShift + startOffset));
+            testimonialsManualOffset = clamp(testimonialsManualOffset, -maxShift, 0);
+            const translateX = startOffset - (progress * (maxShift + startOffset)) + testimonialsManualOffset;
 
             testimonialsRail.style.transform = `translate3d(${translateX.toFixed(1)}px, 0, 0)`;
         };
+
+        testimonialsRail.addEventListener('wheel', (event) => {
+            if (isCompactViewport()) return;
+
+            const maxShift = Math.max(testimonialsRail.scrollWidth - window.innerWidth, 0);
+            if (!maxShift) return;
+
+            event.preventDefault();
+            testimonialsManualOffset = clamp(testimonialsManualOffset - event.deltaY * 0.55, -maxShift, 0);
+            updateTestimonialsPosition();
+        }, { passive: false });
 
         updateTestimonialsPosition();
         window.addEventListener('scroll', updateTestimonialsPosition, { passive: true });

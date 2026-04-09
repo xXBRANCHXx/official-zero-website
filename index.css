@@ -1252,11 +1252,11 @@ section {
 }
 
 .testimonial-card:nth-child(odd) {
-    transform: translateY(-0.8rem) rotate(-1.1deg);
+    transform: translateY(-0.8rem);
 }
 
 .testimonial-card:nth-child(even) {
-    transform: translateY(1.1rem) rotate(1deg);
+    transform: translateY(1.1rem);
 }
 
 .testimonial-card-dark {
@@ -1296,6 +1296,13 @@ section {
     text-transform: uppercase;
 }
 
+.testimonial-stars {
+    font-size: 1rem;
+    letter-spacing: 0.18rem;
+    color: #c78b2a;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
 .testimonial-card p {
     font-size: clamp(1.2rem, 2vw, 1.75rem);
     line-height: 1.18;
@@ -1314,6 +1321,11 @@ section {
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.1);
     color: rgba(226, 232, 240, 0.74);
+}
+
+.testimonial-card-dark .testimonial-stars {
+    color: #f3c969;
+    text-shadow: none;
 }
 
 .testimonial-card-dark .testimonial-mark {
