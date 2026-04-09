@@ -333,6 +333,21 @@ section {
     color: var(--text);
 }
 
+.menu-logo-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 0.8rem;
+    margin-bottom: 0.15rem;
+    background: rgba(255, 255, 255, 0.34);
+}
+
+.menu-logo-link img {
+    display: block;
+    width: 126px;
+    height: auto;
+}
+
 .n-btn {
     display: inline-flex;
     align-items: center;
