@@ -1663,12 +1663,13 @@ section {
 
 @media (max-width: 768px) {
     section {
-        padding: 5rem 0;
+        padding: 4.5rem 0;
     }
 
     .floating-nav {
         width: calc(100vw - 1rem);
-        padding: 0.75rem 0.85rem;
+        padding: 0.7rem 0.8rem;
+        border-radius: 22px;
     }
 
     .hero-v6,
@@ -1682,6 +1683,20 @@ section {
     .hero-p,
     .page-hero-copy p {
         font-size: 1rem;
+    }
+
+    .nav-right {
+        margin-left: auto;
+    }
+
+    .nav-links {
+        gap: 0.35rem;
+    }
+
+    .nav-links > li:last-child .n-btn {
+        padding: 0.78rem 0.95rem;
+        font-size: 0.68rem;
+        letter-spacing: 0.06rem;
     }
 
     #nav-logo {
@@ -1709,6 +1724,60 @@ section {
     .showcase-panel,
     .journey-panel {
         padding: 0.8rem;
+    }
+
+    .hero-shell,
+    .page-hero-grid {
+        gap: 1.15rem;
+    }
+
+    .hero-panel,
+    .page-hero-copy {
+        gap: 0.85rem;
+        padding: 0;
+    }
+
+    .hero-kicker {
+        font-size: 0.72rem;
+        letter-spacing: 0.11rem;
+    }
+
+    .hero-h1,
+    .page-hero-title {
+        font-size: clamp(2.7rem, 13vw, 4.15rem);
+        line-height: 0.92;
+        letter-spacing: -0.07em;
+    }
+
+    .hero-support,
+    .page-hero-subtitle {
+        font-size: 0.98rem;
+        line-height: 1.45;
+    }
+
+    .page-hero-facts {
+        gap: 0.55rem;
+    }
+
+    .page-hero-facts span {
+        padding: 0.48rem 0.72rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.56);
+        border: 1px solid rgba(17, 24, 39, 0.08);
+        font-size: 0.76rem;
+        line-height: 1.15;
+    }
+
+    .btn-cluster {
+        gap: 0.7rem;
+    }
+
+    .btn-cluster .n-btn {
+        flex: 1 1 calc(50% - 0.35rem);
+        min-width: 0;
+        padding: 0.9rem 0.95rem;
+        font-size: 0.7rem;
+        letter-spacing: 0.06rem;
     }
 
     .search-morph-container,
@@ -1739,8 +1808,17 @@ section {
 
     .hero-visual,
     .page-hero-visual {
-        min-height: 300px;
+        min-height: 260px;
         justify-content: center;
+        align-items: center;
+        padding-top: 0.35rem;
+    }
+
+    .hero-main-image,
+    .page-hero-image {
+        width: min(88vw, 360px);
+        max-height: 42vh;
+        object-fit: contain;
     }
 
     .product-lines-parallax {
@@ -1827,6 +1905,93 @@ section {
         white-space: normal;
     }
 
+    .section-heading {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-heading h2 {
+        font-size: clamp(2rem, 10vw, 3rem);
+        margin-bottom: 0.7rem;
+    }
+
+    .section-heading p {
+        font-size: 0.98rem;
+        line-height: 1.5;
+    }
+
+    .showcase-header {
+        gap: 0.7rem;
+    }
+
+    .showcase-header h3 {
+        font-size: 1.25rem;
+        line-height: 1.08;
+    }
+
+    .showcase-panel-dark .showcase-header strong,
+    .showcase-header strong {
+        font-size: 0.76rem;
+        letter-spacing: 0.1rem;
+        text-transform: uppercase;
+    }
+
+    .showcase-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.45rem;
+        padding: 0.85rem 0.9rem;
+    }
+
+    .showcase-row span {
+        font-size: 0.88rem;
+        line-height: 1.45;
+    }
+
+    .wireframe-card,
+    .journey-card,
+    .timeline-card {
+        padding: 1rem;
+        min-height: auto;
+    }
+
+    .journey-card p,
+    .timeline-card p,
+    .wireframe-card p {
+        line-height: 1.5;
+    }
+
+    .page-action-row,
+    .legal-action-row {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+        margin-top: 0.9rem;
+    }
+
+    .page-journey-grid,
+    .page-feature-layout {
+        margin-top: 0.9rem;
+    }
+
+    .grid-v6,
+    .panel-grid,
+    .panel-grid.two-up,
+    .flv-grid,
+    .timeline-grid,
+    .journey-grid,
+    .feature-layout {
+        gap: 0.9rem;
+    }
+
+    .testimonials-meta {
+        gap: 0.7rem;
+        margin-bottom: 1rem;
+    }
+
+    .testimonials-meta-card {
+        padding: 0.9rem;
+        border-radius: 16px;
+    }
+
     .testimonials-shell {
         padding: 0;
     }
@@ -1866,11 +2031,26 @@ section {
 
     .testimonial-card p {
         font-size: 1.08rem;
+        line-height: 1.24;
     }
 
     .testimonials-instruction {
         margin: 1rem;
         font-size: 0.78rem;
+    }
+
+    .footer-section {
+        padding: 2.6rem 0 4rem;
+    }
+
+    .footer-title {
+        font-size: clamp(2rem, 10vw, 3rem);
+        line-height: 0.96;
+    }
+
+    .footer-meta {
+        font-size: 0.96rem;
+        line-height: 1.55;
     }
 
     .footer-brand-flood {
@@ -1879,5 +2059,55 @@ section {
         width: 118vw;
         height: 34vw;
         opacity: 0.1;
+    }
+}
+
+@media (max-width: 520px) {
+    .floating-nav {
+        width: calc(100vw - 0.7rem);
+        padding: 0.65rem 0.72rem;
+    }
+
+    .hero-v6,
+    .page-hero,
+    .catalog-page header,
+    .zfit-page header,
+    .legal-page header {
+        padding-top: 6.15rem;
+    }
+
+    .hero-h1,
+    .page-hero-title {
+        font-size: clamp(2.45rem, 14vw, 3.45rem);
+    }
+
+    .btn-cluster .n-btn {
+        flex-basis: 100%;
+    }
+
+    .page-hero-facts {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .page-hero-facts span {
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .hero-main-image,
+    .page-hero-image {
+        width: min(92vw, 320px);
+    }
+
+    .testimonial-card,
+    .testimonial-card-wide {
+        padding: 1.2rem;
+        border-radius: 22px;
+    }
+
+    .testimonial-stars {
+        font-size: 0.92rem;
+        letter-spacing: 0.13rem;
     }
 }
