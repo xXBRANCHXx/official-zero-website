@@ -620,6 +620,7 @@ section {
 
 .product-story-section {
     padding-top: 1.5rem;
+    overflow: hidden;
 }
 
 .story-heading {
@@ -640,6 +641,7 @@ section {
 }
 
 .product-story-shell {
+    width: 100%;
     padding: 1.5rem 0 2rem;
 }
 
@@ -653,11 +655,14 @@ section {
     --story-topping-opacity: 0;
     --story-darkness: 0;
     position: relative;
-    min-height: 76vh;
-    border-radius: 36px;
-    border: 1px solid rgba(17, 24, 39, 0.08);
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    min-height: 100vh;
+    border-radius: 0;
+    border: 0;
     background: #f2f5f3;
-    box-shadow: var(--shadow);
+    box-shadow: none;
     overflow: hidden;
 }
 
@@ -780,7 +785,7 @@ section {
 }
 
 .story-copy-left {
-    left: 6%;
+    left: max(2rem, calc((100vw - 1200px) / 2 + 1rem));
     top: 22%;
     width: min(26%, 300px);
     opacity: var(--story-left-opacity);
@@ -789,7 +794,7 @@ section {
 
 .story-copy-center {
     top: 12%;
-    left: 61%;
+    left: 63%;
     width: min(20%, 240px);
     transform:
         translateX(-50%)
@@ -799,7 +804,7 @@ section {
 }
 
 .story-copy-right {
-    right: 8%;
+    right: max(2rem, calc((100vw - 1200px) / 2 + 1rem));
     top: 63%;
     width: min(22%, 250px);
     text-align: left;
@@ -1460,6 +1465,9 @@ section {
         padding: 2rem 1.2rem;
         display: grid;
         gap: 1.5rem;
+        width: 100%;
+        left: auto;
+        margin-left: 0;
     }
 
     .story-aura {
