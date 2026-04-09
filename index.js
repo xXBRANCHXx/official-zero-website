@@ -156,35 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', updateStoryProgress);
     }
 
-    // Section black-to-white transitions
-    const tonalSections = Array.from(document.querySelectorAll('.timeline-section'));
-    if (tonalSections.length) {
-        let tonalRaf = 0;
-
-        const updateSectionTones = () => {
-            tonalRaf = 0;
-            const viewportHeight = window.innerHeight || 1;
-
-            tonalSections.forEach((section) => {
-                const rect = section.getBoundingClientRect();
-                const totalTravel = rect.height + viewportHeight;
-                const progress = totalTravel <= 0 ? 0 : clamp((viewportHeight - rect.top) / totalTravel, 0, 1);
-                const darkness = easedPeak(progress, 0.82);
-
-                section.style.setProperty('--section-darkness', darkness.toFixed(4));
-            });
-        };
-
-        const requestToneFrame = () => {
-            if (tonalRaf) return;
-            tonalRaf = window.requestAnimationFrame(updateSectionTones);
-        };
-
-        updateSectionTones();
-        window.addEventListener('scroll', requestToneFrame, { passive: true });
-        window.addEventListener('resize', requestToneFrame);
-    }
-
     // Pronounced but lightweight parallax layers
     const parallaxLayers = Array.from(document.querySelectorAll('[data-parallax]'));
     if (parallaxLayers.length) {
