@@ -1128,7 +1128,7 @@ section {
 
 .testimonials-section {
     position: relative;
-    overflow: clip;
+    overflow: hidden;
 }
 
 .testimonials-heading {
@@ -1137,7 +1137,8 @@ section {
 
 .testimonials-track {
     position: relative;
-    height: 240vh;
+    height: 200vh;
+    overflow: hidden;
 }
 
 .testimonials-sticky {
@@ -1159,6 +1160,7 @@ section {
     display: flex;
     gap: 1rem;
     width: max-content;
+    max-width: none;
     padding: 0 max(1.5rem, calc((100vw - 1200px) / 2 + 1rem));
     will-change: transform;
     transform: translate3d(0, 0, 0);
@@ -1166,6 +1168,7 @@ section {
 
 .testimonial-card {
     width: min(30rem, 72vw);
+    max-width: min(30rem, 72vw);
     min-height: 20rem;
     padding: 1.4rem;
     border-radius: 28px;
@@ -1193,6 +1196,7 @@ section {
 
 .testimonial-card-wide {
     width: min(34rem, 82vw);
+    max-width: min(34rem, 82vw);
 }
 
 .testimonial-source {
