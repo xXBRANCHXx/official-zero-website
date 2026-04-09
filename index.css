@@ -1126,6 +1126,26 @@ section {
     min-height: 220px;
 }
 
+.page-feature-layout,
+.page-action-row,
+.legal-action-row {
+    margin-top: 1rem;
+}
+
+.page-action-row {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 1rem;
+}
+
+.page-card-actions {
+    margin-top: 1rem;
+}
+
+.page-journey-grid {
+    margin-top: 1rem;
+}
+
 .testimonials-section {
     position: relative;
     overflow: hidden;

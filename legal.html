@@ -40,19 +40,19 @@
             <ul class="nav-links">
                 <li>
                     <div class="search-anchor">
-                        <button id="search-trigger" class="icon-btn">
+                        <button id="search-trigger" class="icon-btn" aria-label="Open search">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </button>
                     </div>
                 </li>
-                <li class="desktop-only"><a href="/catalog.html">CATALOG</a></li>
-                <li class="desktop-only"><a href="/zfit.html">ZFIT</a></li>
+                <li class="desktop-only"><a href="/catalog.html">Catalog</a></li>
+                <li class="desktop-only"><a href="/zfit.html">ZFit</a></li>
                 <li class="more-menu">
-                    <button id="more-trigger" class="icon-btn">
+                    <button id="more-trigger" class="icon-btn" aria-label="Open menu">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
                     </button>
                 </li>
-                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="font-size: 0.7rem;">JOIN THE LAB</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn primary">Order on WhatsApp</a></li>
             </ul>
         </div>
     </nav>
@@ -61,16 +61,16 @@
         <div class="search-icon-box" id="morph-icon-box">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </div>
-        <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
+        <input type="text" id="main-search" class="search-input-field" placeholder="Search ZERO">
         <div id="close-search" class="search-close-x">×</div>
     </div>
 
     <div id="more-dropdown" class="glass-dropdown global-overlay">
-        <a href="/index.html">HOME</a>
-        <a href="/catalog.html" class="mobile-only">CATALOG</a>
-        <a href="/zfit.html" class="mobile-only">ZFIT</a>
-        <a href="/index.html#company">COMPANY INFO</a>
-        <a href="/legal.html">LEGAL INFO</a>
+        <a href="/index.html">Home</a>
+        <a href="/catalog.html" class="mobile-only">Catalog</a>
+        <a href="/zfit.html" class="mobile-only">ZFit</a>
+        <a href="/index.html#experience">About</a>
+        <a href="/legal.html">Legal Info</a>
     </div>
 
     <header class="page-hero">
@@ -101,33 +101,91 @@
         </div>
     </header>
 
-    <section class="stack-section">
+    <section class="timeline-section">
         <div class="container">
-            <div class="section-shell">
-                <div class="n-card text-cluster">
-                    <h2>Key Company Details</h2>
-                    <p>ZERO Foods Indonesia is based at Jl. Jombor Tegal No.124 A, Jombor Lor, Sinduadi, Kec. Mlati, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55284. The company mission is to make healthier choices easier in Indonesia.</p>
-                    <ul class="text-list">
-                        <li><strong>Leadership</strong> Founders Brent Vincent and Giri Gusman, CEO Maria Renny, CMO Branch Vincent.</li>
-                        <li><strong>Channels</strong> WhatsApp, Instagram, TikTok, Facebook, and YouTube under the ZERO identity.</li>
-                        <li><strong>Documents</strong> Company and product PDFs are available in the Information folder for reference.</li>
-                    </ul>
+            <div class="section-heading">
+                <span class="section-badge">Company Details</span>
+                <h2>Everything Important, In One Place.</h2>
+                <p>This page keeps the key operating information in the same visual system as the rest of the site: company basics, leadership, contact points, and supporting documents.</p>
+            </div>
+
+            <div class="timeline-grid">
+                <div class="timeline-card">
+                    <strong>Address</strong>
+                    <p>Jl. Jombor Tegal No.124 A, Jombor Lor, Sinduadi, Kec. Mlati, Kabupaten Sleman, DI Yogyakarta 55284.</p>
+                </div>
+                <div class="timeline-card">
+                    <strong>Leadership</strong>
+                    <p>Founders Brent Vincent and Giri Gusman, CEO Maria Renny, and CMO Branch Vincent.</p>
+                </div>
+                <div class="timeline-card">
+                    <strong>Channels</strong>
+                    <p>WhatsApp, Instagram, TikTok, Facebook, and YouTube operate under the ZERO identity.</p>
+                </div>
+            </div>
+
+            <div class="page-action-row legal-action-row">
+                <div class="showcase-panel">
+                    <div class="showcase-header">
+                        <div>
+                            <span class="showcase-badge">Documents</span>
+                            <h3>Reference files for company and product information.</h3>
+                        </div>
+                    </div>
+                    <div class="showcase-list">
+                        <div class="showcase-row">
+                            <div>
+                                <strong>Company PDF</strong>
+                                <span>Overview of the company, brand mission, and operating details.</span>
+                            </div>
+                            <em>Primary</em>
+                        </div>
+                        <div class="showcase-row">
+                            <div>
+                                <strong>Information folder</strong>
+                                <span>Holds supporting PDFs and product references used across the site.</span>
+                            </div>
+                            <em>Source</em>
+                        </div>
+                    </div>
+                    <div class="btn-cluster">
+                        <a href="/Information/Zero Company Information.pdf" target="_blank" class="n-btn primary">Open Company PDF</a>
+                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">Contact WhatsApp</a>
+                    </div>
+                </div>
+
+                <div class="feature-wireframe">
+                    <div class="wireframe-stack">
+                        <div class="wireframe-card">
+                            <strong>Mission</strong>
+                            <p>Make healthier choices easier in Indonesia through better-tasting sugar-free products.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Base</strong>
+                            <p>Operations run from Sleman, Yogyakarta with marketplace and social channels supporting sales.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Support</strong>
+                            <p>WhatsApp remains the clearest direct path for orders, questions, and repeat customer contact.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Reference</strong>
+                            <p>Company and product PDFs stay available as supporting material rather than replacing the site.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer-section" style="padding: 6rem 0 5rem;">
-        <div class="parallax-media" data-parallax data-parallax-speed="0.28" data-parallax-scale="1.38" aria-hidden="true">
-            <img class="parallax-image" src="/ZERO Media/ZERO Syrup Images/Fruit Variants ZERO Syrup.png" alt="">
-        </div>
-        <div class="parallax-overlay" aria-hidden="true"></div>
+    <footer class="footer-section">
         <div class="footer-shell">
             <div class="footer-brand-flood" aria-hidden="true">
                 <img src="/ZERO logos/ZERO Logo Cropped.svg" alt="">
             </div>
             <div class="container footer-inner">
                 <div>
+                    <span class="section-badge">ZERO</span>
                     <h2 class="footer-title">Keep ZERO Close.</h2>
                     <p class="footer-meta">+62 858-4283-3973<br>Jl. Jombor Tegal No.124 A, Sleman, Yogyakarta</p>
                 </div>

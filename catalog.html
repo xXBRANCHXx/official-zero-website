@@ -40,19 +40,19 @@
             <ul class="nav-links">
                 <li>
                     <div class="search-anchor">
-                        <button id="search-trigger" class="icon-btn">
+                        <button id="search-trigger" class="icon-btn" aria-label="Open search">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </button>
                     </div>
                 </li>
-                <li class="desktop-only"><a href="/catalog.html">CATALOG</a></li>
-                <li class="desktop-only"><a href="/zfit.html">ZFIT</a></li>
+                <li class="desktop-only"><a href="/catalog.html">Catalog</a></li>
+                <li class="desktop-only"><a href="/zfit.html">ZFit</a></li>
                 <li class="more-menu">
-                    <button id="more-trigger" class="icon-btn">
+                    <button id="more-trigger" class="icon-btn" aria-label="Open menu">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg>
                     </button>
                 </li>
-                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn" style="font-size: 0.7rem;">JOIN THE LAB</a></li>
+                <li><a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn primary">Order on WhatsApp</a></li>
             </ul>
         </div>
     </nav>
@@ -61,16 +61,16 @@
         <div class="search-icon-box" id="morph-icon-box">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
         </div>
-        <input type="text" id="main-search" class="search-input-field" placeholder="Search the Paradox...">
+        <input type="text" id="main-search" class="search-input-field" placeholder="Search ZERO">
         <div id="close-search" class="search-close-x">×</div>
     </div>
 
     <div id="more-dropdown" class="glass-dropdown global-overlay">
-        <a href="/index.html">HOME</a>
-        <a href="/catalog.html" class="mobile-only">CATALOG</a>
-        <a href="/zfit.html" class="mobile-only">ZFIT</a>
-        <a href="/index.html#company">COMPANY INFO</a>
-        <a href="/legal.html">LEGAL INFO</a>
+        <a href="/index.html">Home</a>
+        <a href="/catalog.html" class="mobile-only">Catalog</a>
+        <a href="/zfit.html" class="mobile-only">ZFit</a>
+        <a href="/index.html#experience">About</a>
+        <a href="/legal.html">Legal Info</a>
     </div>
 
     <header class="page-hero">
@@ -101,29 +101,69 @@
         </div>
     </header>
 
-    <section id="syrups" class="stack-section">
+    <section id="syrups" class="timeline-section">
         <div class="container">
-            <div class="section-shell">
-                <h2 class="section-badge">SYRUPS</h2>
-                <div class="panel-grid two-up">
-                    <div class="flv-card-min n-card copy-panel">
-                        <span class="eyebrow-note">CORE PRODUCT</span>
-                        <h3>ZERO Syrup</h3>
-                        <p>Lab-tested zero-calorie syrup made to disappear into coffee and drinks without the bitter stevia finish people expect.</p>
-                        <div class="price-tag">Rp10K — Rp69K</div>
-                        <div class="btn-cluster" style="margin-top: 1.5rem;">
-                            <a href="https://www.tokopedia.com/jenang-gemi-official-shop/zero-sirup-keto-diet-0-kalori-bebas-gula-sugar-free-non-stevia-zero-250-ml-550ml-keto-diabetes-friendly-tanpa-gula-lemak-gluten-tersertifikasi-pirt-dan-halal-1731017005586286118" target="_blank" class="n-btn">TOKOPEDIA</a>
-                            <a href="https://www.tiktok.com/@zerofoods.id" target="_blank" class="n-btn">TIKTOK</a>
+            <div class="section-heading">
+                <span class="section-badge">Core Range</span>
+                <h2>Built Around Daily Drink Habits.</h2>
+                <p>The catalog works best when it is split by routine: the main syrup line for everyday drinks, maple topping for heavier pours, and drops for portability.</p>
+            </div>
+
+            <div class="feature-layout page-feature-layout">
+                <div class="showcase-panel showcase-panel-dark">
+                    <div class="showcase-header">
+                        <div>
+                            <span class="showcase-badge">ZERO Syrup</span>
+                            <h3>The flagship line for coffee, refreshers, and repeat use.</h3>
+                        </div>
+                        <strong>Rp10K to Rp69K</strong>
+                    </div>
+                    <div class="showcase-list">
+                        <div class="showcase-row">
+                            <div>
+                                <strong>16 flavors</strong>
+                                <span>From coffee standards to fruit-forward profiles.</span>
+                            </div>
+                            <em>Wide</em>
+                        </div>
+                        <div class="showcase-row">
+                            <div>
+                                <strong>3 bottle sizes</strong>
+                                <span>50ml, 250ml, and 550ml depending on usage volume.</span>
+                            </div>
+                            <em>Flexible</em>
+                        </div>
+                        <div class="showcase-row">
+                            <div>
+                                <strong>Taste position</strong>
+                                <span>Smoother sweetness without the bitter stevia finish many shoppers expect.</span>
+                            </div>
+                            <em>Signature</em>
                         </div>
                     </div>
-                    <div class="flv-card-min n-card copy-panel">
-                        <span class="eyebrow-note">TOPPING</span>
-                        <h3>ZERO Maple Topping</h3>
-                        <p>Thick zero-calorie topping with real maple extract. Built for pancakes, yogurt, and breakfast, not for coffee.</p>
-                        <div class="price-tag">Rp149K</div>
-                        <div class="btn-cluster" style="margin-top: 1.5rem;">
-                            <a href="https://shopee.co.id/product/39127320/29175721394/" target="_blank" class="n-btn">SHOPEE</a>
-                            <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">ORDER</a>
+                    <div class="btn-cluster">
+                        <a href="https://www.tokopedia.com/jenang-gemi-official-shop/zero-sirup-keto-diet-0-kalori-bebas-gula-sugar-free-non-stevia-zero-250-ml-550ml-keto-diabetes-friendly-tanpa-gula-lemak-gluten-tersertifikasi-pirt-dan-halal-1731017005586286118" target="_blank" class="n-btn">Tokopedia</a>
+                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank" class="n-btn">TikTok</a>
+                    </div>
+                </div>
+
+                <div class="feature-wireframe">
+                    <div class="wireframe-stack">
+                        <div class="wireframe-card">
+                            <strong>Maple Topping</strong>
+                            <p>Thick zero-calorie topping with real maple extract for pancakes, yogurt, and breakfast applications.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Price point</strong>
+                            <p>Maple Topping is positioned as a premium add-on at Rp149K rather than an everyday sweetener.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Channel fit</strong>
+                            <p>Marketplace and direct WhatsApp ordering cover both self-serve buyers and repeat customers.</p>
+                        </div>
+                        <div class="wireframe-card">
+                            <strong>Usage split</strong>
+                            <p>Syrup handles drinks, topping handles heavier pours, and drops handle portability.</p>
                         </div>
                     </div>
                 </div>
@@ -131,50 +171,62 @@
         </div>
     </section>
 
-    <section id="drops" class="stack-section" style="background: var(--grey-ultra);">
+    <section id="drops" class="timeline-section">
         <div class="container">
-            <div class="section-shell">
-                <h2 class="section-badge">DROPS</h2>
-                <div class="panel-grid two-up">
-                    <div class="flv-card-min n-card copy-panel">
-                        <span class="eyebrow-note">PORTABLE</span>
-                        <h3>ZERO Drops</h3>
-                        <p>High-concentrate liquid sweetener in a glass dropper. Just 5 to 7 drops sweetens a drink anywhere.</p>
-                        <div class="price-tag">Rp20K — Rp49K</div>
-                        <div class="btn-cluster" style="margin-top: 1.5rem;">
-                            <a href="https://www.tokopedia.com/zero-foods-indonesia/zero-drops-pemanis-tanpa-gula-zero-kalori-rasa-lebih-baik-dari-stevia-1731819296225002582" target="_blank" class="n-btn">TOKOPEDIA</a>
-                            <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">ORDER</a>
-                        </div>
+            <div class="section-heading">
+                <span class="section-badge">Drops</span>
+                <h2>The Portable Format In The Lineup.</h2>
+                <p>ZERO Drops exist for customers who want sweetness in the smallest possible footprint. The format is less about browsing flavors and more about convenience.</p>
+            </div>
+
+            <div class="journey-grid">
+                <div class="journey-card">
+                    <strong>Portable</strong>
+                    <p>Small glass dropper bottle designed for bags, desks, cars, and daily carry.</p>
+                </div>
+                <div class="journey-card journey-card-dark">
+                    <strong>Use</strong>
+                    <p>Five to seven drops are enough to sweeten a drink without carrying a full bottle.</p>
+                </div>
+                <div class="journey-card">
+                    <strong>Range</strong>
+                    <p>Priced from Rp20K to Rp49K and sold across marketplace channels plus WhatsApp ordering.</p>
+                </div>
+            </div>
+
+            <div class="page-action-row">
+                <div class="timeline-card">
+                    <strong>Where To Buy</strong>
+                    <p>ZERO Drops are sold through Tokopedia and direct WhatsApp ordering for repeat customers.</p>
+                    <div class="btn-cluster page-card-actions">
+                        <a href="https://www.tokopedia.com/zero-foods-indonesia/zero-drops-pemanis-tanpa-gula-zero-kalori-rasa-lebih-baik-dari-stevia-1731819296225002582" target="_blank" class="n-btn">Tokopedia</a>
+                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">WhatsApp</a>
                     </div>
-                    <div class="flv-card-min dark-accent-card copy-panel">
-                        <span class="badge">SIZE GUIDE</span>
-                        <h3>Pick By Habit</h3>
-                        <p>Use syrup for home drinks, drops for bags and pockets, and maple topping for breakfast or dessert-style pours.</p>
-                    </div>
+                </div>
+                <div class="timeline-card">
+                    <strong>How To Choose</strong>
+                    <p>Pick syrup for kitchen use, drops for portability, and topping when the drink or food needs more body.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="footer-section" style="padding: 10rem 0 5rem;">
-        <div class="parallax-media" data-parallax data-parallax-speed="0.28" data-parallax-scale="1.38" aria-hidden="true">
-            <img class="parallax-image" src="/ZERO Media/ZERO Syrup Images/Fruit Variants ZERO Syrup.png" alt="">
-        </div>
-        <div class="parallax-overlay" aria-hidden="true"></div>
+    <footer class="footer-section">
         <div class="footer-shell">
             <div class="footer-brand-flood" aria-hidden="true">
                 <img src="/ZERO logos/ZERO Logo Cropped.svg" alt="">
             </div>
             <div class="container footer-inner">
                 <div>
-                    <h2 class="footer-title">Pure science. <br>Pure sweetness.</h2>
-                    <p class="footer-meta">jakarta@zerofoods.id <br>MADE BY ZEROFOODS.ID</p>
+                    <span class="section-badge">ZERO</span>
+                    <h2 class="footer-title">Healthy choices, <br>made easier.</h2>
+                    <p class="footer-meta">+62 858-4283-3973<br>Jl. Jombor Tegal No.124 A, Sleman, Yogyakarta</p>
                 </div>
                 <div>
-                    <a href="/legal.html" class="footer-legal">LEGAL INFO</a>
+                    <a href="/legal.html" class="footer-legal">Legal Info</a>
                     <div class="footer-links">
-                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank">INSTAGRAM</a>
-                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank">TIKTOK</a>
+                        <a href="https://www.instagram.com/zerofoods.id/" target="_blank">Instagram</a>
+                        <a href="https://www.tiktok.com/@zerofoods.id" target="_blank">TikTok</a>
                     </div>
                     <span class="footer-mark">ZERO</span>
                 </div>
