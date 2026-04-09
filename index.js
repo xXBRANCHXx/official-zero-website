@@ -116,71 +116,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const isCompactViewport = () => window.matchMedia('(max-width: 768px)').matches;
 
     if (storyTrack && storyStage) {
-        const storyState = {
-            revealProgress: 0,
-            locked: false,
-            touchY: null,
-            lockDirection: 0
-        };
-
-        const setStoryLock = (locked) => {
-            if (storyState.locked === locked) return;
-            storyState.locked = locked;
-            document.documentElement.classList.toggle('story-scroll-locked', locked);
-            document.body.classList.toggle('story-scroll-locked', locked);
-        };
-
-        const getStoryMetrics = () => {
-            const viewportHeight = window.innerHeight || 1;
-            const trackRect = storyTrack.getBoundingClientRect();
-            const stageRect = storyStage.getBoundingClientRect();
-            const distance = Math.max(storyTrack.offsetHeight - viewportHeight, 1);
-            const scrollProgress = clamp((-trackRect.top) / distance, 0, 1);
-            const stagePinned = trackRect.top <= 0 && trackRect.bottom >= viewportHeight;
-            const stageCentered = Math.abs((stageRect.top + stageRect.height / 2) - (viewportHeight / 2)) <= viewportHeight * 0.08;
-            return { viewportHeight, trackRect, stageRect, scrollProgress, stagePinned, stageCentered };
-        };
-
         const applyStoryVisuals = () => {
-            const { scrollProgress, stagePinned, stageCentered } = getStoryMetrics();
-            const entryProgress = clamp(scrollProgress / 0.18, 0, 1);
-            const exitProgress = clamp((scrollProgress - 0.78) / 0.22, 0, 1);
-            let sectionDarkness = entryProgress;
+            const rect = storyTrack.getBoundingClientRect();
+            const distance = Math.max(storyTrack.offsetHeight - window.innerHeight, 1);
+            const progress = clamp((-rect.top) / distance, 0, 1);
+            const revealProgress = clamp((progress - 0.18) / 0.5, 0, 1);
+            let darkness = 0;
 
-            if (stagePinned || scrollProgress > 0.18) {
-                sectionDarkness = 1;
+            if (progress < 0.2) {
+                darkness = clamp(progress / 0.2, 0, 1);
+            } else if (progress > 0.78) {
+                darkness = 1 - clamp((progress - 0.78) / 0.22, 0, 1);
+            } else {
+                darkness = 1;
             }
 
-            if (scrollProgress > 0.78) {
-                sectionDarkness = 1 - exitProgress;
-            }
-
-            if (!stagePinned && scrollProgress < 0.08) {
-                storyState.revealProgress = 0;
-            }
-
-            const revealIncomplete = storyState.revealProgress > 0 && storyState.revealProgress < 1;
-            const shouldLock =
-                stagePinned &&
-                stageCentered &&
-                scrollProgress >= 0.08 &&
-                scrollProgress <= 0.78 &&
-                (
-                    (storyState.lockDirection >= 0 && storyState.revealProgress < 1) ||
-                    (storyState.lockDirection < 0 && revealIncomplete)
-                );
-
-            setStoryLock(shouldLock);
-
-            storyStage.style.setProperty('--story-progress', storyState.revealProgress.toFixed(4));
-            storyStage.style.setProperty('--story-left-opacity', clamp((storyState.revealProgress - 0.18) * 3.3, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-center-opacity', clamp((storyState.revealProgress - 0.34) * 3.5, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-right-opacity', clamp((storyState.revealProgress - 0.52) * 3.5, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-syrup-opacity', clamp((storyState.revealProgress - 0.04) * 3.8, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-drops-opacity', clamp((storyState.revealProgress - 0.18) * 3.7, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-topping-opacity', clamp((storyState.revealProgress - 0.3) * 3.7, 0, 1).toFixed(4));
-            storyStage.style.setProperty('--story-darkness', sectionDarkness.toFixed(4));
-            storyTrack.closest('.product-story-section')?.style.setProperty('--section-darkness', sectionDarkness.toFixed(4));
+            storyStage.style.setProperty('--story-progress', revealProgress.toFixed(4));
+            storyStage.style.setProperty('--story-left-opacity', clamp((revealProgress - 0.08) * 2.8, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-center-opacity', clamp((revealProgress - 0.34) * 3.2, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-right-opacity', clamp((revealProgress - 0.54) * 3.2, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-syrup-opacity', clamp((revealProgress - 0.02) * 4.2, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-drops-opacity', clamp((revealProgress - 0.22) * 4, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-topping-opacity', clamp((revealProgress - 0.42) * 4, 0, 1).toFixed(4));
+            storyStage.style.setProperty('--story-darkness', darkness.toFixed(4));
+            storyTrack.closest('.product-story-section')?.style.setProperty('--section-darkness', darkness.toFixed(4));
         };
 
         const updateStoryProgress = () => {
@@ -194,127 +153,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 storyStage.style.setProperty('--story-topping-opacity', '1');
                 storyStage.style.setProperty('--story-darkness', '0');
                 storyTrack.closest('.product-story-section')?.style.setProperty('--section-darkness', '0');
-                setStoryLock(false);
                 return;
             }
             applyStoryVisuals();
-        };
-
-        const nudgeStoryProgress = (delta) => {
-            storyState.revealProgress = clamp(storyState.revealProgress + delta, 0, 1);
-            applyStoryVisuals();
-        };
-
-        const handleStoryWheel = (event) => {
-            if (isCompactViewport()) return;
-
-            const { scrollProgress, stagePinned, stageCentered } = getStoryMetrics();
-            const inCaptureZone = stagePinned && stageCentered && scrollProgress >= 0.08 && scrollProgress <= 0.78;
-            if (!inCaptureZone) {
-                setStoryLock(false);
-                storyState.lockDirection = 0;
-                return;
-            }
-
-            const movingDown = event.deltaY > 0;
-            const movingUp = event.deltaY < 0;
-            const step = clamp(Math.abs(event.deltaY) * 0.0012, 0.03, 0.11);
-
-            if (movingDown && storyState.revealProgress < 1) {
-                event.preventDefault();
-                storyState.lockDirection = 1;
-                setStoryLock(true);
-                nudgeStoryProgress(step);
-                return;
-            }
-
-            if (movingUp && storyState.revealProgress > 0) {
-                event.preventDefault();
-                storyState.lockDirection = -1;
-                setStoryLock(true);
-                nudgeStoryProgress(-step);
-                return;
-            }
-
-            if (movingDown && storyState.revealProgress >= 1) {
-                storyState.lockDirection = 0;
-                setStoryLock(false);
-            }
-
-            if (movingUp && storyState.revealProgress <= 0 && scrollProgress <= 0.14) {
-                storyState.lockDirection = 0;
-                setStoryLock(false);
-            }
-        };
-
-        const handleStoryKeydown = (event) => {
-            if (isCompactViewport() || !storyState.locked) return;
-            const downKeys = ['ArrowDown', 'PageDown', ' '];
-            const upKeys = ['ArrowUp', 'PageUp'];
-
-            if (downKeys.includes(event.key) && storyState.revealProgress < 1) {
-                event.preventDefault();
-                storyState.lockDirection = 1;
-                nudgeStoryProgress(0.09);
-                return;
-            }
-
-            if (upKeys.includes(event.key) && storyState.revealProgress > 0) {
-                event.preventDefault();
-                storyState.lockDirection = -1;
-                nudgeStoryProgress(-0.09);
-            }
-        };
-
-        const handleStoryTouchStart = (event) => {
-            if (isCompactViewport()) return;
-            storyState.touchY = event.touches[0]?.clientY ?? null;
-        };
-
-        const handleStoryTouchMove = (event) => {
-            if (isCompactViewport() || storyState.touchY === null) return;
-            const currentY = event.touches[0]?.clientY;
-            if (typeof currentY !== 'number') return;
-
-            const { scrollProgress, stagePinned, stageCentered } = getStoryMetrics();
-            const inCaptureZone = stagePinned && stageCentered && scrollProgress >= 0.08 && scrollProgress <= 0.78;
-            if (!inCaptureZone) {
-                setStoryLock(false);
-                storyState.lockDirection = 0;
-                storyState.touchY = currentY;
-                return;
-            }
-
-            const deltaY = storyState.touchY - currentY;
-            storyState.touchY = currentY;
-
-            if (deltaY > 0 && storyState.revealProgress < 1) {
-                event.preventDefault();
-                storyState.lockDirection = 1;
-                setStoryLock(true);
-                nudgeStoryProgress(clamp(Math.abs(deltaY) * 0.0035, 0.04, 0.12));
-                return;
-            }
-
-            if (deltaY < 0 && storyState.revealProgress > 0) {
-                event.preventDefault();
-                storyState.lockDirection = -1;
-                setStoryLock(true);
-                nudgeStoryProgress(-clamp(Math.abs(deltaY) * 0.0035, 0.04, 0.12));
-                return;
-            }
-
-            storyState.lockDirection = 0;
-            setStoryLock(false);
         };
 
         updateStoryProgress();
         window.addEventListener('scroll', updateStoryProgress, { passive: true });
         window.addEventListener('resize', updateStoryProgress);
-        window.addEventListener('wheel', handleStoryWheel, { passive: false });
-        window.addEventListener('keydown', handleStoryKeydown);
-        window.addEventListener('touchstart', handleStoryTouchStart, { passive: true });
-        window.addEventListener('touchmove', handleStoryTouchMove, { passive: false });
     }
 
     // Pronounced but lightweight parallax layers

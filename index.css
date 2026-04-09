@@ -32,11 +32,6 @@ html {
     scroll-behavior: smooth;
 }
 
-html.story-scroll-locked,
-body.story-scroll-locked {
-    overflow: hidden;
-}
-
 body {
     background:
         radial-gradient(circle at top, rgba(17, 24, 39, 0.03), rgba(246, 248, 247, 0) 26%),
@@ -645,12 +640,12 @@ section {
 }
 
 .product-story-section {
-    padding-top: 1.5rem;
+    padding-top: 0;
     overflow: hidden;
 }
 
 .product-story-track {
-    height: 360vh;
+    height: 400vh;
     position: relative;
 }
 
@@ -693,7 +688,7 @@ section {
 
 .product-story-heading {
     position: absolute;
-    top: max(6.5rem, 10vh);
+    top: max(6.75rem, 10vh);
     left: 50%;
     transform: translateX(-50%);
     z-index: 5;
@@ -709,7 +704,7 @@ section {
     position: absolute;
     inset: 0;
     background: #05080c;
-    opacity: calc(var(--story-darkness) * 0.96);
+    opacity: calc(var(--story-darkness) * 0.94);
     pointer-events: none;
     z-index: 1;
 }
@@ -729,7 +724,7 @@ section {
 
 .story-product {
     position: absolute;
-    top: 62%;
+    top: 60%;
     z-index: 2;
     transition: transform 120ms linear, opacity 140ms linear;
     opacity: 0;
@@ -743,40 +738,40 @@ section {
 }
 
 .story-syrup {
-    left: 33%;
+    left: 50%;
     width: min(30vw, 390px);
     opacity: var(--story-syrup-opacity);
     transform:
         translate(
-            calc(-50% - (8vw * (1 - var(--story-progress)))),
-            calc(-50% - (1rem * var(--story-progress)))
+            calc(-50% - (18vw * var(--story-progress))),
+            calc(-50% - (2.2rem * var(--story-progress)))
         )
         rotate(0deg);
 }
 
 .story-drops {
-    left: 73.5%;
-    top: 36%;
+    left: 50%;
+    top: 42%;
     width: min(11vw, 132px);
     z-index: 3;
     opacity: var(--story-drops-opacity);
     transform:
         translate(
-            calc(-50% + (6vw * (1 - var(--story-progress)))),
-            calc(-50% - (1rem * var(--story-progress)))
+            calc(-50% + (20vw * var(--story-progress))),
+            calc(-50% - (7rem * var(--story-progress)))
         )
         rotate(0deg);
 }
 
 .story-topping {
-    left: 73.5%;
-    top: 72%;
+    left: 50%;
+    top: 68%;
     width: min(17vw, 210px);
     opacity: var(--story-topping-opacity);
     transform:
         translate(
-            calc(-50% + (6vw * (1 - var(--story-progress)))),
-            calc(-50% - (1rem * var(--story-progress)))
+            calc(-50% + (20vw * var(--story-progress))),
+            calc(-50% + (1.2rem * var(--story-progress)))
         )
         rotate(0deg);
 }
@@ -824,15 +819,15 @@ section {
 
 .story-copy-left {
     left: max(2rem, calc((100vw - 1200px) / 2 + 1rem));
-    top: 28%;
+    top: 31%;
     width: min(26%, 300px);
     opacity: var(--story-left-opacity);
     transform: translateY(calc(30px - (30px * var(--story-left-opacity))));
 }
 
 .story-copy-center {
-    top: 24%;
-    left: 63%;
+    top: 22%;
+    left: 76%;
     width: min(20%, 240px);
     transform:
         translateX(-50%)
@@ -843,7 +838,7 @@ section {
 
 .story-copy-right {
     right: max(2rem, calc((100vw - 1200px) / 2 + 1rem));
-    top: 66%;
+    top: 67%;
     width: min(22%, 250px);
     text-align: left;
     opacity: var(--story-right-opacity);
@@ -1543,6 +1538,7 @@ section {
         width: min(58vw, 240px);
         margin: 0 auto;
         transform: none;
+        opacity: 1;
     }
 
     .story-drops {
