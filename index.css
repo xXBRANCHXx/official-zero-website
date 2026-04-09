@@ -170,6 +170,7 @@ section {
     display: flex;
     align-items: center;
     gap: 1rem;
+    width: 100%;
 }
 
 .nav-links {
@@ -177,6 +178,11 @@ section {
     align-items: center;
     gap: 0.25rem;
     list-style: none;
+    width: 100%;
+}
+
+.nav-logo-slot {
+    margin-right: auto;
 }
 
 .nav-links a {
@@ -331,21 +337,6 @@ section {
 .glass-dropdown a:hover {
     background: rgba(255, 255, 255, 0.44);
     color: var(--text);
-}
-
-.menu-logo-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.7rem 0.8rem;
-    margin-bottom: 0.15rem;
-    background: rgba(255, 255, 255, 0.34);
-}
-
-.menu-logo-link img {
-    display: block;
-    width: 126px;
-    height: auto;
 }
 
 .n-btn {
