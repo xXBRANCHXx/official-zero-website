@@ -36,8 +36,13 @@ h3,
 .footer-title,
 .story-heading h2 {
     font-family: 'Causten', 'Manrope', sans-serif;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: -0.05em;
+}
+
+.display-emphasis {
+    font-family: 'Causten', 'Manrope', sans-serif;
+    font-weight: 700;
 }
 
 html {
