@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/causten');
+
 :root {
     --bg: #f6f8f7;
     --surface: rgba(255, 255, 255, 0.78);
@@ -26,6 +28,18 @@
     box-sizing: border-box;
     font-family: 'Manrope', sans-serif;
     -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.hero-h1,
+.page-hero-title,
+.footer-title,
+.story-heading h2 {
+    font-family: 'Causten', 'Manrope', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.05em;
 }
 
 html {
@@ -796,6 +810,10 @@ body.cart-drawer-open {
     width: min(100%, 440px);
     height: auto;
     filter: drop-shadow(0 20px 28px rgba(15, 23, 42, 0.12));
+}
+
+.hero-main-image {
+    width: min(100%, 560px);
 }
 
 .page-hero-title {
