@@ -49,6 +49,11 @@ h3,
     font-size: 0.84em;
 }
 
+.hero-line {
+    display: block;
+    white-space: nowrap;
+}
+
 html {
     scroll-behavior: smooth;
 }
