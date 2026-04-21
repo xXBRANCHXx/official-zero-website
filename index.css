@@ -421,6 +421,7 @@ body.cart-drawer-open {
     text-decoration: none;
     font-size: 0.82rem;
     font-weight: 700;
+    letter-spacing: 0.04em;
     color: var(--text-mid);
     padding: 0.7rem 0.95rem;
     border-radius: 999px;
