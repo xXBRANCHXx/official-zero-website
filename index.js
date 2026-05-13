@@ -1,8 +1,69 @@
-import { initUniversalCartDrawer } from './zero-products.js';
+import { ZERO_RELEASES, initUniversalCartDrawer, isDropsFruit5mlLive } from './zero-products.js';
+
+const NAV_ITEMS = [
+    { label: 'Catalog', href: '/catalog.html', desktop: true },
+    { label: 'Syrup', href: '/syrup.html', desktop: true },
+    { label: 'Drops', href: '/drops.html', desktop: true },
+    { label: 'Maple Topping', href: '/maple-topping.html', desktop: true },
+    { label: 'ZFit', href: '/zfit.html', desktop: true },
+    { label: 'Legal Info', href: '/legal.html', desktop: false },
+];
+
+const MENU_ITEMS = [
+    { label: 'Home', href: '/index.html' },
+    ...NAV_ITEMS,
+    { label: 'About', href: '/index.html#experience' },
+];
+
+const normalizePath = (href) => {
+    const path = href.split('#')[0] || '/index.html';
+    return path === '/' ? '/index.html' : path;
+};
+
+const isCurrentHref = (href) => normalizePath(href) === normalizePath(window.location.pathname);
+
+const renderAnchor = ({ label, href }) => {
+    const current = isCurrentHref(href);
+    return `<a href="${href}"${current ? ' class="active" aria-current="page"' : ''}>${label}</a>`;
+};
+
+const normalizeNavigation = () => {
+    const navLinks = document.querySelector('.nav-links');
+    const moreMenu = navLinks?.querySelector('.more-menu');
+    const moreDropdown = document.getElementById('more-dropdown');
+
+    if (navLinks && moreMenu) {
+        navLinks.querySelectorAll('li.desktop-only').forEach((item) => item.remove());
+        NAV_ITEMS.filter((item) => item.desktop).forEach((item) => {
+            const navItem = document.createElement('li');
+            navItem.className = 'desktop-only';
+            navItem.innerHTML = renderAnchor(item);
+            navLinks.insertBefore(navItem, moreMenu);
+        });
+    }
+
+    if (moreDropdown) {
+        moreDropdown.innerHTML = MENU_ITEMS.map(renderAnchor).join('');
+    }
+};
+
+const syncScheduledDropsCopy = () => {
+    const release = ZERO_RELEASES.dropsFruit5ml;
+    const isLive = isDropsFruit5mlLive();
+
+    document.querySelectorAll('[data-drops-size-copy]').forEach((element) => {
+        const isShort = element.dataset.dropsSizeCopy === 'short';
+        element.textContent = isLive
+            ? (isShort ? release.liveShortCopy : release.liveCopy)
+            : (isShort ? release.upcomingShortCopy : release.upcomingCopy);
+    });
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     const ACCESS_CODE = "192017";
     const SESSION_KEY = "zero_vault_access";
+    normalizeNavigation();
+    syncScheduledDropsCopy();
     const cartApi = initUniversalCartDrawer();
     window.zeroCartApi = cartApi;
     const closeOverlay = (element) => {

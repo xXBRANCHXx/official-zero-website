@@ -1,6 +1,21 @@
 const CART_KEY = 'zero_products_cart_v1';
 const WHATSAPP_PHONE = '6285842833973';
 const currency = new Intl.NumberFormat('id-ID');
+const DROPS_FRUIT_5ML_START_ISO = '2026-06-15T00:00:00+07:00';
+
+export const ZERO_RELEASES = {
+    dropsFruit5ml: {
+        startsAt: new Date(DROPS_FRUIT_5ML_START_ISO),
+        label: 'June 15',
+        upcomingCopy: '5ml currently covers coffee flavors; fruit flavors unlock in 5ml on June 15. 10ml stays plain only, and 30ml carries the full range.',
+        liveCopy: '5ml is now available for every flavor. 10ml stays plain only, and 30ml carries the full range.',
+        upcomingShortCopy: '5ml coffee flavors now; fruit flavors join 5ml on June 15.',
+        liveShortCopy: '5ml and 30ml carry the full flavor range; 10ml stays plain only.',
+    },
+};
+
+export const isReleaseLive = (release, now = new Date()) => now >= release.startsAt;
+export const isDropsFruit5mlLive = (now = new Date()) => isReleaseLive(ZERO_RELEASES.dropsFruit5ml, now);
 
 export const ZERO_PRODUCTS = {
     syrup: {
@@ -76,6 +91,18 @@ export const ZERO_PRODUCTS = {
         ],
     },
 };
+
+if (isDropsFruit5mlLive()) {
+    ZERO_PRODUCTS.drops.options.forEach((option) => {
+        if (!option.sizes.includes('5ml')) {
+            option.sizes = ['5ml', ...option.sizes];
+        }
+    });
+
+    ZERO_PRODUCTS.drops.sizes = ZERO_PRODUCTS.drops.sizes.map((size) => (
+        size.id === '5ml' ? { ...size, note: 'All flavors' } : size
+    ));
+}
 
 export const formatPrice = (value) => `Rp${currency.format(value)}`;
 

@@ -429,7 +429,8 @@ body.cart-drawer-open {
 }
 
 .nav-links a:hover,
-.nav-links a:focus-visible {
+.nav-links a:focus-visible,
+.nav-links a.active {
     background: rgba(255, 255, 255, 0.42);
     color: var(--text);
     outline: none;
@@ -567,7 +568,8 @@ body.cart-drawer-open {
     transition: background var(--transition), color var(--transition);
 }
 
-.glass-dropdown a:hover {
+.glass-dropdown a:hover,
+.glass-dropdown a.active {
     background: rgba(255, 255, 255, 0.44);
     color: var(--text);
 }
