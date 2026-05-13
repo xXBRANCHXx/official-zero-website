@@ -233,6 +233,11 @@ section {
     flex: 0 0 auto;
 }
 
+.nav-primary-link {
+    display: block;
+    flex: 0 0 auto;
+}
+
 .syrup-cart-fab {
     position: fixed;
     right: 1.25rem;
@@ -452,7 +457,8 @@ body.cart-drawer-open {
 }
 
 #search-trigger:hover,
-.icon-btn:hover {
+.icon-btn:hover,
+.icon-btn.active {
     color: var(--text);
     background: rgba(255, 255, 255, 0.42);
     border-color: rgba(17, 24, 39, 0.08);
@@ -462,9 +468,25 @@ body.cart-drawer-open {
     display: block;
 }
 
-.mobile-only,
-.more-menu {
+.mobile-only {
     display: none;
+}
+
+.more-menu {
+    display: block;
+    flex: 0 0 auto;
+}
+
+.product-menu-trigger {
+    position: relative;
+}
+
+.product-menu-chevron {
+    transition: transform var(--transition);
+}
+
+.product-menu-trigger[aria-expanded="true"] .product-menu-chevron {
+    transform: rotate(180deg);
 }
 
 .global-overlay {
@@ -545,17 +567,17 @@ body.cart-drawer-open {
 }
 
 .glass-dropdown {
-    width: min(260px, calc(100vw - 2rem));
+    width: min(230px, calc(100vw - 2rem));
     padding: 0.55rem;
     border-radius: 24px;
-    background: rgba(255, 255, 255, 0.52);
-    border: 1px solid rgba(17, 24, 39, 0.08);
-    box-shadow: var(--shadow-soft);
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.64);
+    box-shadow: 0 24px 54px rgba(15, 23, 42, 0.16);
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
+    backdrop-filter: blur(30px) saturate(1.24);
+    -webkit-backdrop-filter: blur(30px) saturate(1.24);
 }
 
 .glass-dropdown a {
@@ -2330,6 +2352,11 @@ body.cart-drawer-open {
         gap: 0.35rem;
     }
 
+    .nav-links a {
+        padding: 0.64rem 0.72rem;
+        font-size: 0.76rem;
+    }
+
     .syrup-cart-fab {
         width: 54px;
         height: 54px;
@@ -2359,13 +2386,13 @@ body.cart-drawer-open {
     }
 
     #nav-logo {
-        width: 118px;
+        width: 96px;
         height: 30px;
     }
 
     #nav-logo img {
-        width: 118px;
-        height: 118px;
+        width: 96px;
+        height: 96px;
     }
 
     .n-card,
@@ -2764,7 +2791,32 @@ body.cart-drawer-open {
 @media (max-width: 520px) {
     .floating-nav {
         width: calc(100vw - 0.7rem);
-        padding: 0.65rem 0.72rem;
+        padding: 0.62rem 0.68rem;
+    }
+
+    .nav-links {
+        gap: 0.14rem;
+    }
+
+    .nav-links a {
+        padding: 0.52rem 0.5rem;
+        font-size: 0.68rem;
+    }
+
+    #search-trigger,
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    #nav-logo {
+        width: 82px;
+        height: 28px;
+    }
+
+    #nav-logo img {
+        width: 82px;
+        height: 82px;
     }
 
     .hero-v6,

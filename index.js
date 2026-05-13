@@ -1,18 +1,14 @@
 import { ZERO_RELEASES, initUniversalCartDrawer, isDropsFruit5mlLive } from './zero-products.js';
 
-const NAV_ITEMS = [
-    { label: 'Catalog', href: '/catalog.html', desktop: true },
-    { label: 'Syrup', href: '/syrup.html', desktop: true },
-    { label: 'Drops', href: '/drops.html', desktop: true },
-    { label: 'Maple Topping', href: '/maple-topping.html', desktop: true },
-    { label: 'ZFit', href: '/zfit.html', desktop: true },
-    { label: 'Legal Info', href: '/legal.html', desktop: false },
+const PRIMARY_NAV_ITEMS = [
+    { label: 'Catalog', href: '/catalog.html' },
+    { label: 'ZFit', href: '/zfit.html' },
 ];
 
-const MENU_ITEMS = [
-    { label: 'Home', href: '/index.html' },
-    ...NAV_ITEMS,
-    { label: 'About', href: '/index.html#experience' },
+const PRODUCT_MENU_ITEMS = [
+    { label: 'Syrup', href: '/syrup.html' },
+    { label: 'Drops', href: '/drops.html' },
+    { label: 'Maple Topping', href: '/maple-topping.html' },
 ];
 
 const normalizePath = (href) => {
@@ -30,20 +26,35 @@ const renderAnchor = ({ label, href }) => {
 const normalizeNavigation = () => {
     const navLinks = document.querySelector('.nav-links');
     const moreMenu = navLinks?.querySelector('.more-menu');
+    const moreTrigger = document.getElementById('more-trigger');
     const moreDropdown = document.getElementById('more-dropdown');
+    const productMenuIsActive = PRODUCT_MENU_ITEMS.some((item) => isCurrentHref(item.href));
 
     if (navLinks && moreMenu) {
-        navLinks.querySelectorAll('li.desktop-only').forEach((item) => item.remove());
-        NAV_ITEMS.filter((item) => item.desktop).forEach((item) => {
+        navLinks.querySelectorAll('li.desktop-only, li.nav-primary-link').forEach((item) => item.remove());
+        PRIMARY_NAV_ITEMS.forEach((item) => {
             const navItem = document.createElement('li');
-            navItem.className = 'desktop-only';
+            navItem.className = 'nav-primary-link';
             navItem.innerHTML = renderAnchor(item);
             navLinks.insertBefore(navItem, moreMenu);
         });
     }
 
+    if (moreTrigger) {
+        moreTrigger.className = `icon-btn product-menu-trigger${productMenuIsActive ? ' active' : ''}`;
+        moreTrigger.setAttribute('aria-label', 'Open product menu');
+        moreTrigger.setAttribute('aria-haspopup', 'true');
+        moreTrigger.setAttribute('aria-expanded', 'false');
+        moreTrigger.innerHTML = `
+            <svg class="product-menu-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"></path>
+            </svg>
+        `;
+    }
+
     if (moreDropdown) {
-        moreDropdown.innerHTML = MENU_ITEMS.map(renderAnchor).join('');
+        moreDropdown.setAttribute('aria-label', 'Product menu');
+        moreDropdown.innerHTML = PRODUCT_MENU_ITEMS.map(renderAnchor).join('');
     }
 };
 
@@ -152,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         moreTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             moreDropdown.classList.toggle('active');
+            moreTrigger.setAttribute('aria-expanded', String(moreDropdown.classList.contains('active')));
         });
     }
 
@@ -160,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (moreDropdown && !moreDropdown.contains(clickedNode) && !moreTrigger?.contains(clickedNode)) {
             moreDropdown.classList.remove('active');
+            moreTrigger?.setAttribute('aria-expanded', 'false');
         }
         if (searchPopout && !searchPopout.contains(clickedNode) && !searchTrigger?.contains(clickedNode)) {
             closeOverlay(searchPopout);
@@ -170,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') {
             closeOverlay(searchPopout);
             moreDropdown?.classList.remove('active');
+            moreTrigger?.setAttribute('aria-expanded', 'false');
         }
     });
 
