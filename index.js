@@ -283,6 +283,42 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', updateTestimonialsPosition);
     }
 
+    const productSplitTrack = document.getElementById('product-split-track');
+    const productSplitStage = document.getElementById('product-split-stage');
+
+    if (productSplitTrack && productSplitStage) {
+        const setProductSplitVars = (spread) => {
+            const eased = 1 - Math.pow(1 - spread, 3);
+            productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
+            productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (28 * eased)).toFixed(2)}vw`);
+            productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (1.2 * eased)).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-left-rotate', `${(-4 - (3 * eased)).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-center-x', '0vw');
+            productSplitStage.style.setProperty('--split-center-y', `${(-1.8 * eased).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-center-rotate', `${(1.5 * eased).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-right-x', `${(1.2 + (28 * eased)).toFixed(2)}vw`);
+            productSplitStage.style.setProperty('--split-right-y', `${(1.1 + (1.2 * eased)).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-right-rotate', `${(4 + (3 * eased)).toFixed(2)}deg`);
+        };
+
+        const updateProductSplit = () => {
+            if (isCompactViewport()) {
+                setProductSplitVars(1);
+                return;
+            }
+
+            const rect = productSplitTrack.getBoundingClientRect();
+            const distance = Math.max(productSplitTrack.offsetHeight - window.innerHeight, 1);
+            const rawProgress = clamp((-rect.top) / distance, 0, 1);
+            const spread = clamp((rawProgress - 0.1) / 0.76, 0, 1);
+            setProductSplitVars(spread);
+        };
+
+        updateProductSplit();
+        window.addEventListener('scroll', updateProductSplit, { passive: true });
+        window.addEventListener('resize', updateProductSplit);
+    }
+
     // Pronounced but lightweight parallax layers
     const parallaxLayers = Array.from(document.querySelectorAll('[data-parallax]'));
     if (parallaxLayers.length) {
