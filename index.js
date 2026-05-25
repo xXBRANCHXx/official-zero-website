@@ -70,11 +70,34 @@ const syncScheduledDropsCopy = () => {
     });
 };
 
+const initMarqueeLetters = () => {
+    const phraseNodes = document.querySelectorAll('.zero-marquee-content span');
+    let letterIndex = 0;
+
+    phraseNodes.forEach((phrase) => {
+        if (phrase.dataset.marqueeSplit === 'true') return;
+
+        const text = phrase.textContent || '';
+        phrase.textContent = '';
+        phrase.dataset.marqueeSplit = 'true';
+
+        Array.from(text).forEach((char) => {
+            const letter = document.createElement('span');
+            letter.className = 'zero-marquee-char';
+            letter.style.setProperty('--char-index', letterIndex.toString());
+            letter.textContent = char === ' ' ? '\u00a0' : char;
+            phrase.appendChild(letter);
+            letterIndex += 1;
+        });
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const ACCESS_CODE = "192017";
     const SESSION_KEY = "zero_vault_access";
     normalizeNavigation();
     syncScheduledDropsCopy();
+    initMarqueeLetters();
     const cartApi = initUniversalCartDrawer();
     window.zeroCartApi = cartApi;
     const closeOverlay = (element) => {
