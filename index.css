@@ -917,51 +917,57 @@ body.cart-drawer-open {
 .zero-marquee-section {
     position: relative;
     padding: 0;
-    background: transparent;
+    background: #05070a;
     color: #f8fafc;
     overflow: hidden;
-    isolation: isolate;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.zero-snake-marquee {
-    display: block;
-    width: 100%;
-    height: clamp(6rem, 8.5vw, 8rem);
-    overflow: visible;
+.zero-marquee-track {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    overflow: hidden;
+    transform: translateZ(0);
 }
 
-.zero-snake-lane {
-    animation: zero-snake-flow 18s linear infinite;
-    transform: translate3d(0, 0, 0);
-    will-change: transform;
+.zero-marquee-content {
+    display: flex;
+    align-items: center;
+    gap: 1.05rem;
+    padding: 1.45rem 0;
+    animation: zero-marquee 34s linear infinite;
+    white-space: nowrap;
 }
 
-.zero-snake-ribbon {
-    fill: none;
-    stroke: #05070a;
-    stroke-width: 84px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-.zero-snake-text {
-    fill: #f8fafc;
-    font-family: 'Manrope', sans-serif;
-    font-size: 25px;
+.zero-marquee-content > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.05rem;
+    font-size: clamp(0.78rem, 1.1vw, 0.98rem);
     font-weight: 900;
-    letter-spacing: 0.015em;
-    dominant-baseline: middle;
+    letter-spacing: 0.025rem;
+    line-height: 1;
     text-transform: uppercase;
-    paint-order: stroke;
 }
 
-@keyframes zero-snake-flow {
+.zero-marquee-content > span::after {
+    content: "";
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 0.22rem rgba(29, 191, 211, 0.16);
+}
+
+@keyframes zero-marquee {
     from {
         transform: translate3d(0, 0, 0);
     }
 
     to {
-        transform: translate3d(-1200px, 0, 0);
+        transform: translate3d(-100%, 0, 0);
     }
 }
 
@@ -2841,16 +2847,15 @@ body.cart-drawer-open {
         letter-spacing: -0.035em;
     }
 
-    .zero-snake-marquee {
-        height: 5.7rem;
+    .zero-marquee-content {
+        padding: 1.15rem 0;
+        animation-duration: 28s;
     }
 
-    .zero-snake-ribbon {
-        stroke-width: 92px;
-    }
-
-    .zero-snake-text {
-        font-size: 31px;
+    .zero-marquee-content > span {
+        gap: 0.72rem;
+        font-size: 0.74rem;
+        letter-spacing: 0.015rem;
     }
 
     .hero-support,
