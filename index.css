@@ -36,17 +36,18 @@ h3,
 .footer-title,
 .story-heading h2 {
     font-family: 'Causten', 'Manrope', sans-serif;
-    font-weight: 500;
-    letter-spacing: -0.05em;
+    font-weight: 700;
+    letter-spacing: -0.025em;
 }
 
 .display-emphasis {
     font-family: 'Causten', 'Manrope', sans-serif;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .display-soft {
-    font-size: 0.84em;
+    font-size: 0.94em;
+    font-weight: 500;
 }
 
 .hero-line {
@@ -64,7 +65,7 @@ body {
         linear-gradient(180deg, #fcfdfc 0%, #f3f6f4 42%, #eef2f0 100%);
     color: var(--text);
     overflow-x: hidden;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 a {
@@ -112,7 +113,7 @@ section {
     gap: 0.5rem;
     font-size: 0.77rem;
     font-weight: 800;
-    letter-spacing: 0.18rem;
+    letter-spacing: 0.13rem;
     text-transform: uppercase;
     color: #5f6b7a;
 }
@@ -802,9 +803,9 @@ body.cart-drawer-open {
     background: rgba(255, 255, 255, 0.72);
     border: 1px solid rgba(17, 24, 39, 0.06);
     color: #31455c;
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    letter-spacing: 0.12rem;
+    letter-spacing: 0.1rem;
     text-transform: uppercase;
     box-shadow: 0 12px 26px rgba(15, 23, 42, 0.05);
 }
@@ -817,17 +818,17 @@ body.cart-drawer-open {
 
 .hero-h1,
 .page-hero-title {
-    font-size: clamp(3rem, 9vw, 6.8rem);
-    line-height: 0.94;
-    letter-spacing: -0.07em;
-    max-width: 8.5ch;
+    font-size: clamp(3.3rem, 8vw, 6.4rem);
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    max-width: 9ch;
 }
 
 .hero-p,
 .page-hero-copy p {
-    max-width: 34rem;
-    font-size: 1.17rem;
-    line-height: 1.58;
+    max-width: 35rem;
+    font-size: clamp(1.05rem, 1.35vw, 1.22rem);
+    line-height: 1.48;
     color: #31455c;
 }
 
@@ -841,9 +842,9 @@ body.cart-drawer-open {
 
 .hero-support {
     max-width: 38rem;
-    font-size: 0.96rem;
-    line-height: 1.55;
-    font-weight: 700;
+    font-size: 0.98rem;
+    line-height: 1.45;
+    font-weight: 800;
     color: var(--text-mid);
 }
 
@@ -865,17 +866,72 @@ body.cart-drawer-open {
 }
 
 .hero-fact span {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 800;
-    letter-spacing: 0.12rem;
+    letter-spacing: 0.09rem;
     text-transform: uppercase;
     color: var(--text-soft);
 }
 
 .hero-fact strong {
-    font-size: 0.98rem;
-    line-height: 1.3;
+    font-size: 1rem;
+    line-height: 1.22;
     color: var(--text);
+}
+
+.zero-marquee-section {
+    padding: 0;
+    background: #05070a;
+    color: #f8fafc;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.zero-marquee-track {
+    display: flex;
+    width: max-content;
+    min-width: 100%;
+    overflow: hidden;
+}
+
+.zero-marquee-content {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    padding: 1.05rem 0;
+    animation: zero-marquee 34s linear infinite;
+    white-space: nowrap;
+}
+
+.zero-marquee-content span {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.6rem;
+    font-size: clamp(0.78rem, 1.1vw, 0.98rem);
+    font-weight: 900;
+    letter-spacing: 0.08rem;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.zero-marquee-content span::after {
+    content: "";
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 0.22rem rgba(29, 191, 211, 0.16);
+}
+
+@keyframes zero-marquee {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(-100%, 0, 0);
+    }
 }
 
 .hero-visual,
@@ -1283,17 +1339,17 @@ body.cart-drawer-open {
 
 .section-heading h2 {
     font-size: clamp(2rem, 5vw, 4rem);
-    line-height: 0.94;
-    letter-spacing: -0.05em;
-    max-width: 11ch;
+    line-height: 0.96;
+    letter-spacing: -0.025em;
+    max-width: 12ch;
     margin-bottom: 0.9rem;
 }
 
 .section-heading p {
     color: var(--text-mid);
     max-width: 40rem;
-    font-size: 1.04rem;
-    line-height: 1.65;
+    font-size: 1.02rem;
+    line-height: 1.55;
 }
 
 .product-story-section .section-badge,
@@ -2297,7 +2353,7 @@ body.cart-drawer-open {
 .footer-title {
     font-size: clamp(2.4rem, 6vw, 4.5rem);
     line-height: 0.94;
-    letter-spacing: -0.07em;
+    letter-spacing: -0.03em;
     color: #f8fafc;
 }
 
@@ -2725,7 +2781,18 @@ body.cart-drawer-open {
     .page-hero-title {
         font-size: clamp(2.7rem, 13vw, 4.15rem);
         line-height: 0.92;
-        letter-spacing: -0.07em;
+        letter-spacing: -0.035em;
+    }
+
+    .zero-marquee-content {
+        padding: 0.9rem 0;
+        animation-duration: 28s;
+    }
+
+    .zero-marquee-content span {
+        gap: 1rem;
+        font-size: 0.74rem;
+        letter-spacing: 0.06rem;
     }
 
     .hero-support,
@@ -2958,6 +3025,7 @@ body.cart-drawer-open {
         font-size: clamp(2rem, 10vw, 3rem);
         margin-bottom: 0.7rem;
         max-width: 12ch;
+        letter-spacing: -0.025em;
     }
 
     .section-heading p {
