@@ -244,37 +244,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const testimonialsTrack = document.getElementById('testimonials-track');
     const testimonialsRail = document.getElementById('testimonials-rail');
+    const testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
 
-    if (testimonialsTrack && testimonialsRail) {
+    if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
         let testimonialsManualOffset = 0;
 
         const updateTestimonialsPosition = () => {
             if (isCompactViewport()) {
-                testimonialsRail.style.transform = 'translate3d(0, 0, 0)';
+                testimonialsRows.forEach((row) => {
+                    row.style.transform = 'translate3d(0, 0, 0)';
+                });
                 return;
             }
 
             const rect = testimonialsTrack.getBoundingClientRect();
             const distance = Math.max(testimonialsTrack.offsetHeight - window.innerHeight, 1);
-            const leadIn = window.innerHeight * 0.62;
+            const leadIn = window.innerHeight * 0.52;
             const rawProgress = clamp((leadIn - rect.top) / (distance + leadIn), 0, 1);
             const progress = 1 - Math.pow(1 - rawProgress, 1.35);
-            const maxShift = Math.max(testimonialsRail.scrollWidth - window.innerWidth, 0);
-            const startOffset = Math.min(window.innerWidth * 0.16, 220);
-            testimonialsManualOffset = clamp(testimonialsManualOffset, -maxShift, 0);
-            const translateX = startOffset - (progress * (maxShift + startOffset)) + testimonialsManualOffset;
 
-            testimonialsRail.style.transform = `translate3d(${translateX.toFixed(1)}px, 0, 0)`;
+            const largestShift = testimonialsRows.reduce((max, row) => Math.max(max, row.scrollWidth - window.innerWidth), 0);
+            testimonialsManualOffset = clamp(testimonialsManualOffset, -largestShift, largestShift);
+
+            testimonialsRows.forEach((row) => {
+                const maxShift = Math.max(row.scrollWidth - window.innerWidth, 0);
+                const startOffset = Math.min(window.innerWidth * 0.14, 190);
+                const direction = row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
+                const baseTranslate = direction === 1
+                    ? startOffset - (progress * (maxShift + startOffset))
+                    : -maxShift - startOffset + (progress * (maxShift + startOffset));
+                const translateX = baseTranslate + (testimonialsManualOffset * direction);
+
+                row.style.transform = `translate3d(${translateX.toFixed(1)}px, 0, 0)`;
+            });
         };
 
         testimonialsRail.addEventListener('wheel', (event) => {
             if (isCompactViewport()) return;
 
-            const maxShift = Math.max(testimonialsRail.scrollWidth - window.innerWidth, 0);
+            const maxShift = testimonialsRows.reduce((max, row) => Math.max(max, row.scrollWidth - window.innerWidth), 0);
             if (!maxShift) return;
 
             event.preventDefault();
-            testimonialsManualOffset = clamp(testimonialsManualOffset - event.deltaY * 0.55, -maxShift, 0);
+            testimonialsManualOffset = clamp(testimonialsManualOffset - event.deltaY * 0.45, -maxShift, maxShift);
             updateTestimonialsPosition();
         }, { passive: false });
 
