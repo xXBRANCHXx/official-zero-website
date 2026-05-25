@@ -188,6 +188,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const heroRoot = document.querySelector('[data-hero-root]');
+    const heroGhost = document.querySelector('[data-hero-ghost]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (heroRoot && heroGhost && !reduceMotion) {
+        let ghostFrame = 0;
+        let pointerX = 0;
+        let pointerY = 0;
+
+        const updateHeroGhost = () => {
+            ghostFrame = 0;
+            const rect = heroRoot.getBoundingClientRect();
+            const heroProgress = clamp(-rect.top / Math.max(rect.height, 1), 0, 1);
+            const scrollShift = heroProgress * -28;
+
+            heroRoot.style.setProperty('--ghost-x', `${(pointerX * 18).toFixed(2)}px`);
+            heroRoot.style.setProperty('--ghost-y', `${(pointerY * 12).toFixed(2)}px`);
+            heroRoot.style.setProperty('--ghost-scroll', `${scrollShift.toFixed(2)}px`);
+        };
+
+        const requestHeroGhostFrame = () => {
+            if (ghostFrame) return;
+            ghostFrame = window.requestAnimationFrame(updateHeroGhost);
+        };
+
+        heroRoot.addEventListener('pointermove', (event) => {
+            const rect = heroRoot.getBoundingClientRect();
+            pointerX = ((event.clientX - rect.left) / Math.max(rect.width, 1)) - 0.5;
+            pointerY = ((event.clientY - rect.top) / Math.max(rect.height, 1)) - 0.5;
+            requestHeroGhostFrame();
+        }, { passive: true });
+
+        heroRoot.addEventListener('pointerleave', () => {
+            pointerX = 0;
+            pointerY = 0;
+            requestHeroGhostFrame();
+        });
+
+        updateHeroGhost();
+        window.addEventListener('scroll', requestHeroGhostFrame, { passive: true });
+        window.addEventListener('resize', requestHeroGhostFrame);
+    }
 
     // Pinned Product Story
     const storyTrack = document.getElementById('product-story-track');
