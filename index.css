@@ -2240,13 +2240,6 @@ body.cart-drawer-open {
     overflow: visible;
 }
 
-.testimonials-wall.testimonials-looping {
-    position: relative;
-    display: block;
-    height: 34.4rem;
-    overflow: visible;
-}
-
 .testimonials-row {
     display: flex;
     gap: 1rem;
@@ -2259,11 +2252,6 @@ body.cart-drawer-open {
 
 .testimonials-row-reverse {
     padding-left: max(4rem, calc((100vw - 1200px) / 2 + 4rem));
-}
-
-.testimonials-looping .testimonials-row {
-    display: contents;
-    padding: 0;
 }
 
 .testimonial-card {
@@ -2298,18 +2286,6 @@ body.cart-drawer-open {
     box-shadow:
         0 32px 64px rgba(15, 23, 42, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.78);
-}
-
-.testimonials-looping .testimonial-card {
-    position: absolute;
-    top: 0;
-    left: 0;
-    will-change: transform;
-    transform: translate3d(var(--review-x, 0), var(--review-y, 0), 0);
-}
-
-.testimonials-looping .testimonial-card:hover {
-    transform: translate3d(var(--review-x, 0), var(--review-y, 0), 0) scale(1.045);
 }
 
 .testimonial-card-dark {
@@ -3662,11 +3638,6 @@ body.cart-drawer-open {
         gap: 0.8rem;
     }
 
-    .testimonials-wall.testimonials-looping {
-        display: grid;
-        height: auto;
-    }
-
     .testimonials-row,
     .testimonials-row-reverse {
         width: 100%;
@@ -3677,10 +3648,8 @@ body.cart-drawer-open {
         transform: none !important;
     }
 
-    .testimonials-looping .testimonials-row,
-    .testimonials-looping .testimonials-row-reverse {
-        display: grid;
-        padding: 0 1rem;
+    .testimonials-row [aria-hidden="true"] {
+        display: none;
     }
 
     .testimonial-card,
@@ -3689,12 +3658,6 @@ body.cart-drawer-open {
         max-width: none;
         height: auto;
         min-height: auto;
-        transform: none;
-    }
-
-    .testimonials-looping .testimonial-card,
-    .testimonials-looping .testimonial-card:hover {
-        position: relative;
         transform: none;
     }
 

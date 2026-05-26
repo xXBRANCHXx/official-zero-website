@@ -382,103 +382,82 @@ document.addEventListener('DOMContentLoaded', () => {
     const testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
 
     if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
-        testimonialsRail.classList.add('testimonials-looping');
+        const loopRows = testimonialsRows.map((row) => {
+            const originalCards = Array.from(row.children);
 
-        const reviewGap = 16;
-        const reviewOffscreenBuffer = 96;
-        const reviewCards = testimonialsRows.flatMap((row, lane) => (
-            Array.from(row.querySelectorAll('.testimonial-card')).map((card) => ({
-                card,
-                lane,
-                x: 0,
-                width: 0,
-            }))
-        ));
-        let lastReviewScroll = 0;
-        let reviewScrollFrame = 0;
+            originalCards.forEach((card) => {
+                const clone = card.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                row.appendChild(clone);
+            });
 
-        const layoutTestimonialsLoop = () => {
-            const rowHeight = reviewCards[0]?.card.offsetHeight || 260;
-            const laneGap = 16;
-            const laneY = [0, rowHeight + laneGap];
-            const laneRight = [
-                Math.max(24, (window.innerWidth - 1200) / 2 + 16),
-                Math.max(64, (window.innerWidth - 1200) / 2 + 64),
-            ];
+            originalCards.forEach((card) => {
+                const clone = card.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                row.appendChild(clone);
+            });
 
-            reviewCards.forEach((item, index) => {
-                const stagger = index % 2 === 0 ? 0 : 18;
-                item.width = item.card.offsetWidth;
-                item.x = laneRight[item.lane] + stagger;
-                laneRight[item.lane] += item.width + reviewGap;
-                item.card.style.setProperty('--review-y', `${laneY[item.lane]}px`);
-                item.card.style.setProperty('--review-x', `${item.x}px`);
+            return {
+                row,
+                originalCount: originalCards.length,
+                cycleWidth: 0,
+            };
+        });
+        let testimonialFrame = 0;
+
+        const measureTestimonials = () => {
+            loopRows.forEach((loop) => {
+                const cards = Array.from(loop.row.children).slice(0, loop.originalCount);
+                const first = cards[0];
+                const last = cards[cards.length - 1];
+                const gap = parseFloat(window.getComputedStyle(loop.row).columnGap) || 0;
+
+                loop.cycleWidth = first && last
+                    ? (last.offsetLeft + last.offsetWidth - first.offsetLeft + gap)
+                    : 1;
             });
         };
 
-        const getReviewScroll = () => {
-            const rect = testimonialsTrack.getBoundingClientRect();
-            return window.innerHeight * 0.52 - rect.top;
-        };
-
-        const applyTestimonialsScroll = () => {
-            reviewScrollFrame = 0;
+        const updateTestimonialsPosition = () => {
+            testimonialFrame = 0;
 
             if (isCompactViewport()) {
+                testimonialsRows.forEach((row) => {
+                    row.style.transform = 'translate3d(0, 0, 0)';
+                });
                 return;
             }
 
-            const currentScroll = getReviewScroll();
-            const scrollDelta = currentScroll - lastReviewScroll;
-            lastReviewScroll = currentScroll;
+            const rect = testimonialsTrack.getBoundingClientRect();
+            const distance = Math.max(testimonialsTrack.offsetHeight - window.innerHeight, 1);
+            const leadIn = window.innerHeight * 0.52;
+            const rawProgress = clamp((leadIn - rect.top) / (distance + leadIn), 0, 1);
+            const progress = 1 - Math.pow(1 - rawProgress, 1.35);
 
-            if (Math.abs(scrollDelta) < 0.1) {
-                return;
-            }
+            loopRows.forEach((loop) => {
+                const cycleWidth = Math.max(loop.cycleWidth, 1);
+                const startOffset = Math.min(window.innerWidth * 0.14, 190);
+                const travel = (progress * cycleWidth * 1.08) % cycleWidth;
+                const direction = loop.row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
+                const baseTranslate = direction === 1
+                    ? startOffset - travel
+                    : -cycleWidth - startOffset + travel;
 
-            const moveX = scrollDelta * 0.74;
-            const laneRight = [-Infinity, -Infinity];
-            const laneLeft = [Infinity, Infinity];
-
-            reviewCards.forEach((item) => {
-                laneRight[item.lane] = Math.max(laneRight[item.lane], item.x + item.width);
-                laneLeft[item.lane] = Math.min(laneLeft[item.lane], item.x);
-            });
-
-            reviewCards.forEach((item) => {
-                item.x -= moveX;
-
-                if (moveX > 0 && item.x + item.width < -reviewOffscreenBuffer) {
-                    item.lane = item.lane === 0 ? 1 : 0;
-                    item.x = Math.max(window.innerWidth + reviewOffscreenBuffer, laneRight[item.lane] + reviewGap);
-                    laneRight[item.lane] = item.x + item.width;
-                }
-
-                if (moveX < 0 && item.x > window.innerWidth + reviewOffscreenBuffer) {
-                    item.lane = item.lane === 0 ? 1 : 0;
-                    item.x = Math.min(-item.width - reviewOffscreenBuffer, laneLeft[item.lane] - item.width - reviewGap);
-                    laneLeft[item.lane] = item.x;
-                }
-
-                const rowHeight = item.card.offsetHeight || 260;
-                const y = item.lane === 0 ? 0 : rowHeight + reviewGap;
-                item.card.style.setProperty('--review-x', `${item.x.toFixed(1)}px`);
-                item.card.style.setProperty('--review-y', `${y}px`);
+                loop.row.style.transform = `translate3d(${baseTranslate.toFixed(1)}px, 0, 0)`;
             });
         };
 
-        const requestTestimonialsScroll = () => {
-            if (reviewScrollFrame) return;
-            reviewScrollFrame = window.requestAnimationFrame(applyTestimonialsScroll);
+        const requestTestimonialsFrame = () => {
+            if (testimonialFrame) return;
+            testimonialFrame = window.requestAnimationFrame(updateTestimonialsPosition);
         };
 
-        layoutTestimonialsLoop();
-        lastReviewScroll = getReviewScroll();
-        window.addEventListener('scroll', requestTestimonialsScroll, { passive: true });
+        measureTestimonials();
+        updateTestimonialsPosition();
+        window.addEventListener('scroll', requestTestimonialsFrame, { passive: true });
         window.addEventListener('resize', () => {
-            layoutTestimonialsLoop();
-            lastReviewScroll = getReviewScroll();
-            requestTestimonialsScroll();
+            measureTestimonials();
+            requestTestimonialsFrame();
         });
     }
 
