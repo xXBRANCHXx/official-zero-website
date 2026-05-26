@@ -1369,6 +1369,173 @@ body.cart-drawer-open {
     color: color-mix(in srgb, #111827 calc((1 - var(--section-darkness)) * 100%), #f8fafc calc(var(--section-darkness) * 100%));
 }
 
+.focus-section {
+    --focus-bg-a: 246;
+    --focus-bg-b: 248;
+    --focus-bg-c: 247;
+    position: relative;
+    padding: 0;
+    overflow: clip;
+    background: rgb(var(--focus-bg-a), var(--focus-bg-b), var(--focus-bg-c));
+    transition: background 260ms ease;
+}
+
+.focus-track {
+    height: 420vh;
+    position: relative;
+}
+
+.focus-sticky {
+    position: sticky;
+    top: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+}
+
+.focus-stage {
+    --focus-progress: 0;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    isolation: isolate;
+    background:
+        radial-gradient(circle at calc(24% + var(--focus-progress) * 34%) 34%, rgba(29, 191, 211, 0.14), transparent 28rem),
+        linear-gradient(180deg, rgb(var(--focus-bg-a), var(--focus-bg-b), var(--focus-bg-c)), rgba(239, 245, 243, 0.96));
+    transition: background 180ms linear;
+}
+
+.focus-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(90deg, rgba(17, 24, 39, 0.026) 0 1px, transparent 1px 7.5rem),
+        repeating-linear-gradient(0deg, rgba(17, 24, 39, 0.018) 0 1px, transparent 1px 7.5rem);
+    opacity: calc(0.42 - var(--focus-progress) * 0.14);
+}
+
+.focus-scene {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+}
+
+.focus-headline,
+.focus-card {
+    --focus: 0;
+    --focus-distance: 1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    will-change: transform, opacity, filter;
+    transition: box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.focus-headline {
+    --focus: 1;
+    width: min(820px, 80vw);
+    transform:
+        translate3d(calc(-50% + var(--focus-x) * (1 - var(--focus))), calc(-50% + var(--focus-y) * (1 - var(--focus))), 0)
+        scale(calc(0.72 + var(--focus) * 0.34));
+    opacity: calc(0.22 + var(--focus) * 0.78);
+    filter: saturate(calc(0.45 + var(--focus) * 0.75)) blur(calc((1 - var(--focus)) * 1.2px));
+}
+
+.focus-headline h2 {
+    font-size: clamp(4rem, 10vw, 9.4rem);
+    line-height: 0.82;
+    letter-spacing: 0;
+    max-width: 9ch;
+    color: #071017;
+}
+
+.focus-card {
+    width: min(32rem, 38vw);
+    min-height: 20rem;
+    display: grid;
+    align-content: end;
+    gap: 1rem;
+    padding: clamp(1.25rem, 2vw, 1.8rem);
+    border-radius: 28px;
+    border: 1px solid rgba(17, 24, 39, calc(0.06 + var(--focus) * 0.16));
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, calc(0.42 + var(--focus) * 0.42)), rgba(255, 255, 255, calc(0.18 + var(--focus) * 0.18))),
+        rgba(248, 250, 252, 0.12);
+    box-shadow:
+        0 calc(12px + var(--focus) * 30px) calc(32px + var(--focus) * 52px) rgba(15, 23, 42, calc(0.06 + var(--focus) * 0.12)),
+        inset 0 1px 0 rgba(255, 255, 255, calc(0.4 + var(--focus) * 0.36));
+    backdrop-filter: blur(calc(8px + var(--focus) * 9px)) saturate(calc(0.75 + var(--focus) * 0.45));
+    -webkit-backdrop-filter: blur(calc(8px + var(--focus) * 9px)) saturate(calc(0.75 + var(--focus) * 0.45));
+    transform:
+        translate3d(calc(-50% + var(--focus-x) * (1 - var(--focus) * 0.24)), calc(-50% + var(--focus-y) * (1 - var(--focus) * 0.24)), 0)
+        scale(calc(0.66 + var(--focus) * 0.38));
+    opacity: calc(0.16 + var(--focus) * 0.84);
+    filter:
+        grayscale(calc((1 - var(--focus)) * 0.7))
+        saturate(calc(0.45 + var(--focus) * 0.9))
+        blur(calc((1 - var(--focus)) * 1.6px));
+}
+
+.focus-card::before {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 18% 16%, rgba(29, 191, 211, calc(0.12 + var(--focus) * 0.16)), transparent 34%),
+        linear-gradient(120deg, rgba(255, 255, 255, calc(0.2 + var(--focus) * 0.2)), rgba(255, 255, 255, 0) 38%);
+}
+
+.focus-card span,
+.focus-card strong,
+.focus-card p {
+    position: relative;
+    z-index: 1;
+}
+
+.focus-card span {
+    width: fit-content;
+    color: rgba(22, 136, 154, calc(0.42 + var(--focus) * 0.4));
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.16rem;
+}
+
+.focus-card strong {
+    max-width: 11ch;
+    color: #0b1420;
+    font-size: clamp(2rem, 4vw, 4.2rem);
+    line-height: 0.88;
+    letter-spacing: 0;
+}
+
+.focus-card p {
+    max-width: 29rem;
+    color: rgba(49, 69, 92, calc(0.58 + var(--focus) * 0.32));
+    font-size: clamp(0.98rem, 1.15vw, 1.12rem);
+    line-height: 1.48;
+}
+
+.focus-card-syrup {
+    z-index: 4;
+}
+
+.focus-card-drops {
+    z-index: 5;
+}
+
+.focus-card-zfit {
+    z-index: 6;
+}
+
+.focus-card-channel {
+    z-index: 7;
+}
+
 .feature-layout {
     display: grid;
     grid-template-columns: 1.15fr 0.85fr;
@@ -2745,6 +2912,50 @@ body.cart-drawer-open {
 }
 
 @media (max-width: 900px) {
+    .focus-track {
+        height: auto;
+    }
+
+    .focus-sticky {
+        position: static;
+        min-height: auto;
+    }
+
+    .focus-stage {
+        min-height: auto;
+        padding: 5.6rem 0 4.5rem;
+    }
+
+    .focus-scene {
+        min-height: auto;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .focus-headline,
+    .focus-card {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 100%;
+        transform: none !important;
+        opacity: 1;
+        filter: none;
+    }
+
+    .focus-headline h2 {
+        font-size: clamp(3rem, 13vw, 5rem);
+    }
+
+    .focus-card {
+        min-height: auto;
+    }
+
+    .focus-card strong {
+        max-width: 12ch;
+        font-size: clamp(2rem, 9vw, 3.2rem);
+    }
+
     .product-split-track {
         height: auto;
     }

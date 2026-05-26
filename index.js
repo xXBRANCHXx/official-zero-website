@@ -188,6 +188,73 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const experienceTrack = document.getElementById('experience-track');
+    const experienceStage = document.getElementById('experience-stage');
+    const experienceItems = experienceStage ? Array.from(experienceStage.querySelectorAll('[data-focus-item]')) : [];
+
+    if (experienceTrack && experienceStage && experienceItems.length) {
+        let experienceFrame = 0;
+
+        const palettes = [
+            [246, 248, 247],
+            [239, 249, 248],
+            [245, 248, 252],
+            [243, 248, 245],
+            [248, 246, 241],
+        ];
+
+        const mixChannel = (from, to, amount) => Math.round(from + ((to - from) * amount));
+
+        const updateExperienceFocus = () => {
+            experienceFrame = 0;
+
+            if (window.matchMedia('(max-width: 900px)').matches) {
+                experienceItems.forEach((item) => {
+                    item.style.setProperty('--focus', '1');
+                    item.style.setProperty('--focus-distance', '0');
+                    item.style.zIndex = '';
+                });
+                experienceStage.style.setProperty('--focus-progress', '1');
+                return;
+            }
+
+            const viewportHeight = window.innerHeight || 1;
+            const distance = Math.max(experienceTrack.offsetHeight - viewportHeight, 1);
+            const leadIn = viewportHeight * 0.1;
+            const rawProgress = clamp((window.scrollY - experienceTrack.offsetTop + leadIn) / (distance * 0.76), 0, 1);
+            const activeIndex = rawProgress * (experienceItems.length - 1);
+
+            experienceStage.style.setProperty('--focus-progress', rawProgress.toFixed(4));
+
+            const paletteIndex = Math.min(Math.floor(activeIndex), palettes.length - 1);
+            const nextPaletteIndex = Math.min(paletteIndex + 1, palettes.length - 1);
+            const paletteMix = activeIndex - paletteIndex;
+            const mixedPalette = palettes[paletteIndex].map((channel, index) => (
+                mixChannel(channel, palettes[nextPaletteIndex][index], paletteMix)
+            ));
+
+            experienceStage.style.setProperty('--focus-bg-a', mixedPalette[0]);
+            experienceStage.style.setProperty('--focus-bg-b', mixedPalette[1]);
+            experienceStage.style.setProperty('--focus-bg-c', mixedPalette[2]);
+
+            experienceItems.forEach((item, index) => {
+                const distanceFromFocus = Math.abs(activeIndex - index);
+                const focus = clamp(1 - (distanceFromFocus * 1.05), 0, 1);
+                item.style.setProperty('--focus', focus.toFixed(4));
+                item.style.setProperty('--focus-distance', distanceFromFocus.toFixed(4));
+                item.style.zIndex = String(20 + Math.round(focus * 20));
+            });
+        };
+
+        const requestExperienceFrame = () => {
+            if (experienceFrame) return;
+            experienceFrame = window.requestAnimationFrame(updateExperienceFocus);
+        };
+
+        updateExperienceFocus();
+        window.addEventListener('scroll', requestExperienceFrame, { passive: true });
+        window.addEventListener('resize', requestExperienceFrame);
+    }
 
     // Pinned Product Story
     const storyTrack = document.getElementById('product-story-track');
