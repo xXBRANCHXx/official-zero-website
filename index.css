@@ -807,7 +807,7 @@ body.cart-drawer-open {
     padding: clamp(1.35rem, 2.2vw, 1.85rem);
     background: #ffffff;
     border: 1px solid rgba(17, 24, 39, 0.1);
-    border-radius: 26px;
+    border-radius: 34px;
     box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
 }
 
@@ -833,6 +833,7 @@ body.cart-drawer-open {
 .product-lines-section .product-format-card p {
     max-width: 23rem;
     margin-top: 0;
+    align-self: center;
     color: var(--text-mid);
     line-height: 1.58;
 }
@@ -1466,6 +1467,16 @@ body.cart-drawer-open {
     align-content: start;
     min-height: clamp(19rem, 32vw, 29rem);
     padding-top: 0.35rem;
+    opacity: 0;
+    transform: translateX(-5rem);
+    transition:
+        opacity 760ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 760ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.habits-section.in-frame .habits-heading {
+    opacity: 1;
+    transform: translateX(0);
 }
 
 .habits-heading h2 {
@@ -1491,15 +1502,69 @@ body.cart-drawer-open {
     color: var(--text);
     cursor: default;
     overflow: hidden;
-    transform: translateY(0);
+    opacity: 0;
+    transform: translateX(var(--habit-entry-x, 0));
     transform-origin: center;
     transition:
         min-height 520ms cubic-bezier(0.16, 1, 0.3, 1),
-        transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 720ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 720ms cubic-bezier(0.16, 1, 0.3, 1),
         background-color 560ms ease,
         border-color 560ms ease,
         color 560ms ease,
         box-shadow 560ms ease;
+}
+
+.habit-card-syrup,
+.habit-card-zfit {
+    --habit-entry-x: -5rem;
+}
+
+.habit-card-drops,
+.habit-card-channel {
+    --habit-entry-x: 5rem;
+}
+
+.habits-section.in-frame .habit-card {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.habit-card-channel {
+    transition-delay: 90ms;
+}
+
+.habit-card-zfit {
+    transition-delay: 170ms;
+}
+
+.habit-card-drops {
+    transition-delay: 250ms;
+}
+
+.habit-card-syrup {
+    transition-delay: 330ms;
+}
+
+.habits-section.in-frame .habit-card-syrup {
+    transition-delay: 90ms;
+}
+
+.habits-section.in-frame .habit-card-drops {
+    transition-delay: 170ms;
+}
+
+.habits-section.in-frame .habit-card-zfit {
+    transition-delay: 250ms;
+}
+
+.habits-section.in-frame .habit-card-channel {
+    transition-delay: 330ms;
+}
+
+.habits-section.in-frame .habit-card:hover,
+.habits-section.in-frame .habit-card:focus {
+    transition-delay: 0ms;
 }
 
 .habit-card:focus-visible {

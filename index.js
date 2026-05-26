@@ -275,12 +275,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const productLineCards = document.querySelectorAll('.product-lines-section .journey-card');
 
+    const habitsSection = document.querySelector('.habits-section');
+
+    if (habitsSection) {
+        const habitsObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                habitsSection.classList.toggle('in-frame', entry.isIntersecting);
+            });
+        }, { threshold: 0.18, rootMargin: '-8% 0px -18% 0px' });
+
+        habitsObserver.observe(habitsSection);
+    }
+
     if (productLinesSection) {
         const productSectionObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     productLinesSection.classList.add('in-frame');
-                    productSectionObserver.unobserve(productLinesSection);
+                    return;
+                }
+
+                if (entry.boundingClientRect.top > 0) {
+                    productLinesSection.classList.remove('in-frame');
+                    productLineCards.forEach((card) => card.classList.remove('in-frame'));
                 }
             });
         }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
@@ -293,7 +310,11 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('in-frame');
-                    productLineObserver.unobserve(entry.target);
+                    return;
+                }
+
+                if (entry.boundingClientRect.top > 0) {
+                    entry.target.classList.remove('in-frame');
                 }
             });
         }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
