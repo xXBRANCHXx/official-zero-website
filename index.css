@@ -60,9 +60,7 @@ html {
 }
 
 body {
-    background:
-        radial-gradient(circle at top, rgba(17, 24, 39, 0.03), rgba(246, 248, 247, 0) 26%),
-        linear-gradient(180deg, #fcfdfc 0%, #f3f6f4 42%, #eef2f0 100%);
+    background: var(--ambient-bg, #ffffff);
     color: var(--text);
     overflow-x: hidden;
     line-height: 1.55;
@@ -752,6 +750,8 @@ body.cart-drawer-open {
     position: relative;
     overflow: hidden;
     isolation: isolate;
+    background: transparent;
+    color: var(--text);
 }
 
 .product-lines-section .container {
@@ -759,41 +759,45 @@ body.cart-drawer-open {
     z-index: 1;
 }
 
-.product-lines-parallax {
-    inset: -14% 0;
+.product-lines-section .section-heading h2 {
+    color: #06343a;
+    max-width: 10ch;
 }
 
-.product-lines-parallax .parallax-image {
-    height: 130%;
-    transform: translate3d(0, 0, 0) scale(1.22);
-    filter: grayscale(1) blur(3px);
-    opacity: 0.46;
-}
-
-.product-lines-overlay {
-    background:
-        linear-gradient(180deg, rgba(7, 18, 26, 0.72), rgba(7, 18, 26, 0.54)),
-        linear-gradient(135deg, rgba(29, 191, 211, 0.58), rgba(29, 191, 211, 0.34));
-}
-
-.product-lines-section .section-badge,
-.product-lines-section .section-heading p,
 .product-lines-section .journey-card p {
-    color: rgba(241, 245, 249, 0.82);
-}
-
-.product-lines-section .section-heading h2,
-.product-lines-section .journey-card strong {
-    color: #f8fafc;
+    color: var(--text-mid);
 }
 
 .product-lines-section .journey-card,
 .product-lines-section .journey-card-dark {
-    background: rgba(9, 18, 26, 0.56);
-    border-color: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 22px 42px rgba(4, 10, 16, 0.22);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    min-height: clamp(22rem, 30vw, 27rem);
+    align-content: space-between;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.64);
+    box-shadow: 0 26px 58px rgba(5, 42, 49, 0.16);
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(14px);
+    transition:
+        opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+        transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+        filter 900ms cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 360ms ease,
+        border-color 360ms ease;
+}
+
+.product-lines-section .journey-card.in-frame {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+.product-lines-section .journey-card:nth-child(2) {
+    transition-delay: 110ms;
+}
+
+.product-lines-section .journey-card:nth-child(3) {
+    transition-delay: 220ms;
 }
 
 .hero-shell,
@@ -1369,163 +1373,88 @@ body.cart-drawer-open {
     color: color-mix(in srgb, #111827 calc((1 - var(--section-darkness)) * 100%), #f8fafc calc(var(--section-darkness) * 100%));
 }
 
-.focus-section {
-    position: relative;
-    padding: 0;
-    overflow: clip;
-    background: #090a0a;
+.habits-section {
+    padding: clamp(5rem, 9vw, 8rem) 0;
+    background: #ffffff;
 }
 
-.focus-track {
-    height: 420vh;
-    position: relative;
-}
-
-.focus-sticky {
-    position: sticky;
-    top: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: stretch;
-    overflow: hidden;
-}
-
-.focus-stage {
-    --focus-progress: 0;
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    isolation: isolate;
-    background: rgb(var(--focus-bg-r, 9), var(--focus-bg-g, 10), var(--focus-bg-b, 10));
-    transition: background 180ms linear;
-}
-
-.focus-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background-image: url("/ZERO Media/ZERO Syrup Images/Group Photo ZERO Syrup.png");
-    background-size: cover;
-    background-position: center;
-    filter: grayscale(0.45) saturate(0.55) brightness(0.22);
-    opacity: 0.22;
-}
-
-.focus-scene {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-}
-
-.focus-headline,
-.focus-card {
-    --focus: 0;
-    --focus-distance: 1;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    will-change: transform, opacity, filter;
-    transition: box-shadow 220ms ease, border-color 220ms ease;
-}
-
-.focus-headline {
-    --focus: 1;
-    z-index: 10;
-    width: min(37rem, 44vw);
-    min-height: 34rem;
+.habits-layout {
     display: grid;
-    place-items: center;
-    padding: clamp(1.6rem, 3vw, 3rem);
-    border-radius: 28px;
-    background: #050606;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 36px 90px rgba(0, 0, 0, 0.38);
-    transform:
-        translate3d(-50%, -50%, 0)
-        scale(calc(0.98 - var(--focus-progress) * 0.04));
-    opacity: 1;
-    filter: none;
+    gap: clamp(1.5rem, 3vw, 2.8rem);
 }
 
-.focus-headline h2 {
-    font-size: clamp(3.7rem, 6vw, 6.8rem);
-    line-height: 0.86;
+.habits-heading h2 {
+    max-width: 9ch;
+    color: var(--text);
+    font-size: clamp(3.2rem, 7.6vw, 7rem);
+    line-height: 0.88;
     letter-spacing: 0;
-    max-width: 8.5ch;
-    color: #f8fafc;
-    text-align: center;
 }
 
-.focus-card {
-    width: min(23rem, 28vw);
-    min-height: 17.5rem;
+.habits-grid {
     display: grid;
-    align-content: end;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
-    padding: clamp(1.25rem, 2vw, 1.8rem);
+    align-items: stretch;
+}
+
+.habit-card {
+    min-height: clamp(22rem, 31vw, 29rem);
+    display: grid;
+    align-content: space-between;
+    gap: 1.2rem;
+    padding: clamp(1.1rem, 1.8vw, 1.55rem);
     border-radius: 24px;
-    border: 1px solid rgba(255, 255, 255, calc(0.08 + var(--focus) * 0.14));
-    background: rgb(
-        calc(31 + var(--focus) * 10),
-        calc(31 + var(--focus) * 10),
-        calc(31 + var(--focus) * 10)
-    );
-    box-shadow:
-        0 calc(16px + var(--focus) * 22px) calc(36px + var(--focus) * 44px) rgba(0, 0, 0, calc(0.24 + var(--focus) * 0.16));
-    transform:
-        translate3d(calc(-50% + var(--focus-x)), calc(-50% + var(--focus-y)), 0)
-        scale(calc(0.86 + var(--focus) * 0.12));
-    opacity: calc(0.62 + var(--focus) * 0.38);
-    filter:
-        grayscale(calc((1 - var(--focus)) * 0.42))
-        saturate(calc(0.72 + var(--focus) * 0.38));
+    background: #ffffff;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    box-shadow: 0 18px 46px rgba(15, 23, 42, 0.07);
+    transform: translateY(0) scale(1);
+    transform-origin: center;
+    transition:
+        transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 560ms ease,
+        border-color 560ms ease,
+        color 560ms ease,
+        box-shadow 560ms ease;
 }
 
-.focus-card span,
-.focus-card strong,
-.focus-card p {
-    position: relative;
-    z-index: 1;
-}
-
-.focus-card span {
-    width: fit-content;
-    color: rgba(29, 191, 211, calc(0.55 + var(--focus) * 0.35));
+.habit-card span {
+    color: var(--accent-strong);
     font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 0.16rem;
 }
 
-.focus-card strong {
+.habit-card strong {
     max-width: 10ch;
-    color: #f8fafc;
-    font-size: clamp(1.75rem, 2.65vw, 2.95rem);
-    line-height: 0.92;
+    color: var(--text);
+    font-size: clamp(1.55rem, 2vw, 2.25rem);
+    line-height: 0.98;
     letter-spacing: 0;
 }
 
-.focus-card p {
-    max-width: 24rem;
-    color: rgba(226, 232, 240, calc(0.62 + var(--focus) * 0.28));
-    font-size: clamp(0.95rem, 1vw, 1.05rem);
+.habit-card p {
+    color: var(--text-mid);
+    font-size: 0.96rem;
     line-height: 1.48;
 }
 
-.focus-card-syrup {
-    z-index: 4;
+.habit-card:hover,
+.habit-card:focus-within {
+    color: #ffffff;
+    background: var(--accent);
+    border-color: rgba(29, 191, 211, 0.7);
+    box-shadow: 0 26px 64px rgba(29, 191, 211, 0.24);
+    transform: translateY(-8px) scale(1.035);
 }
 
-.focus-card-drops {
-    z-index: 5;
-}
-
-.focus-card-zfit {
-    z-index: 6;
-}
-
-.focus-card-channel {
-    z-index: 7;
+.habit-card:hover span,
+.habit-card:hover strong,
+.habit-card:hover p,
+.habit-card:focus-within span,
+.habit-card:focus-within strong,
+.habit-card:focus-within p {
+    color: rgba(255, 255, 255, 0.92);
 }
 
 .feature-layout {
@@ -2885,8 +2814,8 @@ body.cart-drawer-open {
         min-height: 420px;
     }
 
-    .product-lines-parallax .parallax-image {
-        transform: translate3d(0, 0, 0) scale(1.24);
+    .habits-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .catalog-detail-section.reverse .catalog-detail-media,
@@ -2904,50 +2833,6 @@ body.cart-drawer-open {
 }
 
 @media (max-width: 900px) {
-    .focus-track {
-        height: auto;
-    }
-
-    .focus-sticky {
-        position: static;
-        min-height: auto;
-    }
-
-    .focus-stage {
-        min-height: auto;
-        padding: 5.6rem 0 4.5rem;
-    }
-
-    .focus-scene {
-        min-height: auto;
-        display: grid;
-        gap: 1rem;
-    }
-
-    .focus-headline,
-    .focus-card {
-        position: relative;
-        top: auto;
-        left: auto;
-        width: 100%;
-        transform: none !important;
-        opacity: 1;
-        filter: none;
-    }
-
-    .focus-headline h2 {
-        font-size: clamp(3rem, 13vw, 5rem);
-    }
-
-    .focus-card {
-        min-height: auto;
-    }
-
-    .focus-card strong {
-        max-width: 12ch;
-        font-size: clamp(2rem, 9vw, 3.2rem);
-    }
-
     .product-split-track {
         height: auto;
     }
@@ -3221,16 +3106,6 @@ body.cart-drawer-open {
         object-fit: contain;
     }
 
-    .product-lines-parallax {
-        inset: -4% 0;
-    }
-
-    .product-lines-parallax .parallax-image {
-        height: 116%;
-        filter: grayscale(1) blur(2px);
-        opacity: 0.42;
-    }
-
     .product-story-sticky {
         position: static;
         height: auto;
@@ -3372,6 +3247,10 @@ body.cart-drawer-open {
         line-height: 1.5;
     }
 
+    .habits-grid {
+        grid-template-columns: 1fr;
+    }
+
     .showcase-header {
         gap: 0.7rem;
     }
@@ -3405,6 +3284,12 @@ body.cart-drawer-open {
     .timeline-card {
         padding: 1rem;
         min-height: auto;
+    }
+
+    .habit-card,
+    .product-lines-section .journey-card,
+    .product-lines-section .journey-card-dark {
+        min-height: 18rem;
     }
 
     .journey-card p,

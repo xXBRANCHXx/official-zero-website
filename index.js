@@ -188,73 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-    const experienceTrack = document.getElementById('experience-track');
-    const experienceStage = document.getElementById('experience-stage');
-    const experienceItems = experienceStage ? Array.from(experienceStage.querySelectorAll('[data-focus-item]')) : [];
-
-    if (experienceTrack && experienceStage && experienceItems.length) {
-        let experienceFrame = 0;
-
-        const palettes = [
-            [9, 10, 10],
-            [10, 13, 13],
-            [11, 12, 15],
-            [10, 13, 11],
-            [12, 11, 10],
-        ];
-
-        const mixChannel = (from, to, amount) => Math.round(from + ((to - from) * amount));
-
-        const updateExperienceFocus = () => {
-            experienceFrame = 0;
-
-            if (window.matchMedia('(max-width: 900px)').matches) {
-                experienceItems.forEach((item) => {
-                    item.style.setProperty('--focus', '1');
-                    item.style.setProperty('--focus-distance', '0');
-                    item.style.zIndex = '';
-                });
-                experienceStage.style.setProperty('--focus-progress', '1');
-                return;
-            }
-
-            const viewportHeight = window.innerHeight || 1;
-            const distance = Math.max(experienceTrack.offsetHeight - viewportHeight, 1);
-            const leadIn = viewportHeight * 0.1;
-            const rawProgress = clamp((window.scrollY - experienceTrack.offsetTop + leadIn) / (distance * 0.76), 0, 1);
-            const activeIndex = rawProgress * (experienceItems.length - 1);
-
-            experienceStage.style.setProperty('--focus-progress', rawProgress.toFixed(4));
-
-            const paletteIndex = Math.min(Math.floor(activeIndex), palettes.length - 1);
-            const nextPaletteIndex = Math.min(paletteIndex + 1, palettes.length - 1);
-            const paletteMix = activeIndex - paletteIndex;
-            const mixedPalette = palettes[paletteIndex].map((channel, index) => (
-                mixChannel(channel, palettes[nextPaletteIndex][index], paletteMix)
-            ));
-
-            experienceStage.style.setProperty('--focus-bg-r', mixedPalette[0]);
-            experienceStage.style.setProperty('--focus-bg-g', mixedPalette[1]);
-            experienceStage.style.setProperty('--focus-bg-b', mixedPalette[2]);
-
-            experienceItems.forEach((item, index) => {
-                const distanceFromFocus = Math.abs(activeIndex - index);
-                const focus = clamp(1 - (distanceFromFocus * 1.05), 0, 1);
-                item.style.setProperty('--focus', focus.toFixed(4));
-                item.style.setProperty('--focus-distance', distanceFromFocus.toFixed(4));
-                item.style.zIndex = String(20 + Math.round(focus * 20));
-            });
-        };
-
-        const requestExperienceFrame = () => {
-            if (experienceFrame) return;
-            experienceFrame = window.requestAnimationFrame(updateExperienceFocus);
-        };
-
-        updateExperienceFocus();
-        window.addEventListener('scroll', requestExperienceFrame, { passive: true });
-        window.addEventListener('resize', requestExperienceFrame);
-    }
 
     // Pinned Product Story
     const storyTrack = document.getElementById('product-story-track');
@@ -309,13 +242,55 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', updateStoryProgress);
     }
 
+    const productLinesSection = document.querySelector('.product-lines-section');
+
+    if (productLinesSection) {
+        const pageBase = [255, 255, 255];
+        const tealBase = [29, 191, 211];
+        let ambientFrame = 0;
+
+        const updateAmbientTeal = () => {
+            ambientFrame = 0;
+            const rect = productLinesSection.getBoundingClientRect();
+            const viewportHeight = window.innerHeight || 1;
+            const fadeIn = clamp((viewportHeight - rect.top) / (viewportHeight * 0.72), 0, 1);
+            const fadeOut = clamp((viewportHeight * 0.5 - rect.bottom) / (viewportHeight * 0.72), 0, 1);
+            const amount = fadeIn * (1 - fadeOut);
+            const mixed = pageBase.map((channel, index) => Math.round(channel + ((tealBase[index] - channel) * amount)));
+
+            document.body.style.setProperty('--ambient-bg', `rgb(${mixed.join(', ')})`);
+        };
+
+        const requestAmbientFrame = () => {
+            if (ambientFrame) return;
+            ambientFrame = window.requestAnimationFrame(updateAmbientTeal);
+        };
+
+        updateAmbientTeal();
+        window.addEventListener('scroll', requestAmbientFrame, { passive: true });
+        window.addEventListener('resize', requestAmbientFrame);
+    }
+
+    const productLineCards = document.querySelectorAll('.product-lines-section .journey-card');
+
+    if (productLineCards.length) {
+        const productLineObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-frame');
+                    productLineObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+
+        productLineCards.forEach((card) => productLineObserver.observe(card));
+    }
+
     const testimonialsTrack = document.getElementById('testimonials-track');
     const testimonialsRail = document.getElementById('testimonials-rail');
     const testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
 
     if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
-        let testimonialsManualOffset = 0;
-
         const updateTestimonialsPosition = () => {
             if (isCompactViewport()) {
                 testimonialsRows.forEach((row) => {
@@ -330,9 +305,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const rawProgress = clamp((leadIn - rect.top) / (distance + leadIn), 0, 1);
             const progress = 1 - Math.pow(1 - rawProgress, 1.35);
 
-            const largestShift = testimonialsRows.reduce((max, row) => Math.max(max, row.scrollWidth - window.innerWidth), 0);
-            testimonialsManualOffset = clamp(testimonialsManualOffset, -largestShift, largestShift);
-
             testimonialsRows.forEach((row) => {
                 const maxShift = Math.max(row.scrollWidth - window.innerWidth, 0);
                 const startOffset = Math.min(window.innerWidth * 0.14, 190);
@@ -340,22 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const baseTranslate = direction === 1
                     ? startOffset - (progress * (maxShift + startOffset))
                     : -maxShift - startOffset + (progress * (maxShift + startOffset));
-                const translateX = baseTranslate + (testimonialsManualOffset * direction);
 
-                row.style.transform = `translate3d(${translateX.toFixed(1)}px, 0, 0)`;
+                row.style.transform = `translate3d(${baseTranslate.toFixed(1)}px, 0, 0)`;
             });
         };
-
-        testimonialsRail.addEventListener('wheel', (event) => {
-            if (isCompactViewport()) return;
-
-            const maxShift = testimonialsRows.reduce((max, row) => Math.max(max, row.scrollWidth - window.innerWidth), 0);
-            if (!maxShift) return;
-
-            event.preventDefault();
-            testimonialsManualOffset = clamp(testimonialsManualOffset - event.deltaY * 0.45, -maxShift, maxShift);
-            updateTestimonialsPosition();
-        }, { passive: false });
 
         updateTestimonialsPosition();
         window.addEventListener('scroll', updateTestimonialsPosition, { passive: true });
@@ -436,7 +396,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Transition Revealer
-    const revealItems = document.querySelectorAll('.n-card, .dark-accent-card, .hero-h1, .hero-p, .flv-card-min, .metric-strip, .feature-wireframe, .showcase-panel, .journey-card, .timeline-card, .footer-shell');
+    const revealItems = document.querySelectorAll('.n-card, .dark-accent-card, .hero-h1, .hero-p, .flv-card-min, .metric-strip, .feature-wireframe, .showcase-panel, .page-journey-grid .journey-card, .timeline-card, .footer-shell');
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
