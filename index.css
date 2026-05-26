@@ -2213,7 +2213,7 @@ body.cart-drawer-open {
 
 .testimonials-track {
     position: relative;
-    height: 180vh;
+    height: 128vh;
     overflow: hidden;
 }
 
@@ -2380,7 +2380,8 @@ body.cart-drawer-open {
     margin-top: -19rem;
     padding: 3.6rem 0 3.7rem;
     overflow: hidden;
-    background: #f7faf9;
+    background:
+        linear-gradient(180deg, #eef1f1 0, #eef1f1 3.4rem, #f7faf9 8.2rem, #f7faf9 100%);
 }
 
 .lab-certificate-section::before {

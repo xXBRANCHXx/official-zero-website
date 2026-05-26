@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loopRows.forEach((loop) => {
                 const cycleWidth = Math.max(loop.cycleWidth, 1);
                 const startOffset = Math.min(window.innerWidth * 0.14, 190);
-                const travel = (scrollTravel * 1.05) % cycleWidth;
+                const travel = (scrollTravel * 1.72) % cycleWidth;
                 const direction = loop.row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
                 const baseTranslate = direction === 1
                     ? startOffset - travel
