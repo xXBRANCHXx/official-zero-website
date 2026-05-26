@@ -1886,7 +1886,7 @@ body.cart-drawer-open {
 
 .testimonials-track {
     position: relative;
-    height: 138vh;
+    height: 112vh;
     overflow: hidden;
 }
 
@@ -1903,7 +1903,7 @@ body.cart-drawer-open {
     position: relative;
     z-index: 1;
     width: 100%;
-    padding: 0.8rem 0 1.15rem;
+    padding: 0.8rem 0 0;
     overflow: hidden;
 }
 
@@ -2048,21 +2048,12 @@ body.cart-drawer-open {
     color: rgba(241, 245, 249, 0.94);
 }
 
-.testimonials-instruction {
-    margin: 1rem max(1.5rem, calc((100vw - 1200px) / 2 + 1rem)) 0;
-    color: var(--text-soft);
-    font-size: 0.82rem;
-    letter-spacing: 0.08rem;
-    text-transform: uppercase;
-}
-
 .lab-certificate-section {
     position: relative;
-    padding: 4.2rem 0 4.4rem;
+    margin-top: -19rem;
+    padding: 3.6rem 0 3.7rem;
     overflow: hidden;
-    background:
-        radial-gradient(circle at 78% 35%, rgba(29, 191, 211, 0.12), transparent 24rem),
-        linear-gradient(180deg, #f7faf9 0%, #eef4f2 100%);
+    background: #f7faf9;
 }
 
 .lab-certificate-section::before {
@@ -2071,8 +2062,8 @@ body.cart-drawer-open {
     inset: 0;
     pointer-events: none;
     background:
-        linear-gradient(90deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 52%),
         repeating-linear-gradient(90deg, rgba(17, 24, 39, 0.028) 0 1px, transparent 1px 7rem);
+    opacity: 0.58;
 }
 
 .lab-certificate-inner {
@@ -2101,45 +2092,79 @@ body.cart-drawer-open {
     align-content: center;
     gap: 0.15rem;
     border-radius: 42% 58% 48% 52% / 54% 42% 58% 46%;
-    color: #f8fafc;
+    color: #081016;
     text-decoration: none;
-    background:
-        radial-gradient(circle at 34% 22%, rgba(255, 255, 255, 0.38), transparent 28%),
-        linear-gradient(145deg, #111827 0%, #05070a 58%, #0c2d33 100%);
+    background: transparent;
+    border: 1.5px solid rgba(8, 16, 22, 0.84);
     box-shadow:
-        0 34px 76px rgba(15, 23, 42, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -18px 48px rgba(29, 191, 211, 0.16);
+        0 24px 60px rgba(15, 23, 42, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.58);
     transform: rotate(-5deg);
-    transition: transform var(--transition), box-shadow var(--transition);
+    transition:
+        color 700ms ease,
+        transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 700ms ease,
+        box-shadow 700ms ease;
 }
 
 .lab-certificate-link::before {
     content: "";
     position: absolute;
-    inset: -1px;
+    inset: 0;
     border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(29, 191, 211, 0.18), rgba(255, 255, 255, 0.12));
+    background: #081016;
+    opacity: 0;
+    transform: scale(0.92);
+    transition:
+        opacity 850ms ease,
+        transform 850ms cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    mask-composite: exclude;
+}
+
+.lab-certificate-link::after {
+    content: "↗";
+    position: absolute;
+    top: 18%;
+    right: 19%;
+    z-index: 1;
+    width: 2.15rem;
+    height: 2.15rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+    font-size: 1.12rem;
+    font-weight: 900;
+    line-height: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+        transform 520ms cubic-bezier(0.16, 1, 0.3, 1),
+        background 700ms ease,
+        color 700ms ease;
 }
 
 .lab-certificate-link:hover,
 .lab-certificate-link:focus-visible {
+    color: #f8fafc;
+    border-color: rgba(8, 16, 22, 0.9);
     transform: rotate(-2deg) translateY(-4px);
     box-shadow:
-        0 42px 90px rgba(15, 23, 42, 0.24),
-        inset 0 1px 0 rgba(255, 255, 255, 0.38),
-        inset 0 -18px 48px rgba(29, 191, 211, 0.22);
+        0 34px 76px rgba(15, 23, 42, 0.18),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     outline: none;
+}
+
+.lab-certificate-link:hover::before,
+.lab-certificate-link:focus-visible::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.lab-certificate-link:hover::after,
+.lab-certificate-link:focus-visible::after {
+    color: #081016;
+    background: #f8fafc;
+    transform: translate3d(0.45rem, -0.45rem, 0);
 }
 
 .lab-certificate-link span,
@@ -2154,7 +2179,8 @@ body.cart-drawer-open {
     font-size: clamp(0.76rem, 1vw, 0.92rem);
     font-weight: 900;
     letter-spacing: 0.18rem;
-    color: rgba(226, 232, 240, 0.72);
+    color: currentColor;
+    opacity: 0.58;
 }
 
 .lab-certificate-link strong {
@@ -3280,13 +3306,9 @@ body.cart-drawer-open {
         line-height: 1.24;
     }
 
-    .testimonials-instruction {
-        margin: 1rem;
-        font-size: 0.78rem;
-    }
-
     .lab-certificate-section {
-        padding: 3.4rem 0 3.7rem;
+        margin-top: 0;
+        padding: 3rem 0 3.2rem;
     }
 
     .lab-certificate-inner {
