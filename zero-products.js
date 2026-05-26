@@ -204,7 +204,7 @@ export const initUniversalCartDrawer = () => {
     if (!document.getElementById('zero-cart-drawer')) {
         document.body.insertAdjacentHTML('beforeend', `
             <div id="zero-cart-backdrop" class="zero-cart-backdrop" aria-hidden="true"></div>
-            <aside id="zero-cart-drawer" class="zero-cart-drawer" aria-hidden="true" aria-label="Shopping cart">
+            <aside id="zero-cart-drawer" class="zero-cart-drawer" aria-hidden="true" aria-label="Shopping cart" data-lenis-prevent>
                 <div class="zero-cart-drawer-head">
                     <div>
                         <span class="showcase-badge">Cart</span>

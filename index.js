@@ -1,3 +1,5 @@
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import { ZERO_RELEASES, initUniversalCartDrawer, isDropsFruit5mlLive } from './zero-products.js';
 
 const PRIMARY_NAV_ITEMS = [
@@ -21,6 +23,58 @@ const isCurrentHref = (href) => normalizePath(href) === normalizePath(window.loc
 const renderAnchor = ({ label, href }) => {
     const current = isCurrentHref(href);
     return `<a href="${href}"${current ? ' class="active" aria-current="page"' : ''}>${label}</a>`;
+};
+
+const initSmoothScroll = () => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    if (reduceMotion.matches) {
+        return null;
+    }
+
+    const lenis = new Lenis({
+        autoRaf: true,
+        anchors: {
+            offset: -88,
+            duration: 1.05,
+            easing: (t) => 1 - Math.pow(1 - t, 3),
+        },
+        duration: 1.08,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        lerp: 0.09,
+        smoothWheel: true,
+        syncTouch: false,
+        wheelMultiplier: 0.92,
+        touchMultiplier: 1,
+        prevent: (node) => node.closest?.('[data-scroll-lock], .global-overlay, .zero-cart-drawer'),
+    });
+
+    const syncScrollState = () => {
+        const shouldStop = document.body.classList.contains('locked')
+            || document.body.classList.contains('cart-drawer-open');
+
+        if (shouldStop) {
+            lenis.stop();
+        } else {
+            lenis.start();
+        }
+    };
+
+    const bodyObserver = new MutationObserver(syncScrollState);
+    bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    reduceMotion.addEventListener('change', (event) => {
+        if (event.matches) {
+            lenis.destroy();
+            bodyObserver.disconnect();
+            window.zeroLenis = null;
+        }
+    });
+
+    window.zeroLenis = lenis;
+    syncScrollState();
+
+    return lenis;
 };
 
 const normalizeNavigation = () => {
@@ -77,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     syncScheduledDropsCopy();
     const cartApi = initUniversalCartDrawer();
     window.zeroCartApi = cartApi;
+    initSmoothScroll();
     const closeOverlay = (element) => {
         if (!element?.classList.contains('active')) return;
         element.classList.remove('expanded');

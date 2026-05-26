@@ -59,6 +59,10 @@ html {
     scroll-behavior: smooth;
 }
 
+html.lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+}
+
 body {
     background: var(--ambient-bg, #ffffff);
     color: var(--text);
@@ -294,6 +298,12 @@ section {
 
 body.cart-drawer-open {
     overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
 }
 
 .zero-cart-backdrop {
