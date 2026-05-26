@@ -1403,11 +1403,11 @@ body.cart-drawer-open {
 }
 
 .habits-heading h2 {
-    max-width: 8.4ch;
+    max-width: 11ch;
     color: var(--text);
-    font-size: clamp(3.6rem, 7vw, 7.2rem);
-    line-height: 0.88;
-    letter-spacing: 0;
+    font-size: clamp(3rem, 5.6vw, 5.8rem);
+    line-height: 0.94;
+    letter-spacing: -0.025em;
     text-align: left;
 }
 
@@ -3316,7 +3316,8 @@ body.cart-drawer-open {
     }
 
     .habits-heading h2 {
-        font-size: clamp(2.8rem, 12vw, 4.8rem);
+        font-size: clamp(2.35rem, 10vw, 3.8rem);
+        max-width: 12ch;
     }
 
     .showcase-header {
