@@ -385,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
         testimonialsRail.classList.add('testimonials-looping');
 
         const reviewGap = 16;
+        const reviewOffscreenBuffer = 96;
         const reviewCards = testimonialsRows.flatMap((row, lane) => (
             Array.from(row.querySelectorAll('.testimonial-card')).map((card) => ({
                 card,
@@ -393,14 +394,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 width: 0,
             }))
         ));
-        let reviewFrame = 0;
-        let lastReviewTime = 0;
+        let lastReviewScroll = 0;
+        let reviewScrollFrame = 0;
 
         const layoutTestimonialsLoop = () => {
             const rowHeight = reviewCards[0]?.card.offsetHeight || 260;
             const laneGap = 16;
             const laneY = [0, rowHeight + laneGap];
-            const laneRight = [0, window.innerWidth * 0.18];
+            const laneRight = [
+                Math.max(24, (window.innerWidth - 1200) / 2 + 16),
+                Math.max(64, (window.innerWidth - 1200) / 2 + 64),
+            ];
 
             reviewCards.forEach((item, index) => {
                 const stagger = index % 2 === 0 ? 0 : 18;
@@ -412,26 +416,48 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        const loopTestimonials = (time) => {
-            if (!lastReviewTime) {
-                lastReviewTime = time;
+        const getReviewScroll = () => {
+            const rect = testimonialsTrack.getBoundingClientRect();
+            return window.innerHeight * 0.52 - rect.top;
+        };
+
+        const applyTestimonialsScroll = () => {
+            reviewScrollFrame = 0;
+
+            if (isCompactViewport()) {
+                return;
             }
 
-            const delta = Math.min((time - lastReviewTime) / 1000, 0.05);
-            lastReviewTime = time;
-            const laneRight = [0, 0];
+            const currentScroll = getReviewScroll();
+            const scrollDelta = currentScroll - lastReviewScroll;
+            lastReviewScroll = currentScroll;
+
+            if (Math.abs(scrollDelta) < 0.1) {
+                return;
+            }
+
+            const moveX = scrollDelta * 0.74;
+            const laneRight = [-Infinity, -Infinity];
+            const laneLeft = [Infinity, Infinity];
 
             reviewCards.forEach((item) => {
                 laneRight[item.lane] = Math.max(laneRight[item.lane], item.x + item.width);
+                laneLeft[item.lane] = Math.min(laneLeft[item.lane], item.x);
             });
 
             reviewCards.forEach((item) => {
-                item.x -= 42 * delta;
+                item.x -= moveX;
 
-                if (item.x + item.width < -reviewGap) {
+                if (moveX > 0 && item.x + item.width < -reviewOffscreenBuffer) {
                     item.lane = item.lane === 0 ? 1 : 0;
-                    item.x = Math.max(window.innerWidth + reviewGap, laneRight[item.lane] + reviewGap);
+                    item.x = Math.max(window.innerWidth + reviewOffscreenBuffer, laneRight[item.lane] + reviewGap);
                     laneRight[item.lane] = item.x + item.width;
+                }
+
+                if (moveX < 0 && item.x > window.innerWidth + reviewOffscreenBuffer) {
+                    item.lane = item.lane === 0 ? 1 : 0;
+                    item.x = Math.min(-item.width - reviewOffscreenBuffer, laneLeft[item.lane] - item.width - reviewGap);
+                    laneLeft[item.lane] = item.x;
                 }
 
                 const rowHeight = item.card.offsetHeight || 260;
@@ -439,17 +465,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.card.style.setProperty('--review-x', `${item.x.toFixed(1)}px`);
                 item.card.style.setProperty('--review-y', `${y}px`);
             });
+        };
 
-            reviewFrame = window.requestAnimationFrame(loopTestimonials);
+        const requestTestimonialsScroll = () => {
+            if (reviewScrollFrame) return;
+            reviewScrollFrame = window.requestAnimationFrame(applyTestimonialsScroll);
         };
 
         layoutTestimonialsLoop();
-        reviewFrame = window.requestAnimationFrame(loopTestimonials);
+        lastReviewScroll = getReviewScroll();
+        window.addEventListener('scroll', requestTestimonialsScroll, { passive: true });
         window.addEventListener('resize', () => {
-            window.cancelAnimationFrame(reviewFrame);
-            lastReviewTime = 0;
             layoutTestimonialsLoop();
-            reviewFrame = window.requestAnimationFrame(loopTestimonials);
+            lastReviewScroll = getReviewScroll();
+            requestTestimonialsScroll();
         });
     }
 
