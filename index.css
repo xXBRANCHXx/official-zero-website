@@ -2091,7 +2091,7 @@ body.cart-drawer-open {
     place-items: center;
     align-content: center;
     gap: 0.15rem;
-    border-radius: 42% 58% 48% 52% / 54% 42% 58% 46%;
+    border-radius: 50%;
     color: #081016;
     text-decoration: none;
     background: transparent;
@@ -2099,7 +2099,7 @@ body.cart-drawer-open {
     box-shadow:
         0 24px 60px rgba(15, 23, 42, 0.1),
         inset 0 0 0 1px rgba(255, 255, 255, 0.58);
-    transform: rotate(-5deg);
+    transform: translateY(0);
     transition:
         color 700ms ease,
         transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -2147,7 +2147,7 @@ body.cart-drawer-open {
 .lab-certificate-link:focus-visible {
     color: #f8fafc;
     border-color: rgba(8, 16, 22, 0.9);
-    transform: rotate(-2deg) translateY(-4px);
+    transform: translateY(-4px);
     box-shadow:
         0 34px 76px rgba(15, 23, 42, 0.18),
         inset 0 0 0 1px rgba(255, 255, 255, 0.1);
