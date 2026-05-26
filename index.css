@@ -750,9 +750,7 @@ body.cart-drawer-open {
     position: relative;
     overflow: hidden;
     isolation: isolate;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 18%),
-        linear-gradient(180deg, #16202a 0%, #0f161e 100%);
+    background: transparent;
     color: #f8fafc;
 }
 
