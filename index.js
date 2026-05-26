@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (productLinesSection) {
         const pageBase = [255, 255, 255];
-        const grayBase = [232, 235, 235];
+        const grayBase = [218, 222, 222];
         let ambientFrame = 0;
 
         const updateAmbientDark = () => {
