@@ -1687,14 +1687,29 @@ body.cart-drawer-open {
 .sales-proof-section {
     padding: clamp(4.5rem, 8vw, 7rem) 0;
     background: #ffffff;
+    overflow: hidden;
+}
+
+.sales-proof-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(20rem, 1.05fr);
+    gap: clamp(1.4rem, 5vw, 5rem);
+    align-items: center;
+    perspective: 1200px;
+    transform-style: preserve-3d;
 }
 
 .sales-proof-heading {
-    max-width: 860px;
+    max-width: none;
+    margin-bottom: 0;
+    transform: rotateY(10deg) translateX(0.5rem);
+    transform-origin: right center;
 }
 
 .sales-proof-heading h2 {
-    max-width: 12ch;
+    max-width: 11ch;
+    font-size: clamp(3rem, 7vw, 6.6rem);
+    line-height: 0.9;
 }
 
 .sales-proof-panel {
@@ -1705,6 +1720,9 @@ body.cart-drawer-open {
     background: linear-gradient(180deg, #16202a 0%, #0f161e 100%);
     color: #f8fafc;
     box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18);
+    transform: rotateY(-12deg) translateZ(-1.2rem);
+    transform-origin: left center;
+    will-change: transform;
 }
 
 .sales-proof-panel strong {
@@ -1722,7 +1740,7 @@ body.cart-drawer-open {
 }
 
 .sales-proof-panel p {
-    max-width: 46rem;
+    max-width: 34rem;
     color: rgba(226, 232, 240, 0.78);
     font-size: 1.04rem;
     line-height: 1.58;
@@ -3030,6 +3048,16 @@ body.cart-drawer-open {
     .hero-visual,
     .page-hero-visual {
         min-height: 420px;
+    }
+
+    .sales-proof-layout {
+        grid-template-columns: 1fr;
+        gap: 1.6rem;
+    }
+
+    .sales-proof-heading,
+    .sales-proof-panel {
+        transform: none;
     }
 
     .habits-layout {
