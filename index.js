@@ -275,6 +275,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const productLineCards = document.querySelectorAll('.product-lines-section .journey-card');
 
+    if (productLinesSection) {
+        const productSectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    productLinesSection.classList.add('in-frame');
+                    productSectionObserver.unobserve(productLinesSection);
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+
+        productSectionObserver.observe(productLinesSection);
+    }
+
     if (productLineCards.length) {
         const productLineObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
