@@ -255,11 +255,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const viewportHeight = window.innerHeight || 1;
             const fadeInStart = viewportHeight - 300;
             const fadeIn = clamp((fadeInStart - rect.top) / 220, 0, 1);
-            const fadeOut = clamp((viewportHeight * 0.42 - rect.bottom) / 240, 0, 1);
+            const fadeOut = clamp((viewportHeight * 0.72 - rect.bottom) / 220, 0, 1);
             const amount = fadeIn * (1 - fadeOut);
             const mixed = pageBase.map((channel, index) => Math.round(channel + ((darkBase[index] - channel) * amount)));
 
             document.body.style.setProperty('--ambient-bg', `rgb(${mixed.join(', ')})`);
+            productLinesSection.style.setProperty('--product-lines-darkness', amount.toFixed(4));
         };
 
         const requestAmbientFrame = () => {
