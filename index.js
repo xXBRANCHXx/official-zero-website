@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (productLinesSection) {
         const pageBase = [255, 255, 255];
-        const darkBase = [22, 32, 42];
+        const grayBase = [232, 235, 235];
         let ambientFrame = 0;
 
         const updateAmbientDark = () => {
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const fadeIn = clamp((fadeInStart - rect.top) / 220, 0, 1);
             const fadeOut = clamp((viewportHeight * 0.72 - rect.bottom) / 220, 0, 1);
             const amount = fadeIn * (1 - fadeOut);
-            const mixed = pageBase.map((channel, index) => Math.round(channel + ((darkBase[index] - channel) * amount)));
+            const mixed = pageBase.map((channel, index) => Math.round(channel + ((grayBase[index] - channel) * amount)));
 
             document.body.style.setProperty('--ambient-bg', `rgb(${mixed.join(', ')})`);
             productLinesSection.style.setProperty('--product-lines-darkness', amount.toFixed(4));
