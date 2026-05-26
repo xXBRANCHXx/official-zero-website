@@ -1871,46 +1871,17 @@ body.cart-drawer-open {
     position: relative;
     overflow: hidden;
     border-top: 1px solid rgba(17, 24, 39, 0.06);
-    border-bottom: 1px solid rgba(17, 24, 39, 0.06);
 }
 
 .testimonials-heading {
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.25rem;
+    text-align: left;
 }
 
-.testimonials-meta {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.9rem;
-    margin-bottom: 1.4rem;
-}
-
-.testimonials-meta-card {
-    padding: 0.95rem 1rem;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.62);
-    border: 1px solid rgba(17, 24, 39, 0.08);
-    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.04);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    display: grid;
-    gap: 0.22rem;
-}
-
-.testimonials-meta-card span {
-    font-size: 0.72rem;
-    font-weight: 800;
-    letter-spacing: 0.12rem;
-    text-transform: uppercase;
-    color: var(--text-soft);
-}
-
-.testimonials-meta-card strong {
-    font-size: 0.96rem;
-    line-height: 1.2;
-    color: var(--text);
+.testimonials-heading h2 {
+    max-width: 11ch;
+    font-size: clamp(3rem, 7vw, 6.1rem);
+    line-height: 0.9;
 }
 
 .testimonials-track {
@@ -2083,6 +2054,114 @@ body.cart-drawer-open {
     font-size: 0.82rem;
     letter-spacing: 0.08rem;
     text-transform: uppercase;
+}
+
+.lab-certificate-section {
+    position: relative;
+    padding: 4.2rem 0 4.4rem;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 78% 35%, rgba(29, 191, 211, 0.12), transparent 24rem),
+        linear-gradient(180deg, #f7faf9 0%, #eef4f2 100%);
+}
+
+.lab-certificate-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0) 52%),
+        repeating-linear-gradient(90deg, rgba(17, 24, 39, 0.028) 0 1px, transparent 1px 7rem);
+}
+
+.lab-certificate-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.lab-certificate-inner h2 {
+    max-width: 8ch;
+    font-size: clamp(3.2rem, 8vw, 7rem);
+    line-height: 0.84;
+    color: #081016;
+}
+
+.lab-certificate-link {
+    position: relative;
+    flex: 0 0 auto;
+    width: clamp(12rem, 22vw, 18rem);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.15rem;
+    border-radius: 42% 58% 48% 52% / 54% 42% 58% 46%;
+    color: #f8fafc;
+    text-decoration: none;
+    background:
+        radial-gradient(circle at 34% 22%, rgba(255, 255, 255, 0.38), transparent 28%),
+        linear-gradient(145deg, #111827 0%, #05070a 58%, #0c2d33 100%);
+    box-shadow:
+        0 34px 76px rgba(15, 23, 42, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -18px 48px rgba(29, 191, 211, 0.16);
+    transform: rotate(-5deg);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.lab-certificate-link::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.84), rgba(29, 191, 211, 0.18), rgba(255, 255, 255, 0.12));
+    pointer-events: none;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    mask-composite: exclude;
+}
+
+.lab-certificate-link:hover,
+.lab-certificate-link:focus-visible {
+    transform: rotate(-2deg) translateY(-4px);
+    box-shadow:
+        0 42px 90px rgba(15, 23, 42, 0.24),
+        inset 0 1px 0 rgba(255, 255, 255, 0.38),
+        inset 0 -18px 48px rgba(29, 191, 211, 0.22);
+    outline: none;
+}
+
+.lab-certificate-link span,
+.lab-certificate-link strong {
+    display: block;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+}
+
+.lab-certificate-link span {
+    font-size: clamp(0.76rem, 1vw, 0.92rem);
+    font-weight: 900;
+    letter-spacing: 0.18rem;
+    color: rgba(226, 232, 240, 0.72);
+}
+
+.lab-certificate-link strong {
+    font-family: 'Causten', 'Manrope', sans-serif;
+    font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+    line-height: 0.9;
+    letter-spacing: 0;
 }
 
 .product-split-section {
@@ -2595,7 +2674,6 @@ body.cart-drawer-open {
     .syrup-builder-layout,
     .journey-grid,
     .timeline-grid,
-    .testimonials-meta,
     .board-grid,
     .grid-v6,
     .panel-grid,
@@ -3151,16 +3229,6 @@ body.cart-drawer-open {
         align-self: flex-end;
     }
 
-    .testimonials-meta {
-        gap: 0.7rem;
-        margin-bottom: 1rem;
-    }
-
-    .testimonials-meta-card {
-        padding: 0.9rem;
-        border-radius: 16px;
-    }
-
     .testimonials-shell {
         padding: 0;
     }
@@ -3215,6 +3283,21 @@ body.cart-drawer-open {
     .testimonials-instruction {
         margin: 1rem;
         font-size: 0.78rem;
+    }
+
+    .lab-certificate-section {
+        padding: 3.4rem 0 3.7rem;
+    }
+
+    .lab-certificate-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .lab-certificate-link {
+        align-self: flex-end;
+        width: min(56vw, 14rem);
     }
 
     .footer-section {
