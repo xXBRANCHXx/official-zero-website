@@ -75,58 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const SESSION_KEY = "zero_vault_access";
     normalizeNavigation();
     syncScheduledDropsCopy();
-
-    const enableInertialScroll = () => {
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const finePointer = window.matchMedia('(pointer: fine)').matches;
-
-        if (reduceMotion || !finePointer) return;
-
-        let current = window.scrollY;
-        let target = current;
-        let frame = 0;
-
-        const maxScroll = () => Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-
-        const animate = () => {
-            current += (target - current) * 0.13;
-
-            if (Math.abs(target - current) < 0.5) {
-                current = target;
-                frame = 0;
-            } else {
-                frame = window.requestAnimationFrame(animate);
-            }
-
-            window.scrollTo(0, current);
-        };
-
-        window.addEventListener('wheel', (event) => {
-            if (event.ctrlKey || document.body.classList.contains('locked')) return;
-
-            event.preventDefault();
-            target = Math.min(maxScroll(), Math.max(0, target + event.deltaY));
-
-            if (!frame) {
-                current = window.scrollY;
-                frame = window.requestAnimationFrame(animate);
-            }
-        }, { passive: false });
-
-        window.addEventListener('scroll', () => {
-            if (!frame) {
-                current = window.scrollY;
-                target = current;
-            }
-        }, { passive: true });
-
-        window.addEventListener('resize', () => {
-            target = Math.min(target, maxScroll());
-        });
-    };
-
-    enableInertialScroll();
-
     const cartApi = initUniversalCartDrawer();
     window.zeroCartApi = cartApi;
     const closeOverlay = (element) => {
