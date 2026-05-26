@@ -196,11 +196,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let experienceFrame = 0;
 
         const palettes = [
-            [246, 248, 247],
-            [239, 249, 248],
-            [245, 248, 252],
-            [243, 248, 245],
-            [248, 246, 241],
+            [9, 10, 10],
+            [10, 13, 13],
+            [11, 12, 15],
+            [10, 13, 11],
+            [12, 11, 10],
         ];
 
         const mixChannel = (from, to, amount) => Math.round(from + ((to - from) * amount));
@@ -233,9 +233,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 mixChannel(channel, palettes[nextPaletteIndex][index], paletteMix)
             ));
 
-            experienceStage.style.setProperty('--focus-bg-a', mixedPalette[0]);
-            experienceStage.style.setProperty('--focus-bg-b', mixedPalette[1]);
-            experienceStage.style.setProperty('--focus-bg-c', mixedPalette[2]);
+            experienceStage.style.setProperty('--focus-bg-r', mixedPalette[0]);
+            experienceStage.style.setProperty('--focus-bg-g', mixedPalette[1]);
+            experienceStage.style.setProperty('--focus-bg-b', mixedPalette[2]);
 
             experienceItems.forEach((item, index) => {
                 const distanceFromFocus = Math.abs(activeIndex - index);
