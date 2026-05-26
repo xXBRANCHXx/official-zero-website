@@ -242,36 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', updateStoryProgress);
     }
 
-    const productLinesSection = document.querySelector('.product-lines-section');
-
-    if (productLinesSection) {
-        const pageBase = [255, 255, 255];
-        const tealBase = [29, 191, 211];
-        let ambientFrame = 0;
-
-        const updateAmbientTeal = () => {
-            ambientFrame = 0;
-            const rect = productLinesSection.getBoundingClientRect();
-            const viewportHeight = window.innerHeight || 1;
-            const fadeInStart = viewportHeight - 300;
-            const fadeIn = clamp((fadeInStart - rect.top) / 220, 0, 1);
-            const fadeOut = clamp((viewportHeight * 0.42 - rect.bottom) / 240, 0, 1);
-            const amount = fadeIn * (1 - fadeOut);
-            const mixed = pageBase.map((channel, index) => Math.round(channel + ((tealBase[index] - channel) * amount)));
-
-            document.body.style.setProperty('--ambient-bg', `rgb(${mixed.join(', ')})`);
-        };
-
-        const requestAmbientFrame = () => {
-            if (ambientFrame) return;
-            ambientFrame = window.requestAnimationFrame(updateAmbientTeal);
-        };
-
-        updateAmbientTeal();
-        window.addEventListener('scroll', requestAmbientFrame, { passive: true });
-        window.addEventListener('resize', requestAmbientFrame);
-    }
-
     const productLineCards = document.querySelectorAll('.product-lines-section .journey-card');
 
     if (productLineCards.length) {
