@@ -2199,23 +2199,8 @@ body.cart-drawer-open {
     overflow: hidden;
     border-top: 1px solid rgba(17, 24, 39, 0.06);
     padding-bottom: 1.25rem;
-}
-
-.testimonials-section::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 13rem;
-    background: linear-gradient(180deg, rgba(238, 241, 241, 0), #eef1f1 38%, #eef1f1 100%);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.testimonials-section > * {
-    position: relative;
-    z-index: 1;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0) calc(100% - 42rem), #eef1f1 calc(100% - 37rem), #eef1f1 100%);
 }
 
 .testimonials-heading {
@@ -2395,7 +2380,7 @@ body.cart-drawer-open {
 
 .lab-certificate-section {
     position: relative;
-    margin-top: -18rem;
+    margin-top: -20rem;
     padding: 3.6rem 0 3.7rem;
     overflow: hidden;
     background:
