@@ -2201,6 +2201,23 @@ body.cart-drawer-open {
     padding-bottom: 1.25rem;
 }
 
+.testimonials-section::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 13rem;
+    background: linear-gradient(180deg, rgba(238, 241, 241, 0), #eef1f1 38%, #eef1f1 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.testimonials-section > * {
+    position: relative;
+    z-index: 1;
+}
+
 .testimonials-heading {
     margin-bottom: 0.25rem;
     text-align: left;
