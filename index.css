@@ -2283,7 +2283,6 @@ body.cart-drawer-open {
 }
 
 .testimonial-card:hover {
-    transform: scale(1.045);
     z-index: 3;
     border-color: rgba(46, 146, 127, 0.32);
     box-shadow:
@@ -2384,7 +2383,7 @@ body.cart-drawer-open {
     padding: 3.6rem 0 3.7rem;
     overflow: hidden;
     background:
-        linear-gradient(180deg, #eef1f1 0, #eef1f1 7.5rem, #f7faf9 13rem, #f7faf9 100%);
+        linear-gradient(180deg, #eef1f1 0, #eef1f1 2rem, #f7faf9 22rem, #f7faf9 100%);
 }
 
 .lab-certificate-section::before {
