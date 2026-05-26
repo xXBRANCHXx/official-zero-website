@@ -382,35 +382,75 @@ document.addEventListener('DOMContentLoaded', () => {
     const testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
 
     if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
-        const updateTestimonialsPosition = () => {
-            if (isCompactViewport()) {
-                testimonialsRows.forEach((row) => {
-                    row.style.transform = 'translate3d(0, 0, 0)';
-                });
-                return;
-            }
+        testimonialsRail.classList.add('testimonials-looping');
 
-            const rect = testimonialsTrack.getBoundingClientRect();
-            const distance = Math.max(testimonialsTrack.offsetHeight - window.innerHeight, 1);
-            const leadIn = window.innerHeight * 0.52;
-            const rawProgress = clamp((leadIn - rect.top) / (distance + leadIn), 0, 1);
-            const progress = 1 - Math.pow(1 - rawProgress, 1.35);
+        const reviewGap = 16;
+        const reviewCards = testimonialsRows.flatMap((row, lane) => (
+            Array.from(row.querySelectorAll('.testimonial-card')).map((card) => ({
+                card,
+                lane,
+                x: 0,
+                width: 0,
+            }))
+        ));
+        let reviewFrame = 0;
+        let lastReviewTime = 0;
 
-            testimonialsRows.forEach((row) => {
-                const maxShift = Math.max(row.scrollWidth - window.innerWidth, 0);
-                const startOffset = Math.min(window.innerWidth * 0.14, 190);
-                const direction = row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
-                const baseTranslate = direction === 1
-                    ? startOffset - (progress * (maxShift + startOffset))
-                    : -maxShift - startOffset + (progress * (maxShift + startOffset));
+        const layoutTestimonialsLoop = () => {
+            const rowHeight = reviewCards[0]?.card.offsetHeight || 260;
+            const laneGap = 16;
+            const laneY = [0, rowHeight + laneGap];
+            const laneRight = [0, window.innerWidth * 0.18];
 
-                row.style.transform = `translate3d(${baseTranslate.toFixed(1)}px, 0, 0)`;
+            reviewCards.forEach((item, index) => {
+                const stagger = index % 2 === 0 ? 0 : 18;
+                item.width = item.card.offsetWidth;
+                item.x = laneRight[item.lane] + stagger;
+                laneRight[item.lane] += item.width + reviewGap;
+                item.card.style.setProperty('--review-y', `${laneY[item.lane]}px`);
+                item.card.style.setProperty('--review-x', `${item.x}px`);
             });
         };
 
-        updateTestimonialsPosition();
-        window.addEventListener('scroll', updateTestimonialsPosition, { passive: true });
-        window.addEventListener('resize', updateTestimonialsPosition);
+        const loopTestimonials = (time) => {
+            if (!lastReviewTime) {
+                lastReviewTime = time;
+            }
+
+            const delta = Math.min((time - lastReviewTime) / 1000, 0.05);
+            lastReviewTime = time;
+            const laneRight = [0, 0];
+
+            reviewCards.forEach((item) => {
+                laneRight[item.lane] = Math.max(laneRight[item.lane], item.x + item.width);
+            });
+
+            reviewCards.forEach((item) => {
+                item.x -= 42 * delta;
+
+                if (item.x + item.width < -reviewGap) {
+                    item.lane = item.lane === 0 ? 1 : 0;
+                    item.x = Math.max(window.innerWidth + reviewGap, laneRight[item.lane] + reviewGap);
+                    laneRight[item.lane] = item.x + item.width;
+                }
+
+                const rowHeight = item.card.offsetHeight || 260;
+                const y = item.lane === 0 ? 0 : rowHeight + reviewGap;
+                item.card.style.setProperty('--review-x', `${item.x.toFixed(1)}px`);
+                item.card.style.setProperty('--review-y', `${y}px`);
+            });
+
+            reviewFrame = window.requestAnimationFrame(loopTestimonials);
+        };
+
+        layoutTestimonialsLoop();
+        reviewFrame = window.requestAnimationFrame(loopTestimonials);
+        window.addEventListener('resize', () => {
+            window.cancelAnimationFrame(reviewFrame);
+            lastReviewTime = 0;
+            layoutTestimonialsLoop();
+            reviewFrame = window.requestAnimationFrame(loopTestimonials);
+        });
     }
 
     const productSplitTrack = document.getElementById('product-split-track');
