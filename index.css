@@ -2198,6 +2198,7 @@ body.cart-drawer-open {
     position: relative;
     overflow: hidden;
     border-top: 1px solid rgba(17, 24, 39, 0.06);
+    padding-bottom: 1.25rem;
 }
 
 .testimonials-heading {
@@ -2213,7 +2214,7 @@ body.cart-drawer-open {
 
 .testimonials-track {
     position: relative;
-    height: 128vh;
+    height: 108vh;
     overflow: hidden;
 }
 
@@ -2377,11 +2378,11 @@ body.cart-drawer-open {
 
 .lab-certificate-section {
     position: relative;
-    margin-top: -19rem;
+    margin-top: -17rem;
     padding: 3.6rem 0 3.7rem;
     overflow: hidden;
     background:
-        linear-gradient(180deg, #eef1f1 0, #eef1f1 3.4rem, #f7faf9 8.2rem, #f7faf9 100%);
+        linear-gradient(180deg, #eef1f1 0, #eef1f1 7.5rem, #f7faf9 13rem, #f7faf9 100%);
 }
 
 .lab-certificate-section::before {
