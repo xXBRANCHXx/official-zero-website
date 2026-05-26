@@ -1684,6 +1684,50 @@ body.cart-drawer-open {
     line-height: 1.62;
 }
 
+.sales-proof-section {
+    padding: clamp(4.5rem, 8vw, 7rem) 0;
+    background: #ffffff;
+}
+
+.sales-proof-heading {
+    max-width: 860px;
+}
+
+.sales-proof-heading h2 {
+    max-width: 12ch;
+}
+
+.sales-proof-panel {
+    display: grid;
+    gap: 0.8rem;
+    padding: clamp(1.6rem, 4vw, 3rem);
+    border-radius: 34px;
+    background: linear-gradient(180deg, #16202a 0%, #0f161e 100%);
+    color: #f8fafc;
+    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18);
+}
+
+.sales-proof-panel strong {
+    font-family: 'Causten', 'Manrope', sans-serif;
+    font-size: clamp(4.5rem, 13vw, 10rem);
+    line-height: 0.82;
+    letter-spacing: -0.025em;
+}
+
+.sales-proof-panel span {
+    font-size: clamp(1.35rem, 3vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.025em;
+}
+
+.sales-proof-panel p {
+    max-width: 46rem;
+    color: rgba(226, 232, 240, 0.78);
+    font-size: 1.04rem;
+    line-height: 1.58;
+}
+
 .showcase-panel {
     display: grid;
     gap: 0.9rem;
