@@ -243,7 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const productLinesSection = document.querySelector('.product-lines-section');
-    const habitsSection = document.querySelector('.habits-section');
 
     if (productLinesSection) {
         const pageBase = [255, 255, 255];
@@ -253,10 +252,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateAmbientTeal = () => {
             ambientFrame = 0;
             const rect = productLinesSection.getBoundingClientRect();
-            const habitsRect = habitsSection?.getBoundingClientRect();
             const viewportHeight = window.innerHeight || 1;
-            const fadeStart = habitsRect ? habitsRect.top : rect.top;
-            const fadeIn = clamp(((viewportHeight * 0.68) - fadeStart) / (viewportHeight * 0.82), 0, 1);
+            const fadeInStart = viewportHeight - 300;
+            const fadeIn = clamp((fadeInStart - rect.top) / 220, 0, 1);
             const fadeOut = clamp((viewportHeight * 0.5 - rect.bottom) / (viewportHeight * 0.72), 0, 1);
             const amount = fadeIn * (1 - fadeOut);
             const mixed = pageBase.map((channel, index) => Math.round(channel + ((tealBase[index] - channel) * amount)));
