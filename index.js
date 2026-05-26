@@ -429,15 +429,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const rect = testimonialsTrack.getBoundingClientRect();
-            const distance = Math.max(testimonialsTrack.offsetHeight - window.innerHeight, 1);
             const leadIn = window.innerHeight * 0.52;
-            const rawProgress = clamp((leadIn - rect.top) / (distance + leadIn), 0, 1);
-            const progress = 1 - Math.pow(1 - rawProgress, 1.35);
+            const scrollTravel = Math.max(0, leadIn - rect.top);
 
             loopRows.forEach((loop) => {
                 const cycleWidth = Math.max(loop.cycleWidth, 1);
                 const startOffset = Math.min(window.innerWidth * 0.14, 190);
-                const travel = (progress * cycleWidth * 1.08) % cycleWidth;
+                const travel = (scrollTravel * 1.05) % cycleWidth;
                 const direction = loop.row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
                 const baseTranslate = direction === 1
                     ? startOffset - travel
