@@ -27,8 +27,9 @@ const renderAnchor = ({ label, href }) => {
 
 const initSmoothScroll = () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const compactViewport = window.matchMedia('(max-width: 768px)');
 
-    if (reduceMotion.matches) {
+    if (reduceMotion.matches || compactViewport.matches) {
         return null;
     }
 
@@ -465,24 +466,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productSplitTrack && productSplitStage) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
+            const splitTravel = isCompactViewport() ? 23 : 28;
             productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
-            productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (28 * eased)).toFixed(2)}vw`);
+            productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (splitTravel * eased)).toFixed(2)}vw`);
             productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (1.2 * eased)).toFixed(2)}rem`);
             productSplitStage.style.setProperty('--split-left-rotate', `${(-4 - (3 * eased)).toFixed(2)}deg`);
             productSplitStage.style.setProperty('--split-center-x', '0vw');
             productSplitStage.style.setProperty('--split-center-y', `${(-1.8 * eased).toFixed(2)}rem`);
             productSplitStage.style.setProperty('--split-center-rotate', `${(1.5 * eased).toFixed(2)}deg`);
-            productSplitStage.style.setProperty('--split-right-x', `${(1.2 + (28 * eased)).toFixed(2)}vw`);
+            productSplitStage.style.setProperty('--split-right-x', `${(1.2 + (splitTravel * eased)).toFixed(2)}vw`);
             productSplitStage.style.setProperty('--split-right-y', `${(1.1 + (1.2 * eased)).toFixed(2)}rem`);
             productSplitStage.style.setProperty('--split-right-rotate', `${(4 + (3 * eased)).toFixed(2)}deg`);
         };
 
         const updateProductSplit = () => {
-            if (isCompactViewport()) {
-                setProductSplitVars(1);
-                return;
-            }
-
             const rect = productSplitTrack.getBoundingClientRect();
             const distance = Math.max(productSplitTrack.offsetHeight - window.innerHeight, 1);
             const leadIn = window.innerHeight * 0.58;
@@ -544,6 +541,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
 
     revealItems.forEach(el => {
+        if (isCompactViewport()) {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+            el.style.transition = '';
+            return;
+        }
+
         el.style.opacity = '0';
         el.style.transform = 'translateY(40px)';
         el.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';

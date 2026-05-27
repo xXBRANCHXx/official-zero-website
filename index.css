@@ -3164,13 +3164,19 @@ body.cart-drawer-open {
 
 @media (max-width: 768px) {
     section {
-        padding: 4.5rem 0;
+        padding: 3.75rem 0;
     }
 
     .floating-nav {
-        width: calc(100vw - 1rem);
-        padding: 0.7rem 0.8rem;
-        border-radius: 22px;
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100vw;
+        max-width: none;
+        padding: 0.62rem 0.72rem;
+        border-right: 0;
+        border-left: 0;
+        border-radius: 0;
     }
 
     .hero-v6,
@@ -3178,22 +3184,23 @@ body.cart-drawer-open {
     .catalog-page header,
     .zfit-page header,
     .legal-page header {
-        padding-top: 6.5rem;
+        padding-top: 5.6rem;
     }
 
     .hero-v6 {
         min-height: auto;
-        display: block;
+        display: grid;
     }
 
     .hero-v6 > .container {
-        display: block;
+        display: grid;
         min-height: 0;
     }
 
     .hero-p,
     .page-hero-copy p {
-        font-size: 1rem;
+        font-size: 0.82rem;
+        line-height: 1.45;
     }
 
     .nav-right {
@@ -3271,12 +3278,14 @@ body.cart-drawer-open {
 
     .hero-shell,
     .page-hero-grid {
-        gap: 1.15rem;
+        grid-template-columns: minmax(0, 1.08fr) minmax(118px, 0.72fr);
+        gap: 0.65rem;
+        align-items: center;
     }
 
     .hero-panel,
     .page-hero-copy {
-        gap: 0.85rem;
+        gap: 0.62rem;
         padding: 0;
     }
 
@@ -3287,8 +3296,8 @@ body.cart-drawer-open {
 
     .hero-h1,
     .page-hero-title {
-        font-size: clamp(2.7rem, 13vw, 4.15rem);
-        line-height: 0.92;
+        font-size: clamp(2.1rem, 10vw, 3.05rem);
+        line-height: 0.9;
         letter-spacing: -0.035em;
     }
 
@@ -3305,7 +3314,7 @@ body.cart-drawer-open {
 
     .hero-support,
     .page-hero-subtitle {
-        font-size: 0.98rem;
+        font-size: 0.78rem;
         line-height: 1.45;
     }
 
@@ -3323,15 +3332,15 @@ body.cart-drawer-open {
     }
 
     .btn-cluster {
-        gap: 0.7rem;
+        gap: 0.45rem;
     }
 
     .btn-cluster .n-btn {
         flex: 1 1 calc(50% - 0.35rem);
         min-width: 0;
-        padding: 0.9rem 0.95rem;
-        font-size: 0.7rem;
-        letter-spacing: 0.06rem;
+        padding: 0.66rem 0.5rem;
+        font-size: 0.57rem;
+        letter-spacing: 0.045rem;
     }
 
     .search-morph-container,
@@ -3357,7 +3366,7 @@ body.cart-drawer-open {
     }
 
     .product-split-track {
-        height: auto;
+        height: 205vh;
     }
 
     .testimonials-track {
@@ -3366,16 +3375,16 @@ body.cart-drawer-open {
 
     .hero-visual,
     .page-hero-visual {
-        min-height: 260px;
-        justify-content: center;
+        min-height: 21rem;
+        justify-content: flex-end;
         align-items: center;
-        padding-top: 0.35rem;
+        padding-top: 0;
     }
 
     .hero-main-image,
     .page-hero-image {
-        width: min(88vw, 360px);
-        max-height: 42vh;
+        width: min(40vw, 170px);
+        max-height: 20rem;
         object-fit: contain;
     }
 
@@ -3385,8 +3394,9 @@ body.cart-drawer-open {
     }
 
     .product-split-sticky {
-        position: static;
-        min-height: auto;
+        position: sticky;
+        top: 0;
+        min-height: 100svh;
     }
 
     .testimonials-sticky {
@@ -3412,45 +3422,103 @@ body.cart-drawer-open {
     }
 
     .product-split-stage {
-        min-height: auto;
-        padding: 5.6rem 0 4.5rem;
+        min-height: 100svh;
+        padding: 4.8rem 0 2.6rem;
     }
 
     .product-split-heading {
-        justify-items: start;
-        text-align: left;
-        margin-bottom: 1.2rem;
+        justify-items: center;
+        text-align: center;
+        margin-bottom: 0;
     }
 
     .product-split-heading h2 {
-        font-size: 2.6rem;
-        max-width: 12ch;
+        font-size: clamp(2.05rem, 9.8vw, 3rem);
+        max-width: 13ch;
     }
 
     .product-split-card-stack {
-        position: relative;
-        inset: auto;
-        width: min(1200px, calc(100vw - 2rem));
-        margin: 0 auto;
-        display: grid;
-        gap: 1rem;
+        position: absolute;
+        inset: 0;
+        width: auto;
+        margin: 0;
+        display: block;
     }
 
     .product-split-card,
     .product-split-syrup,
     .product-split-drops,
     .product-split-topping {
-        position: relative;
-        top: auto;
-        left: auto;
-        width: 100%;
+        position: absolute;
+        top: 63%;
+        left: 50%;
+        width: 35vw;
         min-width: 0;
-        min-height: auto;
-        transform: none !important;
+        min-height: 18.2rem;
+        padding: 0.62rem;
+        border-radius: 20px;
+        grid-template-rows: minmax(8.1rem, auto) 1fr;
+        gap: 0.58rem;
+    }
+
+    .product-split-syrup {
+        transform: translate(-50%, -50%) translate3d(var(--split-left-x), var(--split-left-y), 0) rotate(var(--split-left-rotate)) !important;
+    }
+
+    .product-split-drops {
+        width: 36vw;
+        min-height: 18.8rem;
+        z-index: 5;
+        transform: translate(-50%, -50%) translate3d(var(--split-center-x), var(--split-center-y), 0) rotate(var(--split-center-rotate)) !important;
+    }
+
+    .product-split-topping {
+        transform: translate(-50%, -50%) translate3d(var(--split-right-x), var(--split-right-y), 0) rotate(var(--split-right-rotate)) !important;
     }
 
     .product-split-media {
-        min-height: 220px;
+        min-height: 8.1rem;
+        border-radius: 16px;
+    }
+
+    .product-split-media img {
+        width: min(82%, 7rem);
+        max-height: 7.35rem;
+    }
+
+    .product-split-drops .product-split-media img {
+        width: min(88%, 7.45rem);
+    }
+
+    .product-split-copy {
+        gap: 0.34rem;
+        padding: 0 0.04rem;
+    }
+
+    .product-split-copy .showcase-badge {
+        padding: 0.3rem 0.44rem;
+        font-size: 0.5rem;
+        letter-spacing: 0.05rem;
+        max-width: 100%;
+    }
+
+    .product-split-copy h3 {
+        font-size: clamp(0.82rem, 3.6vw, 1.02rem);
+        line-height: 0.98;
+    }
+
+    .product-split-copy p {
+        max-height: 3.55em;
+        overflow: hidden;
+        font-size: 0.55rem;
+        line-height: 1.18;
+    }
+
+    .product-split-copy .n-btn {
+        min-height: 0;
+        padding: 0.48rem 0.4rem;
+        font-size: 0.48rem;
+        letter-spacing: 0.03rem;
     }
 
     .product-split-instruction {
@@ -3521,12 +3589,26 @@ body.cart-drawer-open {
     }
 
     .habits-stage {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
     }
 
     .habits-heading h2 {
         font-size: clamp(2.35rem, 10vw, 3.8rem);
         max-width: 12ch;
+    }
+
+    .habits-heading,
+    .habits-section.in-frame .habits-heading,
+    .habits-section .habit-card,
+    .habits-section.in-frame .habit-card,
+    .product-lines-section .container,
+    .product-lines-section.in-frame .container,
+    .product-lines-section .journey-card,
+    .product-lines-section .journey-card.in-frame {
+        opacity: 1;
+        filter: none;
+        transform: none;
     }
 
     .showcase-header {
@@ -3566,17 +3648,67 @@ body.cart-drawer-open {
 
     .product-lines-section .journey-card,
     .product-lines-section .journey-card-dark {
-        min-height: 18rem;
+        min-height: 15rem;
+    }
+
+    .product-format-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.55rem;
+    }
+
+    .product-lines-section .product-format-card {
+        min-height: 14.4rem;
+        padding: 0.7rem 0.58rem;
+        border-radius: 22px;
+        gap: 0.55rem;
+    }
+
+    .product-lines-section .product-format-card h3 {
+        font-size: clamp(0.92rem, 4vw, 1.16rem);
+        line-height: 0.96;
+        max-width: 9ch;
+    }
+
+    .product-lines-section .product-format-card p {
+        align-self: start;
+        font-size: 0.58rem;
+        line-height: 1.28;
+    }
+
+    .product-lines-section .product-format-card .n-btn {
+        min-height: 0;
+        width: 100%;
+        padding: 0.56rem 0.32rem;
+        font-size: 0.46rem;
+        letter-spacing: 0.03rem;
+        white-space: normal;
+        line-height: 1.05;
     }
 
     .habit-card {
-        min-height: auto;
+        min-height: 10.2rem;
+        padding: 0.92rem;
+        gap: 0.58rem;
     }
 
     .habit-card p {
-        max-height: none;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(0.45rem);
+        font-size: 0.74rem;
+        line-height: 1.35;
+    }
+
+    .habit-card strong {
+        font-size: clamp(1.05rem, 5vw, 1.45rem);
+        max-width: 10ch;
+    }
+
+    .habit-card:focus p,
+    .habit-card:hover p {
+        max-height: 7rem;
         opacity: 1;
-        transform: none;
+        transform: translateY(0);
     }
 
     .journey-card p,
@@ -3687,18 +3819,39 @@ body.cart-drawer-open {
 
     .lab-certificate-section {
         margin-top: 0;
-        padding: 3rem 0 3.2rem;
+        padding: 4.1rem 0 2.8rem;
     }
 
     .lab-certificate-inner {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 1.5rem;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 1rem;
     }
 
     .lab-certificate-link {
-        align-self: flex-end;
-        width: min(56vw, 14rem);
+        align-self: center;
+        width: min(30vw, 8.5rem);
+    }
+
+    .lab-certificate-inner h2 {
+        font-size: clamp(2.5rem, 11vw, 4rem);
+        max-width: 7ch;
+    }
+
+    .lab-certificate-link strong {
+        font-size: clamp(1.35rem, 5.8vw, 2rem);
+    }
+
+    .lab-certificate-link span {
+        font-size: 0.58rem;
+        letter-spacing: 0.11rem;
+    }
+
+    .lab-certificate-link::after {
+        width: 1.55rem;
+        height: 1.55rem;
+        font-size: 0.9rem;
     }
 
     .footer-section {
@@ -3726,8 +3879,8 @@ body.cart-drawer-open {
 
 @media (max-width: 520px) {
     .floating-nav {
-        width: calc(100vw - 0.7rem);
-        padding: 0.62rem 0.68rem;
+        width: 100vw;
+        padding: 0.56rem 0.58rem;
     }
 
     .nav-links {
@@ -3760,16 +3913,16 @@ body.cart-drawer-open {
     .catalog-page header,
     .zfit-page header,
     .legal-page header {
-        padding-top: 6.15rem;
+        padding-top: 5.15rem;
     }
 
     .hero-h1,
     .page-hero-title {
-        font-size: clamp(2.45rem, 14vw, 3.45rem);
+        font-size: clamp(1.95rem, 9.6vw, 2.7rem);
     }
 
     .btn-cluster .n-btn {
-        flex-basis: 100%;
+        flex-basis: calc(50% - 0.25rem);
     }
 
     .page-hero-facts {
@@ -3784,7 +3937,58 @@ body.cart-drawer-open {
 
     .hero-main-image,
     .page-hero-image {
-        width: min(92vw, 320px);
+        width: min(38vw, 150px);
+    }
+
+    .hero-kicker {
+        padding: 0.42rem 0.62rem;
+        font-size: 0.58rem;
+        letter-spacing: 0.075rem;
+    }
+
+    .hero-p,
+    .page-hero-copy p {
+        font-size: 0.76rem;
+    }
+
+    .hero-support,
+    .page-hero-subtitle {
+        font-size: 0.72rem;
+    }
+
+    .product-split-card,
+    .product-split-syrup,
+    .product-split-drops,
+    .product-split-topping {
+        width: 36vw;
+        min-height: 17.8rem;
+    }
+
+    .product-split-drops {
+        width: 37vw;
+        min-height: 18.4rem;
+    }
+
+    .product-split-media {
+        min-height: 7.5rem;
+    }
+
+    .product-split-media img {
+        width: min(82%, 6.35rem);
+        max-height: 6.7rem;
+    }
+
+    .product-split-copy h3 {
+        font-size: clamp(0.76rem, 3.7vw, 0.95rem);
+    }
+
+    .product-split-copy p {
+        font-size: 0.5rem;
+    }
+
+    .product-split-copy .n-btn {
+        padding: 0.44rem 0.34rem;
+        font-size: 0.43rem;
     }
 
     .testimonial-card,
