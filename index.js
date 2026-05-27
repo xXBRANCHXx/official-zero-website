@@ -380,9 +380,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const testimonialsTrack = document.getElementById('testimonials-track');
     const testimonialsRail = document.getElementById('testimonials-rail');
-    const testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
+    let testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
 
     if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
+        if (isCompactViewport() && testimonialsRows.length < 4) {
+            testimonialsRows.forEach((row, index) => {
+                const clone = row.cloneNode(true);
+                clone.dataset.testimonialsRow = index % 2 === 0 ? 'reverse' : 'forward';
+                clone.setAttribute('aria-hidden', 'true');
+                testimonialsRail.appendChild(clone);
+            });
+            testimonialsRows = Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]'));
+        }
+
         const loopRows = testimonialsRows.map((row) => {
             const originalCards = Array.from(row.children);
 
@@ -422,21 +432,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateTestimonialsPosition = () => {
             testimonialFrame = 0;
 
-            if (isCompactViewport()) {
-                testimonialsRows.forEach((row) => {
-                    row.style.transform = 'translate3d(0, 0, 0)';
-                });
-                return;
-            }
-
             const rect = testimonialsTrack.getBoundingClientRect();
             const leadIn = window.innerHeight * 0.52;
             const scrollTravel = Math.max(0, leadIn - rect.top);
 
             loopRows.forEach((loop) => {
                 const cycleWidth = Math.max(loop.cycleWidth, 1);
-                const startOffset = Math.min(window.innerWidth * 0.14, 190);
-                const travel = (scrollTravel * 1.95) % cycleWidth;
+                const compact = isCompactViewport();
+                const startOffset = compact ? window.innerWidth * 0.04 : Math.min(window.innerWidth * 0.14, 190);
+                const travel = (scrollTravel * (compact ? 1.25 : 1.95)) % cycleWidth;
                 const direction = loop.row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
                 const baseTranslate = direction === 1
                     ? startOffset - travel
