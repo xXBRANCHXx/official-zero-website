@@ -3578,8 +3578,14 @@ body.site-loaded .site-loader {
         min-height: 18.2rem;
         padding: 0.62rem;
         border-radius: 20px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.055));
+        border-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(6px) saturate(1.12) brightness(1.08);
+        -webkit-backdrop-filter: blur(6px) saturate(1.12) brightness(1.08);
         grid-template-rows: minmax(8.1rem, auto) 1fr;
         gap: 0.58rem;
+        backface-visibility: hidden;
+        contain: layout paint style;
     }
 
     .product-split-syrup {
@@ -3914,7 +3920,16 @@ body.site-loaded .site-loader {
         min-height: auto;
         padding: 0.95rem;
         border-radius: 20px;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px) saturate(1.05);
+        -webkit-backdrop-filter: blur(10px) saturate(1.05);
         gap: 0.58rem;
+        backface-visibility: hidden;
+        contain: layout paint style;
+    }
+
+    .testimonial-card-dark {
+        background: rgba(17, 24, 39, 0.86);
     }
 
     .testimonial-card:hover,

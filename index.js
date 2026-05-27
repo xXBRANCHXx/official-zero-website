@@ -128,6 +128,7 @@ const syncScheduledDropsCopy = () => {
 const initSiteLoader = () => {
     const loaderBar = document.getElementById('site-loader-bar');
     const loaderPercent = document.getElementById('site-loader-percent');
+    const compactViewport = window.matchMedia('(max-width: 768px)');
     const startedAt = performance.now();
     let progress = 0;
 
@@ -143,7 +144,14 @@ const initSiteLoader = () => {
     };
 
     const waitForImages = async () => {
-        const images = Array.from(document.images);
+        const images = Array.from(document.images).filter((image) => {
+            if (!compactViewport.matches) {
+                return true;
+            }
+
+            return image.closest('.hero-v6, .page-hero, .floating-nav');
+        });
+
         if (!images.length) {
             setProgress(0.78);
             return;
@@ -192,7 +200,9 @@ const initSiteLoader = () => {
         document.fonts?.ready ?? Promise.resolve(),
         windowLoaded,
     ]);
-    const releaseFallback = new Promise((resolve) => window.setTimeout(resolve, 2400));
+    const releaseFallbackMs = compactViewport.matches ? 1200 : 2400;
+    const minimumVisibleMs = compactViewport.matches ? 280 : 520;
+    const releaseFallback = new Promise((resolve) => window.setTimeout(resolve, releaseFallbackMs));
 
     Promise.race([ready, releaseFallback]).then(() => {
         setProgress(1);
@@ -206,7 +216,7 @@ const initSiteLoader = () => {
                     loader.style.display = 'none';
                 }
             }, 460);
-        }, Math.max(0, 520 - elapsed));
+        }, Math.max(0, minimumVisibleMs - elapsed));
     });
 };
 
@@ -337,7 +347,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const isCompactViewport = () => window.matchMedia('(max-width: 768px)').matches;
 
     if (storyTrack && storyStage) {
+        let compactStoryApplied = false;
+
         const applyStoryVisuals = () => {
+            compactStoryApplied = false;
             const rect = storyTrack.getBoundingClientRect();
             const distance = Math.max(storyTrack.offsetHeight - window.innerHeight, 1);
             const progress = clamp((-rect.top) / distance, 0, 1);
@@ -365,6 +378,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const updateStoryProgress = () => {
             if (isCompactViewport()) {
+                if (compactStoryApplied) {
+                    return;
+                }
+
+                compactStoryApplied = true;
                 storyStage.style.setProperty('--story-progress', '1');
                 storyStage.style.setProperty('--story-left-opacity', '1');
                 storyStage.style.setProperty('--story-center-opacity', '1');
@@ -469,7 +487,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
 
     if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
-        if (isCompactViewport() && testimonialsRows.length < 4) {
+        let compactTestimonials = isCompactViewport();
+
+        if (compactTestimonials && testimonialsRows.length < 4) {
             testimonialsRows.forEach((row, index) => {
                 const clone = row.cloneNode(true);
                 clone.setAttribute('aria-hidden', 'true');
@@ -483,18 +503,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const loopRows = testimonialsRows.map((row) => {
             const originalCards = Array.from(row.children);
+            const clonePasses = compactTestimonials ? 1 : 2;
 
-            originalCards.forEach((card) => {
-                const clone = card.cloneNode(true);
-                clone.setAttribute('aria-hidden', 'true');
-                row.appendChild(clone);
-            });
-
-            originalCards.forEach((card) => {
-                const clone = card.cloneNode(true);
-                clone.setAttribute('aria-hidden', 'true');
-                row.appendChild(clone);
-            });
+            for (let pass = 0; pass < clonePasses; pass += 1) {
+                originalCards.forEach((card) => {
+                    const clone = card.cloneNode(true);
+                    clone.setAttribute('aria-hidden', 'true');
+                    row.appendChild(clone);
+                });
+            }
 
             return {
                 row,
@@ -526,9 +543,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             loopRows.forEach((loop) => {
                 const cycleWidth = Math.max(loop.cycleWidth, 1);
-                const compact = isCompactViewport();
-                const startOffset = compact ? window.innerWidth * 0.04 : Math.min(window.innerWidth * 0.14, 190);
-                const travel = (scrollTravel * (compact ? 1.75 : 1.95)) % cycleWidth;
+                const startOffset = compactTestimonials ? window.innerWidth * 0.04 : Math.min(window.innerWidth * 0.14, 190);
+                const travel = (scrollTravel * (compactTestimonials ? 1.75 : 1.95)) % cycleWidth;
                 const direction = loop.row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
                 const baseTranslate = direction === 1
                     ? startOffset - travel
@@ -538,15 +554,31 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
+        let testimonialsActive = !compactTestimonials;
         const requestTestimonialsFrame = () => {
+            if (compactTestimonials && !testimonialsActive) return;
             if (testimonialFrame) return;
             testimonialFrame = window.requestAnimationFrame(updateTestimonialsPosition);
         };
+
+        if (compactTestimonials) {
+            const testimonialsObserver = new IntersectionObserver((entries) => {
+                testimonialsActive = entries.some((entry) => entry.isIntersecting);
+
+                if (testimonialsActive) {
+                    requestTestimonialsFrame();
+                }
+            }, { threshold: 0, rootMargin: '65% 0px 65% 0px' });
+
+            testimonialsObserver.observe(testimonialsTrack);
+        }
 
         measureTestimonials();
         updateTestimonialsPosition();
         window.addEventListener('scroll', requestTestimonialsFrame, { passive: true });
         window.addEventListener('resize', () => {
+            compactTestimonials = isCompactViewport();
+            testimonialsActive = !compactTestimonials || testimonialsActive;
             measureTestimonials();
             requestTestimonialsFrame();
         });
@@ -558,7 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productSplitTrack && productSplitStage) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
-            const splitTravel = isCompactViewport() ? 23 : 28;
+            const splitTravel = isCompactViewport() ? 26.5 : 28;
             productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
             productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (splitTravel * eased)).toFixed(2)}vw`);
             productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (1.2 * eased)).toFixed(2)}rem`);
@@ -580,9 +612,23 @@ document.addEventListener('DOMContentLoaded', () => {
             setProductSplitVars(spread);
         };
 
+        let productSplitFrame = 0;
+        const requestProductSplit = () => {
+            if (!isCompactViewport()) {
+                updateProductSplit();
+                return;
+            }
+
+            if (productSplitFrame) return;
+            productSplitFrame = window.requestAnimationFrame(() => {
+                productSplitFrame = 0;
+                updateProductSplit();
+            });
+        };
+
         updateProductSplit();
-        window.addEventListener('scroll', updateProductSplit, { passive: true });
-        window.addEventListener('resize', updateProductSplit);
+        window.addEventListener('scroll', requestProductSplit, { passive: true });
+        window.addEventListener('resize', requestProductSplit);
     }
 
     // Pronounced but lightweight parallax layers
