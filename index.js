@@ -29,7 +29,7 @@ const initSmoothScroll = () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const isTouchViewport = window.matchMedia('(max-width: 768px)').matches;
 
-    if (reduceMotion.matches || isTouchViewport) {
+    if (reduceMotion.matches) {
         return null;
     }
 
@@ -42,8 +42,8 @@ const initSmoothScroll = () => {
         },
         duration: 1.08,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        lerp: 0.09,
-        smoothWheel: true,
+        lerp: isTouchViewport ? 0.18 : 0.09,
+        smoothWheel: !isTouchViewport,
         syncTouch: false,
         wheelMultiplier: 0.92,
         touchMultiplier: 1,
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productSplitTrack && productSplitStage) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
-            const splitTravel = isCompactViewport() ? 20.5 : 28;
+            const splitTravel = isCompactViewport() ? 24.5 : 28;
             productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
             productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (splitTravel * eased)).toFixed(2)}vw`);
             productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (1.2 * eased)).toFixed(2)}rem`);
@@ -541,13 +541,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
 
     revealItems.forEach(el => {
-        if (isCompactViewport()) {
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-            el.style.transition = '';
-            return;
-        }
-
         el.style.opacity = '0';
         el.style.transform = 'translateY(40px)';
         el.style.transition = 'all 1s cubic-bezier(0.16, 1, 0.3, 1)';
