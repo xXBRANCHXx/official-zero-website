@@ -27,7 +27,6 @@ const renderAnchor = ({ label, href }) => {
 
 const initSmoothScroll = () => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const isTouchViewport = window.matchMedia('(max-width: 768px)').matches;
 
     if (reduceMotion.matches) {
         return null;
@@ -42,8 +41,8 @@ const initSmoothScroll = () => {
         },
         duration: 1.08,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        lerp: isTouchViewport ? 0.18 : 0.09,
-        smoothWheel: !isTouchViewport,
+        lerp: 0.09,
+        smoothWheel: true,
         syncTouch: false,
         wheelMultiplier: 0.92,
         touchMultiplier: 1,
@@ -128,13 +127,6 @@ const syncScheduledDropsCopy = () => {
 document.addEventListener('DOMContentLoaded', () => {
     const ACCESS_CODE = "192017";
     const SESSION_KEY = "zero_vault_access";
-    const syncViewportVars = () => {
-        const visualOffset = Math.max(0, window.innerWidth - document.documentElement.clientWidth);
-        document.documentElement.style.setProperty('--visual-viewport-offset', `${visualOffset}px`);
-    };
-
-    syncViewportVars();
-    window.addEventListener('resize', syncViewportVars, { passive: true });
     normalizeNavigation();
     syncScheduledDropsCopy();
     const cartApi = initUniversalCartDrawer();
@@ -429,6 +421,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const updateTestimonialsPosition = () => {
             testimonialFrame = 0;
 
+            if (isCompactViewport()) {
+                testimonialsRows.forEach((row) => {
+                    row.style.transform = 'translate3d(0, 0, 0)';
+                });
+                return;
+            }
+
             const rect = testimonialsTrack.getBoundingClientRect();
             const leadIn = window.innerHeight * 0.52;
             const scrollTravel = Math.max(0, leadIn - rect.top);
@@ -466,20 +465,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productSplitTrack && productSplitStage) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
-            const splitTravel = isCompactViewport() ? 24.5 : 28;
             productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
-            productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (splitTravel * eased)).toFixed(2)}vw`);
+            productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (28 * eased)).toFixed(2)}vw`);
             productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (1.2 * eased)).toFixed(2)}rem`);
             productSplitStage.style.setProperty('--split-left-rotate', `${(-4 - (3 * eased)).toFixed(2)}deg`);
             productSplitStage.style.setProperty('--split-center-x', '0vw');
             productSplitStage.style.setProperty('--split-center-y', `${(-1.8 * eased).toFixed(2)}rem`);
             productSplitStage.style.setProperty('--split-center-rotate', `${(1.5 * eased).toFixed(2)}deg`);
-            productSplitStage.style.setProperty('--split-right-x', `${(1.2 + (splitTravel * eased)).toFixed(2)}vw`);
+            productSplitStage.style.setProperty('--split-right-x', `${(1.2 + (28 * eased)).toFixed(2)}vw`);
             productSplitStage.style.setProperty('--split-right-y', `${(1.1 + (1.2 * eased)).toFixed(2)}rem`);
             productSplitStage.style.setProperty('--split-right-rotate', `${(4 + (3 * eased)).toFixed(2)}deg`);
         };
 
         const updateProductSplit = () => {
+            if (isCompactViewport()) {
+                setProductSplitVars(1);
+                return;
+            }
+
             const rect = productSplitTrack.getBoundingClientRect();
             const distance = Math.max(productSplitTrack.offsetHeight - window.innerHeight, 1);
             const leadIn = window.innerHeight * 0.58;
