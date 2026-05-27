@@ -13,7 +13,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/causten" rel="stylesheet">
 </head>
-<body>
+<body class="site-loading">
+    <div id="site-loader" class="site-loader" role="status" aria-live="polite" aria-label="Loading ZERO website">
+        <div class="site-loader-inner">
+            <span class="site-loader-brand">ZERO</span>
+            <div class="site-loader-track" aria-hidden="true">
+                <span id="site-loader-bar" class="site-loader-bar"></span>
+            </div>
+            <span id="site-loader-percent" class="site-loader-percent">0%</span>
+        </div>
+    </div>
+
     <div id="coming-soon-overlay" class="coming-soon-overlay">
         <div class="coming-soon-card n-card">
             <h1>Under <span class="teal-text">Construction.</span></h1>

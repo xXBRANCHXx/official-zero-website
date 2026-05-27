@@ -125,9 +125,95 @@ const syncScheduledDropsCopy = () => {
     });
 };
 
+const initSiteLoader = () => {
+    const loaderBar = document.getElementById('site-loader-bar');
+    const loaderPercent = document.getElementById('site-loader-percent');
+    const startedAt = performance.now();
+    let progress = 0;
+
+    const setProgress = (value) => {
+        progress = Math.max(progress, Math.min(value, 1));
+        document.documentElement.style.setProperty('--site-load-progress', progress.toFixed(3));
+        if (loaderPercent) {
+            loaderPercent.textContent = `${Math.round(progress * 100)}%`;
+        }
+        if (loaderBar) {
+            loaderBar.style.width = `${progress * 100}%`;
+        }
+    };
+
+    const waitForImages = async () => {
+        const images = Array.from(document.images);
+        if (!images.length) {
+            setProgress(0.78);
+            return;
+        }
+
+        let complete = 0;
+        const update = () => {
+            complete += 1;
+            setProgress(0.12 + ((complete / images.length) * 0.68));
+        };
+
+        await Promise.all(images.map(async (image) => {
+            if (image.complete && image.naturalWidth > 0) {
+                update();
+                return;
+            }
+
+            try {
+                if (image.decode) {
+                    await image.decode();
+                } else {
+                    await new Promise((resolve) => {
+                        image.addEventListener('load', resolve, { once: true });
+                        image.addEventListener('error', resolve, { once: true });
+                    });
+                }
+            } catch {
+                // A failed optional image should not trap the visitor on the loader.
+            }
+            update();
+        }));
+    };
+
+    const windowLoaded = new Promise((resolve) => {
+        if (document.readyState === 'complete') {
+            resolve();
+            return;
+        }
+        window.addEventListener('load', resolve, { once: true });
+    });
+
+    setProgress(0.08);
+
+    const ready = Promise.all([
+        waitForImages(),
+        document.fonts?.ready ?? Promise.resolve(),
+        windowLoaded,
+    ]);
+    const releaseFallback = new Promise((resolve) => window.setTimeout(resolve, 2400));
+
+    Promise.race([ready, releaseFallback]).then(() => {
+        setProgress(1);
+        const elapsed = performance.now() - startedAt;
+        window.setTimeout(() => {
+            const loader = document.getElementById('site-loader');
+            document.body.classList.remove('site-loading');
+            document.body.classList.add('site-loaded');
+            window.setTimeout(() => {
+                if (loader) {
+                    loader.style.display = 'none';
+                }
+            }, 460);
+        }, Math.max(0, 520 - elapsed));
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     const ACCESS_CODE = "192017";
     const SESSION_KEY = "zero_vault_access";
+    initSiteLoader();
     normalizeNavigation();
     syncScheduledDropsCopy();
     const cartApi = initUniversalCartDrawer();
@@ -386,12 +472,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isCompactViewport() && testimonialsRows.length < 4) {
             testimonialsRows.forEach((row, index) => {
                 const clone = row.cloneNode(true);
-                clone.dataset.testimonialsRow = index % 2 === 0 ? 'reverse' : 'forward';
                 clone.setAttribute('aria-hidden', 'true');
                 testimonialsRail.appendChild(clone);
             });
             testimonialsRows = Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]'));
         }
+        testimonialsRows.forEach((row, index) => {
+            row.dataset.testimonialsRow = index % 2 === 0 ? 'forward' : 'reverse';
+        });
 
         const loopRows = testimonialsRows.map((row) => {
             const originalCards = Array.from(row.children);
@@ -440,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cycleWidth = Math.max(loop.cycleWidth, 1);
                 const compact = isCompactViewport();
                 const startOffset = compact ? window.innerWidth * 0.04 : Math.min(window.innerWidth * 0.14, 190);
-                const travel = (scrollTravel * (compact ? 1.25 : 1.95)) % cycleWidth;
+                const travel = (scrollTravel * (compact ? 1.75 : 1.95)) % cycleWidth;
                 const direction = loop.row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
                 const baseTranslate = direction === 1
                     ? startOffset - travel
