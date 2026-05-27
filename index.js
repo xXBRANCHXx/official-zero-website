@@ -489,21 +489,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
         let compactTestimonials = isCompactViewport();
 
-        if (compactTestimonials && testimonialsRows.length < 4) {
-            testimonialsRows.forEach((row, index) => {
-                const clone = row.cloneNode(true);
-                clone.setAttribute('aria-hidden', 'true');
-                testimonialsRail.appendChild(clone);
-            });
-            testimonialsRows = Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]'));
-        }
         testimonialsRows.forEach((row, index) => {
             row.dataset.testimonialsRow = index % 2 === 0 ? 'forward' : 'reverse';
         });
 
         const loopRows = testimonialsRows.map((row) => {
             const originalCards = Array.from(row.children);
-            const clonePasses = compactTestimonials ? 1 : 2;
+            const clonePasses = compactTestimonials ? 0 : 2;
 
             for (let pass = 0; pass < clonePasses; pass += 1) {
                 originalCards.forEach((card) => {
@@ -543,12 +535,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
             loopRows.forEach((loop) => {
                 const cycleWidth = Math.max(loop.cycleWidth, 1);
-                const startOffset = compactTestimonials ? window.innerWidth * 0.04 : Math.min(window.innerWidth * 0.14, 190);
-                const travel = (scrollTravel * (compactTestimonials ? 1.75 : 1.95)) % cycleWidth;
                 const direction = loop.row.dataset.testimonialsRow === 'reverse' ? -1 : 1;
-                const baseTranslate = direction === 1
-                    ? startOffset - travel
-                    : -cycleWidth - startOffset + travel;
+                const startOffset = compactTestimonials ? window.innerWidth * 0.04 : Math.min(window.innerWidth * 0.14, 190);
+                let baseTranslate;
+
+                if (compactTestimonials) {
+                    const trackDistance = Math.max(testimonialsTrack.offsetHeight - window.innerHeight * 0.35, 1);
+                    const progress = clamp(scrollTravel / trackDistance, 0, 1);
+                    const rowOverflow = Math.max(cycleWidth - window.innerWidth + (startOffset * 2), 0);
+                    const travel = Math.min(rowOverflow, window.innerWidth * 0.82) * progress;
+
+                    baseTranslate = direction === 1
+                        ? startOffset - travel
+                        : startOffset - rowOverflow + travel;
+                } else {
+                    const travel = (scrollTravel * 1.95) % cycleWidth;
+                    baseTranslate = direction === 1
+                        ? startOffset - travel
+                        : -cycleWidth - startOffset + travel;
+                }
 
                 loop.row.style.transform = `translate3d(${baseTranslate.toFixed(1)}px, 0, 0)`;
             });
@@ -590,7 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productSplitTrack && productSplitStage) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
-            const splitTravel = isCompactViewport() ? 26.5 : 28;
+            const splitTravel = isCompactViewport() ? 26.9 : 28;
             productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
             productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (splitTravel * eased)).toFixed(2)}vw`);
             productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (1.2 * eased)).toFixed(2)}rem`);
@@ -612,23 +617,9 @@ document.addEventListener('DOMContentLoaded', () => {
             setProductSplitVars(spread);
         };
 
-        let productSplitFrame = 0;
-        const requestProductSplit = () => {
-            if (!isCompactViewport()) {
-                updateProductSplit();
-                return;
-            }
-
-            if (productSplitFrame) return;
-            productSplitFrame = window.requestAnimationFrame(() => {
-                productSplitFrame = 0;
-                updateProductSplit();
-            });
-        };
-
         updateProductSplit();
-        window.addEventListener('scroll', requestProductSplit, { passive: true });
-        window.addEventListener('resize', requestProductSplit);
+        window.addEventListener('scroll', updateProductSplit, { passive: true });
+        window.addEventListener('resize', updateProductSplit);
     }
 
     // Pronounced but lightweight parallax layers
