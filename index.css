@@ -3013,6 +3013,10 @@ body.site-loaded .site-loader {
     overflow-x: hidden;
 }
 
+body.quick-add-open {
+    overflow: hidden;
+}
+
 .fade-out {
     opacity: 0;
     pointer-events: none;
@@ -5309,6 +5313,7 @@ body.site-loaded .site-loader {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: clamp(0.75rem, 2vw, 1.5rem);
     opacity: 0;
     pointer-events: none;
     transition: opacity 300ms ease;
@@ -5330,19 +5335,21 @@ body.site-loaded .site-loader {
 .quick-add-content {
     position: relative;
     z-index: 1;
-    width: min(90vw, 800px);
-    max-height: 90vh;
-    overflow-y: auto;
+    width: min(94vw, 760px);
+    max-height: calc(100dvh - clamp(1.5rem, 4vw, 3rem));
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
     background: #f6f8f7;
-    border-radius: 24px;
-    padding: 2rem;
+    border-radius: 22px;
+    padding: clamp(1.05rem, 2.4vw, 1.55rem);
     box-shadow: 0 24px 48px rgba(0,0,0,0.2);
 }
 
 .quick-add-close {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 0.85rem;
+    right: 0.85rem;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
@@ -5364,5 +5371,124 @@ body.site-loaded .site-loader {
 }
 
 #quick-add-container {
-    margin-top: 1rem;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.25rem 0.2rem 0.1rem 0;
+    scrollbar-gutter: stable;
+}
+
+.quick-add-configurator {
+    display: grid;
+    gap: 1rem;
+}
+
+.quick-add-summary,
+.quick-add-options {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.82);
+    padding: clamp(1rem, 2vw, 1.25rem);
+}
+
+.quick-add-heading {
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+}
+
+.quick-add-heading h3 {
+    font-size: clamp(1.45rem, 3vw, 2rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+}
+
+.quick-add-selected {
+    display: grid;
+    gap: 0.3rem;
+    margin-top: 0.9rem;
+}
+
+.quick-add-selected span {
+    color: var(--text-soft);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+}
+
+.quick-add-selected strong {
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+.quick-add-summary .syrup-size-summary {
+    margin-top: 0.9rem;
+}
+
+.quick-add-options.syrup-chooser-panel {
+    gap: 1rem;
+}
+
+.quick-add-options .syrup-flavor-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+}
+
+.quick-add-options .syrup-size-selector {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.55rem;
+}
+
+.quick-add-options .syrup-choice-card,
+.quick-add-options .syrup-size-chip {
+    min-height: auto;
+    border-radius: 14px;
+    padding: 0.72rem 0.78rem;
+}
+
+.quick-add-options .syrup-choice-card strong,
+.quick-add-options .syrup-size-chip strong {
+    font-size: 0.9rem;
+    line-height: 1.12;
+}
+
+.quick-add-options .syrup-choice-card span,
+.quick-add-options .syrup-size-chip span {
+    margin-top: 0.16rem;
+    font-size: 0.68rem;
+    line-height: 1.2;
+}
+
+.quick-add-options .btn-cluster {
+    margin-top: 0;
+}
+
+.quick-add-options .btn-cluster .n-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+@media (max-width: 680px) {
+    .quick-add-modal {
+        align-items: stretch;
+        padding: 0.65rem;
+    }
+
+    .quick-add-content {
+        width: 100%;
+        max-height: calc(100dvh - 1.3rem);
+        border-radius: 18px;
+    }
+
+    .quick-add-options .syrup-flavor-grid,
+    .quick-add-options .syrup-size-selector {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 420px) {
+    .quick-add-options .syrup-flavor-grid,
+    .quick-add-options .syrup-size-selector {
+        grid-template-columns: 1fr;
+    }
 }

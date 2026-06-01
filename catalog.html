@@ -237,10 +237,10 @@
         </div>
     </footer>
 
-    <div id="quick-add-modal" class="quick-add-modal">
+    <div id="quick-add-modal" class="quick-add-modal" aria-hidden="true">
         <div class="quick-add-backdrop"></div>
-        <div class="quick-add-content">
-            <button class="quick-add-close" aria-label="Close modal">×</button>
+        <div class="quick-add-content" role="dialog" aria-modal="true" aria-label="Choose product variants" data-scroll-lock>
+            <button type="button" class="quick-add-close" aria-label="Close modal">×</button>
             <div id="quick-add-container"></div>
         </div>
     </div>

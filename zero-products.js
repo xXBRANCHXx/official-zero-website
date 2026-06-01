@@ -402,13 +402,15 @@ export const initProductPage = ({
         const size = findSize(selectedSizeId);
         if (!option || !size) return;
 
-        selectedName.textContent = option.name;
-        selectedDescription.textContent = option.description;
-        selectedImage.src = option.image;
-        selectedImage.alt = `${option.name} ${product.name}`;
-        selectedGroup.textContent = option.group;
-        selectedPrice.textContent = formatPrice(size.price);
-        selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}`;
+        if (selectedName) selectedName.textContent = option.name;
+        if (selectedDescription) selectedDescription.textContent = option.description;
+        if (selectedImage) {
+            selectedImage.src = option.image;
+            selectedImage.alt = `${option.name} ${product.name}`;
+        }
+        if (selectedGroup) selectedGroup.textContent = option.group;
+        if (selectedPrice) selectedPrice.textContent = formatPrice(size.price);
+        if (selectedSizeNote) selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}`;
 
         Array.from(optionGrid.querySelectorAll('[data-option-id]')).forEach((button) => {
             button.classList.toggle('active', button.dataset.optionId === selectedOptionId);
