@@ -109,7 +109,7 @@ export const formatPrice = (value) => `Rp${currency.format(value)}`;
 
 export const buildZeroSku = (productSlug, optionId, sizeId) => `ZERO-${String(productSlug).replace(/([a-z])([A-Z])/g, '$1-$2').toUpperCase()}-${String(optionId).toUpperCase()}-${String(sizeId).toUpperCase()}`;
 
-const getInventoryApiCandidates = () => {
+const getInventoryCatalogUrls = () => {
     const candidates = [
         CONFIGURED_INVENTORY_API_BASE_URL,
         window.ZERO_INVENTORY_API_BASE_URL,
@@ -117,6 +117,7 @@ const getInventoryApiCandidates = () => {
 
     const host = window.location.hostname.toLowerCase();
     if (host === 'zerofoods.id' || host === 'www.zerofoods.id') {
+        candidates.push('https://admin.jenanggemi.com/api/zero-store/?action=catalog');
         candidates.push('https://api.zerofoods.id');
     }
 
@@ -124,15 +125,18 @@ const getInventoryApiCandidates = () => {
 
     return [...new Set(candidates
         .map((value) => String(value || '').replace(/\/$/, ''))
-        .filter(Boolean))];
+        .filter(Boolean)
+        .map((value) => value.includes('/api/')
+            ? value
+            : `${value}/api/catalog`))];
 };
 
 export const loadZeroCatalog = async () => {
-    const apiCandidates = getInventoryApiCandidates();
+    const catalogUrls = getInventoryCatalogUrls();
 
-    for (const apiBaseUrl of apiCandidates) {
+    for (const catalogUrl of catalogUrls) {
         try {
-            const response = await fetch(`${apiBaseUrl}/api/catalog`, {
+            const response = await fetch(catalogUrl, {
                 headers: { Accept: 'application/json' },
                 credentials: 'omit',
             });
@@ -140,7 +144,7 @@ export const loadZeroCatalog = async () => {
             const payload = await response.json();
             return Array.isArray(payload.data) ? payload.data : [];
         } catch (error) {
-            console.warn(`ZERO inventory catalog unavailable at ${apiBaseUrl}; trying fallback.`, error);
+            console.warn(`ZERO inventory catalog unavailable at ${catalogUrl}; trying fallback.`, error);
         }
     }
 
