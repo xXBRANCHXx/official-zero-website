@@ -1,6 +1,6 @@
 const CART_KEY = 'zero_products_cart_v1';
 const WHATSAPP_PHONE = '6285842833973';
-const INVENTORY_API_BASE_URL = (import.meta.env.VITE_ZERO_INVENTORY_API_BASE_URL || '').replace(/\/$/, '');
+const CONFIGURED_INVENTORY_API_BASE_URL = (import.meta.env.VITE_ZERO_INVENTORY_API_BASE_URL || '').replace(/\/$/, '');
 const currency = new Intl.NumberFormat('id-ID');
 const DROPS_FRUIT_5ML_START_ISO = '2026-06-15T00:00:00+07:00';
 
@@ -109,21 +109,42 @@ export const formatPrice = (value) => `Rp${currency.format(value)}`;
 
 export const buildZeroSku = (productSlug, optionId, sizeId) => `ZERO-${String(productSlug).replace(/([a-z])([A-Z])/g, '$1-$2').toUpperCase()}-${String(optionId).toUpperCase()}-${String(sizeId).toUpperCase()}`;
 
-export const loadZeroCatalog = async () => {
-    if (!INVENTORY_API_BASE_URL) return null;
+const getInventoryApiCandidates = () => {
+    const candidates = [
+        CONFIGURED_INVENTORY_API_BASE_URL,
+        window.ZERO_INVENTORY_API_BASE_URL,
+    ];
 
-    try {
-        const response = await fetch(`${INVENTORY_API_BASE_URL}/api/catalog`, {
-            headers: { Accept: 'application/json' },
-            credentials: 'omit',
-        });
-        if (!response.ok) throw new Error(`Inventory API ${response.status}`);
-        const payload = await response.json();
-        return Array.isArray(payload.data) ? payload.data : [];
-    } catch (error) {
-        console.warn('ZERO inventory catalog unavailable; using bundled product data.', error);
-        return null;
+    const host = window.location.hostname.toLowerCase();
+    if (host === 'zerofoods.id' || host === 'www.zerofoods.id') {
+        candidates.push('https://api.zerofoods.id');
     }
+
+    candidates.push(window.location.origin);
+
+    return [...new Set(candidates
+        .map((value) => String(value || '').replace(/\/$/, ''))
+        .filter(Boolean))];
+};
+
+export const loadZeroCatalog = async () => {
+    const apiCandidates = getInventoryApiCandidates();
+
+    for (const apiBaseUrl of apiCandidates) {
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/catalog`, {
+                headers: { Accept: 'application/json' },
+                credentials: 'omit',
+            });
+            if (!response.ok) throw new Error(`Inventory API ${response.status}`);
+            const payload = await response.json();
+            return Array.isArray(payload.data) ? payload.data : [];
+        } catch (error) {
+            console.warn(`ZERO inventory catalog unavailable at ${apiBaseUrl}; trying fallback.`, error);
+        }
+    }
+
+    return null;
 };
 
 export const applyCatalogToProduct = (product, catalogRows) => {

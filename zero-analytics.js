@@ -1,4 +1,4 @@
-const ANALYTICS_ENDPOINT = import.meta.env.VITE_ZERO_ANALYTICS_ENDPOINT || '';
+const ANALYTICS_ENDPOINT = import.meta.env.VITE_ZERO_ANALYTICS_ENDPOINT || window.ZERO_ANALYTICS_ENDPOINT || 'https://jenanggemi.com/analytics.php';
 const DEVICE_COOKIE = 'jg_analytics_device_id';
 const DEVICE_MAX_AGE = 60 * 60 * 24 * 365 * 2;
 
