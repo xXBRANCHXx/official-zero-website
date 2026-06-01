@@ -140,7 +140,7 @@
                             <p>The broadest range in the lineup with the easiest daily-use format.</p>
                         </div>
                     </div>
-                    <a href="/syrup.html" class="n-btn primary">Buy ZERO Syrup</a>
+                    <button type="button" class="n-btn primary quick-add-trigger" data-product="syrup">Buy ZERO Syrup</button>
                 </div>
             </div>
         </div>
@@ -174,7 +174,7 @@
                             <p>The most compact and portable way to keep ZERO sweetness close.</p>
                         </div>
                     </div>
-                    <a href="/drops.html" class="n-btn primary">Buy ZERO Drops</a>
+                    <button type="button" class="n-btn primary quick-add-trigger" data-product="drops">Buy ZERO Drops</button>
                 </div>
             </div>
         </div>
@@ -208,7 +208,7 @@
                             <p>This is not the same as ZERO Maple Syrup flavor for coffee drinks.</p>
                         </div>
                     </div>
-                    <a href="/maple-topping.html" class="n-btn primary">Buy Maple Topping</a>
+                    <button type="button" class="n-btn primary quick-add-trigger" data-product="mapleTopping">Buy Maple Topping</button>
                 </div>
             </div>
         </div>
@@ -237,6 +237,15 @@
         </div>
     </footer>
 
+    <div id="quick-add-modal" class="quick-add-modal">
+        <div class="quick-add-backdrop"></div>
+        <div class="quick-add-content">
+            <button class="quick-add-close" aria-label="Close modal">×</button>
+            <div id="quick-add-container"></div>
+        </div>
+    </div>
+
     <script type="module" src="/index.js"></script>
+    <script type="module" src="/catalog.js"></script>
 </body>
 </html>

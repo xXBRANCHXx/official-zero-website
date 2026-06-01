@@ -5300,3 +5300,69 @@ body.site-loaded .site-loader {
     opacity: 1;
     transform: translateX(0);
 }
+
+/* Quick Add Modal */
+.quick-add-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+}
+
+.quick-add-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.quick-add-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.quick-add-content {
+    position: relative;
+    z-index: 1;
+    width: min(90vw, 800px);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #f6f8f7;
+    border-radius: 24px;
+    padding: 2rem;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.2);
+}
+
+.quick-add-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: rgba(17, 24, 39, 0.1);
+    color: var(--text);
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 200ms ease;
+    z-index: 2;
+}
+
+.quick-add-close:hover {
+    background: rgba(17, 24, 39, 0.2);
+}
+
+#quick-add-container {
+    margin-top: 1rem;
+}
