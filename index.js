@@ -221,8 +221,6 @@ const initSiteLoader = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    const ACCESS_CODE = "192017";
-    const SESSION_KEY = "zero_vault_access";
     initSiteLoader();
     normalizeNavigation();
     syncScheduledDropsCopy();
@@ -235,51 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => element.classList.remove('active'), 500);
     };
 
-    // Global Lock/Unlock Logic
     const overlay = document.getElementById('coming-soon-overlay');
     if (overlay) {
-        if (sessionStorage.getItem(SESSION_KEY) === "granted") {
-            overlay.style.display = 'none'; // Total removal from render stack
-            document.body.classList.remove('locked');
-        } else {
-            document.body.classList.add('locked');
-        }
+        overlay.remove();
+        document.body.classList.remove('locked');
     }
-
-    // Portal UI Interaction
-    const portal = {
-        overlay: overlay,
-        devYes: document.getElementById('dev-yes'),
-        devNo: document.getElementById('dev-no'),
-        devCheck: document.getElementById('developer-check'),
-        codePrompt: document.getElementById('code-prompt'),
-        devInput: document.getElementById('dev-code'),
-        submitBtn: document.getElementById('submit-code')
-    };
-
-    portal.devYes?.addEventListener('click', () => {
-        portal.devCheck.classList.add('hide');
-        portal.codePrompt.classList.remove('hide');
-        setTimeout(() => portal.devInput.focus(), 100);
-    });
-
-    const unlockSite = () => {
-        if (portal.devInput.value === ACCESS_CODE) {
-            sessionStorage.setItem(SESSION_KEY, "granted");
-            portal.overlay.classList.add('fade-out');
-            setTimeout(() => portal.overlay.style.display = 'none', 1000); 
-            document.body.classList.remove('locked');
-            console.log("Access Granted.");
-        } else {
-            alert("Incorrect code.");
-            portal.devInput.value = "";
-        }
-    };
-
-    portal.submitBtn?.addEventListener('click', unlockSite);
-    portal.devInput?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') unlockSite();
-    });
 
     // Search and more menu logic
     const searchTrigger = document.getElementById('search-trigger');
@@ -295,6 +253,9 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             if (searchPopout.classList.contains('active')) {
                 closeOverlay(searchPopout);
+            } else if (isCompactViewport()) {
+                searchPopout.classList.add('active', 'expanded');
+                mainSearch.focus();
             } else {
                 searchPopout.classList.add('active');
                 setTimeout(() => {
@@ -404,7 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const productLinesSection = document.querySelector('.product-lines-section');
 
-    if (productLinesSection) {
+    if (productLinesSection && !isCompactViewport()) {
         const pageBase = [255, 255, 255];
         const grayBase = [218, 222, 222];
         let ambientFrame = 0;
@@ -489,29 +450,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (testimonialsTrack && testimonialsRail && testimonialsRows.length) {
         let compactTestimonials = isCompactViewport();
 
-        testimonialsRows.forEach((row, index) => {
-            row.dataset.testimonialsRow = index % 2 === 0 ? 'forward' : 'reverse';
-        });
+        if (compactTestimonials) {
+            testimonialsRows.forEach((row) => {
+                row.style.transform = 'none';
+            });
+        } else {
 
-        const loopRows = testimonialsRows.map((row) => {
-            const originalCards = Array.from(row.children);
-            const clonePasses = compactTestimonials ? 0 : 2;
+            testimonialsRows.forEach((row, index) => {
+                row.dataset.testimonialsRow = index % 2 === 0 ? 'forward' : 'reverse';
+            });
 
-            for (let pass = 0; pass < clonePasses; pass += 1) {
-                originalCards.forEach((card) => {
-                    const clone = card.cloneNode(true);
-                    clone.setAttribute('aria-hidden', 'true');
-                    row.appendChild(clone);
-                });
-            }
+            const loopRows = testimonialsRows.map((row) => {
+                const originalCards = Array.from(row.children);
+                const clonePasses = 2;
 
-            return {
-                row,
-                originalCount: originalCards.length,
-                cycleWidth: 0,
-            };
-        });
-        let testimonialFrame = 0;
+                for (let pass = 0; pass < clonePasses; pass += 1) {
+                    originalCards.forEach((card) => {
+                        const clone = card.cloneNode(true);
+                        clone.setAttribute('aria-hidden', 'true');
+                        row.appendChild(clone);
+                    });
+                }
+
+                return {
+                    row,
+                    originalCount: originalCards.length,
+                    cycleWidth: 0,
+                };
+            });
+            let testimonialFrame = 0;
 
         const measureTestimonials = () => {
             loopRows.forEach((loop) => {
@@ -560,39 +527,28 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         let testimonialsActive = !compactTestimonials;
-        const requestTestimonialsFrame = () => {
-            if (compactTestimonials && !testimonialsActive) return;
-            if (testimonialFrame) return;
-            testimonialFrame = window.requestAnimationFrame(updateTestimonialsPosition);
-        };
+            const requestTestimonialsFrame = () => {
+                if (compactTestimonials && !testimonialsActive) return;
+                if (testimonialFrame) return;
+                testimonialFrame = window.requestAnimationFrame(updateTestimonialsPosition);
+            };
 
-        if (compactTestimonials) {
-            const testimonialsObserver = new IntersectionObserver((entries) => {
-                testimonialsActive = entries.some((entry) => entry.isIntersecting);
-
-                if (testimonialsActive) {
-                    requestTestimonialsFrame();
-                }
-            }, { threshold: 0, rootMargin: '65% 0px 65% 0px' });
-
-            testimonialsObserver.observe(testimonialsTrack);
-        }
-
-        measureTestimonials();
-        updateTestimonialsPosition();
-        window.addEventListener('scroll', requestTestimonialsFrame, { passive: true });
-        window.addEventListener('resize', () => {
-            compactTestimonials = isCompactViewport();
-            testimonialsActive = !compactTestimonials || testimonialsActive;
             measureTestimonials();
-            requestTestimonialsFrame();
-        });
+            updateTestimonialsPosition();
+            window.addEventListener('scroll', requestTestimonialsFrame, { passive: true });
+            window.addEventListener('resize', () => {
+                compactTestimonials = isCompactViewport();
+                testimonialsActive = !compactTestimonials || testimonialsActive;
+                measureTestimonials();
+                requestTestimonialsFrame();
+            });
+        }
     }
 
     const productSplitTrack = document.getElementById('product-split-track');
     const productSplitStage = document.getElementById('product-split-stage');
 
-    if (productSplitTrack && productSplitStage) {
+    if (productSplitTrack && productSplitStage && !isCompactViewport()) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
             const splitTravel = isCompactViewport() ? 26.9 : 28;
@@ -624,7 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pronounced but lightweight parallax layers
     const parallaxLayers = Array.from(document.querySelectorAll('[data-parallax]'));
-    if (parallaxLayers.length) {
+    if (parallaxLayers.length && !isCompactViewport()) {
         let rafId = 0;
 
         const updateParallax = () => {
