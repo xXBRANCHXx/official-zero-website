@@ -5276,3 +5276,27 @@ body.site-loaded .site-loader {
         overflow: hidden;
     }
 }
+
+/* Zipper animations for catalog rows */
+.catalog-product-row.zipper-left,
+.catalog-product-row.zipper-right {
+    animation: none !important;
+}
+
+.catalog-product-row.zipper-left {
+    opacity: 0;
+    transform: translateX(-5rem);
+    transition: opacity 720ms cubic-bezier(0.16, 1, 0.3, 1), transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.catalog-product-row.zipper-right {
+    opacity: 0;
+    transform: translateX(5rem);
+    transition: opacity 720ms cubic-bezier(0.16, 1, 0.3, 1), transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.catalog-product-row.zipper-left.in-frame,
+.catalog-product-row.zipper-right.in-frame {
+    opacity: 1;
+    transform: translateX(0);
+}

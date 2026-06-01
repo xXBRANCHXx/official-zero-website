@@ -443,6 +443,24 @@ document.addEventListener('DOMContentLoaded', () => {
         productLineCards.forEach((card) => productLineObserver.observe(card));
     }
 
+    const catalogRows = document.querySelectorAll('.catalog-product-row');
+    if (catalogRows.length) {
+        const catalogRowObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-frame');
+                    return;
+                }
+
+                if (entry.boundingClientRect.top > 0) {
+                    entry.target.classList.remove('in-frame');
+                }
+            });
+        }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+
+        catalogRows.forEach((row) => catalogRowObserver.observe(row));
+    }
+
     const testimonialsTrack = document.getElementById('testimonials-track');
     const testimonialsRail = document.getElementById('testimonials-rail');
     let testimonialsRows = testimonialsRail ? Array.from(testimonialsRail.querySelectorAll('[data-testimonials-row]')) : [];
