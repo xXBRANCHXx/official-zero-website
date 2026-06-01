@@ -1,12 +1,13 @@
-import { ZERO_PRODUCTS, initProductPage } from './zero-products.js';
+import { ZERO_PRODUCTS, applyCatalogToProduct, initProductPage, loadZeroCatalog } from './zero-products.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const cartApi = window.zeroCartApi;
     const modal = document.getElementById('quick-add-modal');
     const container = document.getElementById('quick-add-container');
     const closeBtn = modal?.querySelector('.quick-add-close');
     const backdrop = modal?.querySelector('.quick-add-backdrop');
     let closeTimer = null;
+    const catalog = await loadZeroCatalog();
 
     if (!modal) return;
 
@@ -30,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.quick-add-trigger').forEach(btn => {
         btn.addEventListener('click', () => {
             const productKey = btn.dataset.product;
-            const product = ZERO_PRODUCTS[productKey];
-            if (!product) return;
+            if (!ZERO_PRODUCTS[productKey]) return;
+            const product = applyCatalogToProduct(ZERO_PRODUCTS[productKey], catalog);
 
             window.clearTimeout(closeTimer);
             container.innerHTML = `

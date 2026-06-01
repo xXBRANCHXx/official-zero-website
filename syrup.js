@@ -1,10 +1,12 @@
-import { ZERO_PRODUCTS, initProductPage } from './zero-products.js';
+import { ZERO_PRODUCTS, applyCatalogToProduct, initProductPage, loadZeroCatalog } from './zero-products.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const cartApi = window.zeroCartApi;
+    const catalog = await loadZeroCatalog();
+    const product = applyCatalogToProduct(ZERO_PRODUCTS.syrup, catalog);
 
     initProductPage({
-        product: ZERO_PRODUCTS.syrup,
+        product,
         dom: {
             optionGridId: 'syrup-flavor-grid',
             sizeSelectorId: 'syrup-size-selector',

@@ -1,6 +1,7 @@
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import { ZERO_RELEASES, initUniversalCartDrawer, isDropsFruit5mlLive } from './zero-products.js';
+import { initZeroAnalytics } from './zero-analytics.js';
 
 const PRIMARY_NAV_ITEMS = [
     { label: 'Catalog', href: '/catalog.html' },
@@ -221,6 +222,7 @@ const initSiteLoader = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    initZeroAnalytics();
     initSiteLoader();
     normalizeNavigation();
     syncScheduledDropsCopy();

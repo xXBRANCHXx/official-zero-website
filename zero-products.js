@@ -1,5 +1,6 @@
 const CART_KEY = 'zero_products_cart_v1';
 const WHATSAPP_PHONE = '6285842833973';
+const INVENTORY_API_BASE_URL = (import.meta.env.VITE_ZERO_INVENTORY_API_BASE_URL || '').replace(/\/$/, '');
 const currency = new Intl.NumberFormat('id-ID');
 const DROPS_FRUIT_5ML_START_ISO = '2026-06-15T00:00:00+07:00';
 
@@ -106,6 +107,61 @@ if (isDropsFruit5mlLive()) {
 
 export const formatPrice = (value) => `Rp${currency.format(value)}`;
 
+export const buildZeroSku = (productSlug, optionId, sizeId) => `ZERO-${String(productSlug).replace(/([a-z])([A-Z])/g, '$1-$2').toUpperCase()}-${String(optionId).toUpperCase()}-${String(sizeId).toUpperCase()}`;
+
+export const loadZeroCatalog = async () => {
+    if (!INVENTORY_API_BASE_URL) return null;
+
+    try {
+        const response = await fetch(`${INVENTORY_API_BASE_URL}/api/catalog`, {
+            headers: { Accept: 'application/json' },
+            credentials: 'omit',
+        });
+        if (!response.ok) throw new Error(`Inventory API ${response.status}`);
+        const payload = await response.json();
+        return Array.isArray(payload.data) ? payload.data : [];
+    } catch (error) {
+        console.warn('ZERO inventory catalog unavailable; using bundled product data.', error);
+        return null;
+    }
+};
+
+export const applyCatalogToProduct = (product, catalogRows) => {
+    if (!Array.isArray(catalogRows)) return product;
+
+    const rowByKey = new Map(catalogRows.map((row) => [
+        `${row.product_slug}:${row.option_id}:${row.size_id}`,
+        row,
+    ]));
+
+    return {
+        ...product,
+        options: product.options.map((option) => ({
+            ...option,
+            sizes: option.sizes.filter((sizeId) => {
+                const row = rowByKey.get(`${product.slug}:${option.id}:${sizeId}`);
+                return !row || row.status !== 'inactive';
+            }),
+        })),
+        sizes: product.sizes.map((size) => {
+            const rowsForSize = product.options
+                .map((option) => rowByKey.get(`${product.slug}:${option.id}:${size.id}`))
+                .filter(Boolean);
+            const pricedRow = rowsForSize.find((row) => Number(row.sale_price) >= 0) || rowsForSize[0];
+            if (!pricedRow) return size;
+            const basePrice = Number(pricedRow.price);
+            const salePrice = Number(pricedRow.sale_price);
+            return {
+                ...size,
+                price: Number.isFinite(salePrice) ? salePrice : size.price,
+                originalPrice: Number.isFinite(basePrice) && basePrice !== salePrice ? basePrice : null,
+                discountLabel: pricedRow.discount?.label || '',
+            };
+        }),
+        inventoryRows: rowByKey,
+    };
+};
+
 export const loadCart = () => {
     try {
         return JSON.parse(localStorage.getItem(CART_KEY) || '[]');
@@ -132,7 +188,7 @@ const buildCheckoutMessage = (cart) => {
     cart.forEach((item, index) => {
         const lineTotal = item.price * item.quantity;
         total += lineTotal;
-        lines.push(`${index + 1}. ${item.label} x${item.quantity} = ${formatPrice(lineTotal)}`);
+        lines.push(`${index + 1}. ${item.label}${item.sku ? ` [${item.sku}]` : ''} x${item.quantity} = ${formatPrice(lineTotal)}`);
     });
 
     lines.push('');
@@ -372,6 +428,7 @@ export const initProductPage = ({
 
     const findOption = (optionId) => product.options.find((option) => option.id === optionId);
     const findSize = (sizeId) => product.sizes.find((size) => size.id === sizeId);
+    const findInventoryRow = (optionId, sizeId) => product.inventoryRows?.get(`${product.slug}:${optionId}:${sizeId}`) || null;
 
     const getAvailableSizeIds = (optionId) => findOption(optionId)?.sizes || [];
 
@@ -387,10 +444,14 @@ export const initProductPage = ({
 
         sizeSelector.innerHTML = product.sizes.map((size) => {
             const isAvailable = availableSizeIds.includes(size.id);
+            const inventoryRow = findInventoryRow(selectedOptionId, size.id);
+            const inStock = !inventoryRow || inventoryRow.available;
+            const disabled = !isAvailable || !inStock;
+            const stockLabel = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
             return `
-                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}" data-size-id="${size.id}" ${isAvailable ? '' : 'disabled'}>
+                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}" data-size-id="${size.id}" ${disabled ? 'disabled' : ''}>
                     <strong>${size.label}</strong>
-                    <span>${formatPrice(size.price)}${size.note ? ` · ${size.note}` : ''}</span>
+                    <span>${formatPrice(size.price)}${size.originalPrice ? ` · was ${formatPrice(size.originalPrice)}` : ''}${size.note ? ` · ${size.note}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
                 </button>
             `;
         }).join('');
@@ -409,8 +470,16 @@ export const initProductPage = ({
             selectedImage.alt = `${option.name} ${product.name}`;
         }
         if (selectedGroup) selectedGroup.textContent = option.group;
-        if (selectedPrice) selectedPrice.textContent = formatPrice(size.price);
-        if (selectedSizeNote) selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}`;
+        const inventoryRow = findInventoryRow(option.id, size.id);
+        if (selectedPrice) selectedPrice.textContent = size.originalPrice ? `${formatPrice(size.price)} (was ${formatPrice(size.originalPrice)})` : formatPrice(size.price);
+        if (selectedSizeNote) {
+            const stockCopy = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
+            selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}${size.discountLabel ? ` · ${size.discountLabel}` : ''}${stockCopy ? ` · ${stockCopy}` : ''}`;
+        }
+        if (addButton) {
+            addButton.disabled = Boolean(inventoryRow && !inventoryRow.available);
+            addButton.textContent = inventoryRow && !inventoryRow.available ? 'Sold Out' : 'Add To Cart';
+        }
 
         Array.from(optionGrid.querySelectorAll('[data-option-id]')).forEach((button) => {
             button.classList.toggle('active', button.dataset.optionId === selectedOptionId);
@@ -457,6 +526,7 @@ export const initProductPage = ({
 
         onAdd?.({
             key: `${product.slug}:${option.id}:${size.id}`,
+            sku: buildZeroSku(product.slug, option.id, size.id),
             productSlug: product.slug,
             productName: product.checkoutLabel,
             optionId: option.id,
