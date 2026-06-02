@@ -11,6 +11,7 @@ export default defineConfig({
         drops: resolve(__dirname, 'drops.html'),
         mapleTopping: resolve(__dirname, 'maple-topping.html'),
         zfit: resolve(__dirname, 'zfit.html'),
+        about: resolve(__dirname, 'about.html'),
         legal: resolve(__dirname, 'legal.html'),
       },
     },

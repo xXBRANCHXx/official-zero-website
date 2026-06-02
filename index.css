@@ -5492,3 +5492,301 @@ body.quick-add-open {
         grid-template-columns: 1fr;
     }
 }
+
+/* ZERO refinement pass: cleaner catalog/product pages and dedicated About page. */
+.catalog-product-label,
+.about-label {
+    display: inline-block;
+    color: var(--accent-strong);
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.14rem;
+    text-transform: uppercase;
+}
+
+.catalog-page .section-heading .section-badge,
+.syrup-page .syrup-builder-section .section-badge,
+.drops-page .syrup-builder-section .section-badge,
+.maple-page .syrup-builder-section .section-badge,
+.syrup-page .page-proof-section .section-badge,
+.drops-page .page-proof-section .section-badge,
+.maple-page .page-proof-section .section-badge {
+    display: none;
+}
+
+.catalog-page .section-heading {
+    max-width: 660px;
+}
+
+.catalog-page .section-heading h2,
+.syrup-page .syrup-builder-section .section-heading h2,
+.drops-page .syrup-builder-section .section-heading h2,
+.maple-page .syrup-builder-section .section-heading h2,
+.syrup-page .page-proof-section .section-heading h2,
+.drops-page .page-proof-section .section-heading h2,
+.maple-page .page-proof-section .section-heading h2 {
+    max-width: 13ch;
+}
+
+.catalog-page .catalog-detail-copy .showcase-badge,
+.syrup-page .syrup-builder-section .showcase-badge,
+.drops-page .syrup-builder-section .showcase-badge,
+.maple-page .syrup-builder-section .showcase-badge {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--accent-strong);
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+}
+
+.catalog-page .catalog-jump-list {
+    padding-top: 0.65rem;
+}
+
+.catalog-page .catalog-jump-list a {
+    border-radius: 0;
+    border-width: 0 0 1px;
+    background: transparent;
+    padding: 0 0 0.2rem;
+    min-height: auto;
+    box-shadow: none;
+}
+
+.catalog-page .catalog-jump-list a:hover,
+.catalog-page .catalog-jump-list a:focus-visible {
+    transform: none;
+    background: transparent;
+}
+
+.catalog-page .catalog-price-block {
+    border-radius: 0;
+    border-width: 1px 0;
+    background: transparent;
+    padding: 1rem 0;
+}
+
+.about-page .page-hero {
+    background: #f7faf9;
+}
+
+.about-hero-visual .page-hero-image {
+    width: min(100%, 520px);
+    max-height: 30rem;
+    border-radius: 24px;
+    object-fit: contain;
+}
+
+.about-story-section,
+.about-location-section {
+    background: #f7faf9;
+}
+
+.about-story-layout,
+.about-location-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+    gap: clamp(1.4rem, 4vw, 4rem);
+    align-items: start;
+}
+
+.about-story-copy,
+.about-location-copy {
+    display: grid;
+    gap: 1rem;
+}
+
+.about-story-copy h2,
+.about-location-copy h2 {
+    max-width: 11ch;
+    font-size: clamp(2.6rem, 5.4vw, 5.2rem);
+    line-height: 0.9;
+}
+
+.about-story-copy p,
+.about-location-copy p,
+.about-values-grid p {
+    color: var(--text-mid);
+}
+
+.about-values-grid {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(17, 24, 39, 0.12);
+}
+
+.about-values-grid article {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.12);
+}
+
+.about-values-grid strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 1.15rem;
+}
+
+.about-contact-list {
+    display: grid;
+    gap: 0;
+    margin-top: 0.5rem;
+    border-top: 1px solid rgba(17, 24, 39, 0.12);
+}
+
+.about-contact-list a {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(17, 24, 39, 0.12);
+    color: var(--text);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.about-map-shell {
+    min-height: 520px;
+    overflow: hidden;
+    border: 1px solid rgba(17, 24, 39, 0.12);
+    border-radius: 24px;
+    background: #ffffff;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+}
+
+.about-map-shell iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    border: 0;
+    filter: saturate(0.92) contrast(1.02);
+}
+
+@media (max-width: 1024px) {
+    .about-story-layout,
+    .about-location-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .about-map-shell {
+        min-height: 420px;
+    }
+}
+
+@media (max-width: 768px) {
+    .catalog-products-section {
+        padding: 3.2rem 0 0.35rem;
+    }
+
+    .catalog-page .section-heading {
+        margin-bottom: 1rem;
+    }
+
+    .catalog-page .section-heading h2 {
+        max-width: 10.5ch;
+    }
+
+    .catalog-page .catalog-jump-list {
+        gap: 0.85rem;
+        padding-top: 0.35rem;
+    }
+
+    .catalog-page .catalog-jump-list a {
+        font-size: 0.64rem;
+        letter-spacing: 0.08rem;
+    }
+
+    .catalog-product-row {
+        min-height: auto;
+        padding: 2.35rem 0 2.6rem;
+    }
+
+    .catalog-product-row .catalog-detail-media {
+        min-height: 15.5rem;
+        border-radius: 0;
+        background: transparent;
+        overflow: visible;
+    }
+
+    .catalog-product-row .catalog-detail-media img {
+        width: min(76vw, 20rem);
+        max-height: 17rem;
+    }
+
+    .catalog-detail-copy {
+        gap: 0.72rem;
+    }
+
+    .catalog-product-row .catalog-detail-copy h2 {
+        max-width: 9.5ch;
+        font-size: clamp(2.55rem, 12vw, 4rem);
+    }
+
+    .catalog-detail-copy p {
+        font-size: 0.92rem;
+        line-height: 1.48;
+    }
+
+    .catalog-price-block {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .catalog-disclosure {
+        padding: 0.82rem 0;
+    }
+
+    .catalog-disclosure p {
+        max-height: none;
+        margin-top: 0.34rem;
+        opacity: 1;
+        transform: none;
+    }
+
+    .catalog-disclosure strong::after {
+        display: none;
+    }
+
+    .catalog-detail-copy > .n-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .syrup-page .syrup-builder-section .section-heading,
+    .drops-page .syrup-builder-section .section-heading,
+    .maple-page .syrup-builder-section .section-heading,
+    .syrup-page .page-proof-section .section-heading,
+    .drops-page .page-proof-section .section-heading,
+    .maple-page .page-proof-section .section-heading {
+        margin-bottom: 1rem;
+    }
+
+    .syrup-page .syrup-builder-section .section-heading h2,
+    .drops-page .syrup-builder-section .section-heading h2,
+    .maple-page .syrup-builder-section .section-heading h2,
+    .syrup-page .page-proof-section .section-heading h2,
+    .drops-page .page-proof-section .section-heading h2,
+    .maple-page .page-proof-section .section-heading h2 {
+        max-width: 11ch;
+    }
+
+    .about-story-section,
+    .about-location-section {
+        padding: 3.75rem 0;
+    }
+
+    .about-story-layout,
+    .about-location-layout {
+        gap: 1.5rem;
+    }
+
+    .about-story-copy h2,
+    .about-location-copy h2 {
+        max-width: 10ch;
+        font-size: clamp(2.35rem, 11.5vw, 3.6rem);
+    }
+
+    .about-map-shell {
+        min-height: 360px;
+        border-radius: 18px;
+    }
+}

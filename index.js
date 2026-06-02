@@ -6,6 +6,7 @@ import { initZeroAnalytics } from './zero-analytics.js';
 const PRIMARY_NAV_ITEMS = [
     { label: 'Catalog', href: '/catalog.html' },
     { label: 'ZFit', href: '/zfit.html' },
+    { label: 'About', href: '/about.html' },
 ];
 
 const PRODUCT_MENU_ITEMS = [
