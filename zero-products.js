@@ -168,21 +168,7 @@ export const applyCatalogToProduct = (product, catalogRows) => {
                 return !row || row.status !== 'inactive';
             }),
         })),
-        sizes: product.sizes.map((size) => {
-            const rowsForSize = product.options
-                .map((option) => rowByKey.get(`${product.slug}:${option.id}:${size.id}`))
-                .filter(Boolean);
-            const pricedRow = rowsForSize.find((row) => Number(row.sale_price) >= 0) || rowsForSize[0];
-            if (!pricedRow) return size;
-            const basePrice = Number(pricedRow.price);
-            const salePrice = Number(pricedRow.sale_price);
-            return {
-                ...size,
-                price: Number.isFinite(salePrice) ? salePrice : size.price,
-                originalPrice: Number.isFinite(basePrice) && basePrice !== salePrice ? basePrice : null,
-                discountLabel: pricedRow.discount?.label || '',
-            };
-        }),
+        sizes: product.sizes,
         inventoryRows: rowByKey,
     };
 };
@@ -454,6 +440,14 @@ export const initProductPage = ({
     const findOption = (optionId) => product.options.find((option) => option.id === optionId);
     const findSize = (sizeId) => product.sizes.find((size) => size.id === sizeId);
     const findInventoryRow = (optionId, sizeId) => product.inventoryRows?.get(`${product.slug}:${optionId}:${sizeId}`) || null;
+    const priceForSelection = (size, inventoryRow) => {
+        const salePrice = Number(inventoryRow?.sale_price);
+        return Number.isFinite(salePrice) ? salePrice : Number(size?.price || 0);
+    };
+    const originalPriceForSelection = (inventoryRow, salePrice) => {
+        const basePrice = Number(inventoryRow?.price);
+        return Number.isFinite(basePrice) && basePrice !== salePrice ? basePrice : null;
+    };
 
     const getAvailableSizeIds = (optionId) => findOption(optionId)?.sizes || [];
 
@@ -473,10 +467,13 @@ export const initProductPage = ({
             const inStock = !inventoryRow || inventoryRow.available;
             const disabled = !isAvailable || !inStock;
             const stockLabel = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
+            const displayPrice = priceForSelection(size, inventoryRow);
+            const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
+            const discountLabel = inventoryRow?.discount?.label || '';
             return `
                 <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}" data-size-id="${size.id}" ${disabled ? 'disabled' : ''}>
                     <strong>${size.label}</strong>
-                    <span>${formatPrice(size.price)}${size.originalPrice ? ` · was ${formatPrice(size.originalPrice)}` : ''}${size.note ? ` · ${size.note}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
+                    <span>${formatPrice(displayPrice)}${originalPrice ? ` · was ${formatPrice(originalPrice)}` : ''}${size.note ? ` · ${size.note}` : ''}${discountLabel ? ` · ${discountLabel}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
                 </button>
             `;
         }).join('');
@@ -496,10 +493,13 @@ export const initProductPage = ({
         }
         if (selectedGroup) selectedGroup.textContent = option.group;
         const inventoryRow = findInventoryRow(option.id, size.id);
-        if (selectedPrice) selectedPrice.textContent = size.originalPrice ? `${formatPrice(size.price)} (was ${formatPrice(size.originalPrice)})` : formatPrice(size.price);
+        const displayPrice = priceForSelection(size, inventoryRow);
+        const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
+        if (selectedPrice) selectedPrice.textContent = originalPrice ? `${formatPrice(displayPrice)} (was ${formatPrice(originalPrice)})` : formatPrice(displayPrice);
         if (selectedSizeNote) {
             const stockCopy = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
-            selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}${size.discountLabel ? ` · ${size.discountLabel}` : ''}${stockCopy ? ` · ${stockCopy}` : ''}`;
+            const discountLabel = inventoryRow?.discount?.label || '';
+            selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}${discountLabel ? ` · ${discountLabel}` : ''}${stockCopy ? ` · ${stockCopy}` : ''}`;
         }
         if (addButton) {
             addButton.disabled = Boolean(inventoryRow && !inventoryRow.available);
@@ -540,6 +540,10 @@ export const initProductPage = ({
         const option = findOption(selectedOptionId);
         const size = findSize(selectedSizeId);
         if (!option || !size) return;
+        const inventoryRow = findInventoryRow(option.id, size.id);
+        if (inventoryRow && !inventoryRow.available) return;
+        const selectedSku = inventoryRow?.sku_code || inventoryRow?.sku || buildZeroSku(product.slug, option.id, size.id);
+        const selectedPrice = priceForSelection(size, inventoryRow);
 
         const labelParts = [product.checkoutLabel];
         if (product.options.length > 1 || option.name !== product.checkoutLabel) {
@@ -550,8 +554,8 @@ export const initProductPage = ({
         }
 
         onAdd?.({
-            key: `${product.slug}:${option.id}:${size.id}`,
-            sku: buildZeroSku(product.slug, option.id, size.id),
+            key: selectedSku || `${product.slug}:${option.id}:${size.id}`,
+            sku: selectedSku,
             productSlug: product.slug,
             productName: product.checkoutLabel,
             optionId: option.id,
@@ -559,7 +563,9 @@ export const initProductPage = ({
             sizeId: size.id,
             sizeLabel: size.label,
             label: labelParts.join(' - '),
-            price: size.price,
+            price: selectedPrice,
+            basePrice: Number(inventoryRow?.price || selectedPrice),
+            discount: inventoryRow?.discount || null,
             quantity: 1,
         });
     });
