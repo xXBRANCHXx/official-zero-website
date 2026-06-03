@@ -107,6 +107,44 @@ if (isDropsFruit5mlLive()) {
 
 export const formatPrice = (value) => `Rp${currency.format(value)}`;
 
+const getDiscountPercent = (discount, basePrice, salePrice) => {
+    if (!discount || !Number.isFinite(Number(basePrice)) || Number(basePrice) <= 0) return 0;
+    if (discount.type === 'percent') return Math.round(Number(discount.amount || 0));
+    return Math.round(((Number(basePrice) - Number(salePrice)) / Number(basePrice)) * 100);
+};
+
+const getDiscountDisplay = (discount, basePrice, salePrice) => {
+    const discountAmount = Math.max(0, Math.round(Number(basePrice || 0) - Number(salePrice || 0)));
+    const percent = getDiscountPercent(discount, basePrice, salePrice);
+    const label = String(discount?.label || '').trim();
+    if (!discount || discountAmount <= 0 || percent <= 0) {
+        return {
+            active: false,
+            amount: 0,
+            percent: 0,
+            label: '',
+            badge: '',
+            message: '',
+        };
+    }
+
+    return {
+        active: true,
+        amount: discountAmount,
+        percent,
+        label,
+        badge: `-${percent}%`,
+        message: `${formatPrice(discountAmount)} (${percent}%)${label ? ` ${label}` : ''}`,
+    };
+};
+
+const escapeHtml = (value) => String(value || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+
 export const buildZeroSku = (productSlug, optionId, sizeId) => `ZERO-${String(productSlug).replace(/([a-z])([A-Z])/g, '$1-$2').toUpperCase()}-${String(optionId).toUpperCase()}-${String(sizeId).toUpperCase()}`;
 
 const getInventoryCatalogUrls = () => {
@@ -199,7 +237,18 @@ const buildCheckoutMessage = (cart) => {
     cart.forEach((item, index) => {
         const lineTotal = item.price * item.quantity;
         total += lineTotal;
-        lines.push(`${index + 1}. ${item.label}${item.sku ? ` [${item.sku}]` : ''} x${item.quantity} = ${formatPrice(lineTotal)}`);
+        const basePrice = Number(item.basePrice || item.price || 0);
+        const discount = getDiscountDisplay(item.discount, basePrice, item.price);
+        const itemLabel = `${index + 1}. ${item.label}${item.sku ? ` [${item.sku}]` : ''} x${item.quantity}`;
+        if (discount.active) {
+            const baseLineTotal = basePrice * item.quantity;
+            const discountLineTotal = discount.amount * item.quantity;
+            lines.push(`${itemLabel} = ${formatPrice(baseLineTotal)}`);
+            lines.push(`   Discount: -${formatPrice(discountLineTotal)} (${discount.percent}%)${discount.label ? ` ${discount.label}` : ''}`);
+            lines.push(`   Net: ${formatPrice(lineTotal)}`);
+            return;
+        }
+        lines.push(`${itemLabel} = ${formatPrice(lineTotal)}`);
     });
 
     lines.push('');
@@ -332,16 +381,18 @@ export const initUniversalCartDrawer = () => {
 
         cart.forEach((item) => {
             const itemNode = document.createElement('div');
+            const basePrice = Number(item.basePrice || item.price || 0);
+            const discount = getDiscountDisplay(item.discount, basePrice, item.price);
             itemNode.className = 'zero-cart-item';
             itemNode.innerHTML = `
                 <div>
-                    <strong>${item.label}</strong>
-                    <span>${formatPrice(item.price)} each</span>
+                    <strong>${escapeHtml(item.label)}</strong>
+                    <span>${formatPrice(item.price)} each${discount.active ? ` · was ${formatPrice(basePrice)} · ${escapeHtml(discount.badge)}${discount.label ? ` ${escapeHtml(discount.label)}` : ''}` : ''}</span>
                 </div>
                 <div class="syrup-cart-controls">
-                    <button type="button" data-cart-action="decrease" data-item-key="${item.key}" aria-label="Decrease quantity">-</button>
+                    <button type="button" data-cart-action="decrease" data-item-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">-</button>
                     <span>${item.quantity}</span>
-                    <button type="button" data-cart-action="increase" data-item-key="${item.key}" aria-label="Increase quantity">+</button>
+                    <button type="button" data-cart-action="increase" data-item-key="${escapeHtml(item.key)}" aria-label="Increase quantity">+</button>
                 </div>
             `;
             cartItems.appendChild(itemNode);
@@ -448,6 +499,10 @@ export const initProductPage = ({
         const basePrice = Number(inventoryRow?.price);
         return Number.isFinite(basePrice) && basePrice !== salePrice ? basePrice : null;
     };
+    const discountForSelection = (inventoryRow, salePrice) => {
+        const basePrice = Number(inventoryRow?.price);
+        return getDiscountDisplay(inventoryRow?.discount, basePrice, salePrice);
+    };
 
     const getAvailableSizeIds = (optionId) => findOption(optionId)?.sizes || [];
 
@@ -469,11 +524,12 @@ export const initProductPage = ({
             const stockLabel = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
             const displayPrice = priceForSelection(size, inventoryRow);
             const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
-            const discountLabel = inventoryRow?.discount?.label || '';
+            const discount = discountForSelection(inventoryRow, displayPrice);
+            const discountLabel = discount.active ? `${discount.badge}${discount.label ? ` ${discount.label}` : ''}` : '';
             return `
                 <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}" data-size-id="${size.id}" ${disabled ? 'disabled' : ''}>
                     <strong>${size.label}</strong>
-                    <span>${formatPrice(displayPrice)}${originalPrice ? ` · was ${formatPrice(originalPrice)}` : ''}${size.note ? ` · ${size.note}` : ''}${discountLabel ? ` · ${discountLabel}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
+                    <span>${formatPrice(displayPrice)}${originalPrice ? ` · was ${formatPrice(originalPrice)}` : ''}${discountLabel ? ` · ${escapeHtml(discountLabel)}` : ''}${size.note ? ` · ${size.note}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
                 </button>
             `;
         }).join('');
@@ -495,10 +551,16 @@ export const initProductPage = ({
         const inventoryRow = findInventoryRow(option.id, size.id);
         const displayPrice = priceForSelection(size, inventoryRow);
         const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
-        if (selectedPrice) selectedPrice.textContent = originalPrice ? `${formatPrice(displayPrice)} (was ${formatPrice(originalPrice)})` : formatPrice(displayPrice);
+        const discount = discountForSelection(inventoryRow, displayPrice);
+        if (selectedPrice) {
+            const discountCopy = discount.active ? ` · ${discount.badge}${discount.label ? ` ${discount.label}` : ''}` : '';
+            selectedPrice.textContent = originalPrice
+                ? `${formatPrice(displayPrice)} (was ${formatPrice(originalPrice)}${discountCopy})`
+                : formatPrice(displayPrice);
+        }
         if (selectedSizeNote) {
             const stockCopy = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
-            const discountLabel = inventoryRow?.discount?.label || '';
+            const discountLabel = discount.active ? `${discount.badge}${discount.label ? ` ${discount.label}` : ''}` : '';
             selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}${discountLabel ? ` · ${discountLabel}` : ''}${stockCopy ? ` · ${stockCopy}` : ''}`;
         }
         if (addButton) {
