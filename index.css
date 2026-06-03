@@ -6192,3 +6192,121 @@ body.quick-add-open {
         border-radius: 18px;
     }
 }
+
+/* Final product builder composition pass */
+.syrup-page .syrup-builder-section,
+.drops-page .syrup-builder-section,
+.maple-page .syrup-builder-section {
+    padding: clamp(4rem, 6vw, 5.8rem) 0;
+}
+
+.syrup-page .syrup-builder-section .container,
+.drops-page .syrup-builder-section .container,
+.maple-page .syrup-builder-section .container {
+    width: min(1280px, calc(100vw - 3rem));
+}
+
+.syrup-page .syrup-builder-section .section-heading,
+.drops-page .syrup-builder-section .section-heading,
+.maple-page .syrup-builder-section .section-heading {
+    margin-bottom: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.syrup-page .syrup-builder-section .section-heading h2,
+.drops-page .syrup-builder-section .section-heading h2,
+.maple-page .syrup-builder-section .section-heading h2 {
+    max-width: 12ch;
+    font-size: clamp(3rem, 4.6vw, 4.8rem);
+    line-height: 0.92;
+}
+
+.syrup-page .syrup-builder-section .section-heading p,
+.drops-page .syrup-builder-section .section-heading p,
+.maple-page .syrup-builder-section .section-heading p {
+    max-width: 44rem;
+    font-size: 1rem;
+}
+
+.syrup-page .syrup-builder-layout,
+.drops-page .syrup-builder-layout,
+.maple-page .syrup-builder-layout {
+    width: 100%;
+    max-width: none;
+}
+
+.syrup-page .syrup-configurator,
+.drops-page .syrup-configurator,
+.maple-page .syrup-configurator {
+    grid-template-columns: minmax(390px, 0.9fr) minmax(0, 1.35fr);
+    gap: clamp(1.1rem, 2vw, 1.6rem);
+}
+
+.syrup-page .syrup-configurator > .showcase-panel,
+.drops-page .syrup-configurator > .showcase-panel,
+.maple-page .syrup-configurator > .showcase-panel,
+.syrup-page .syrup-chooser-panel,
+.drops-page .syrup-chooser-panel,
+.maple-page .syrup-chooser-panel {
+    padding: clamp(1.15rem, 1.7vw, 1.45rem);
+    border-radius: 28px;
+}
+
+.syrup-page .syrup-configurator > .showcase-panel,
+.drops-page .syrup-configurator > .showcase-panel,
+.maple-page .syrup-configurator > .showcase-panel {
+    align-content: start;
+}
+
+.syrup-page .syrup-visual-shell,
+.drops-page .syrup-visual-shell,
+.maple-page .syrup-visual-shell {
+    min-height: clamp(19rem, 30vw, 26rem);
+}
+
+.syrup-page .syrup-visual-shell img,
+.drops-page .syrup-visual-shell img,
+.maple-page .syrup-visual-shell img {
+    width: min(86%, 330px);
+    max-height: 23rem;
+}
+
+.syrup-page .syrup-selection-copy,
+.drops-page .syrup-selection-copy,
+.maple-page .syrup-selection-copy {
+    margin-top: 0.2rem;
+}
+
+@media (max-width: 1024px) {
+    .syrup-page .syrup-builder-section .container,
+    .drops-page .syrup-builder-section .container,
+    .maple-page .syrup-builder-section .container {
+        width: min(900px, calc(100vw - 2rem));
+    }
+
+    .syrup-page .syrup-configurator,
+    .drops-page .syrup-configurator,
+    .maple-page .syrup-configurator {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .syrup-page .syrup-builder-section,
+    .drops-page .syrup-builder-section,
+    .maple-page .syrup-builder-section {
+        padding: 3.25rem 0;
+    }
+
+    .syrup-page .syrup-builder-section .section-heading h2,
+    .drops-page .syrup-builder-section .section-heading h2,
+    .maple-page .syrup-builder-section .section-heading h2 {
+        font-size: clamp(2.25rem, 10vw, 3.35rem);
+        max-width: 10ch;
+    }
+
+    .syrup-page .syrup-visual-shell,
+    .drops-page .syrup-visual-shell,
+    .maple-page .syrup-visual-shell {
+        min-height: 17rem;
+    }
+}
