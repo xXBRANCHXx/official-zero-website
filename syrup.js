@@ -155,6 +155,66 @@ const initSyrupImageCarousel = () => {
     startAutoplay();
 };
 
+const initProofNumberReels = () => {
+    const numbers = Array.from(document.querySelectorAll('[data-proof-number]'));
+    if (!numbers.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const buildNumberSequence = (target, direction) => {
+        if (direction === 'down') {
+            const start = Math.max(9, target);
+            return Array.from({ length: start - target + 1 }, (_, index) => start - index);
+        }
+        return Array.from({ length: target + 1 }, (_, index) => index);
+    };
+
+    const rollNumber = (numberElement) => {
+        if (numberElement.dataset.proofReelReady === 'true') return;
+        numberElement.dataset.proofReelReady = 'true';
+        const targetNumber = numberElement.dataset.proofNumber || numberElement.textContent.trim();
+        const direction = numberElement.dataset.proofDirection || 'up';
+        const targetValue = Number(targetNumber);
+        numberElement.setAttribute('aria-label', targetNumber);
+
+        if (prefersReducedMotion || !Number.isFinite(targetValue)) {
+            numberElement.textContent = targetNumber;
+            return;
+        }
+
+        const sequence = buildNumberSequence(targetValue, direction);
+        let index = 0;
+        numberElement.textContent = sequence[index];
+        numberElement.classList.add('is-rolling');
+
+        const tick = window.setInterval(() => {
+            index += 1;
+            if (index >= sequence.length) {
+                window.clearInterval(tick);
+                numberElement.textContent = targetNumber;
+                numberElement.classList.remove('is-rolling');
+                return;
+            }
+            numberElement.textContent = sequence[index];
+        }, direction === 'down' ? 76 : 58);
+    };
+
+    if (!('IntersectionObserver' in window)) {
+        numbers.forEach(rollNumber);
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            rollNumber(entry.target);
+            observer.unobserve(entry.target);
+        });
+    }, { threshold: 0.45 });
+
+    numbers.forEach((numberElement) => observer.observe(numberElement));
+};
+
 document.addEventListener('DOMContentLoaded', async () => {
     const cartApi = window.zeroCartApi;
     const catalog = await loadZeroCatalog();
@@ -182,4 +242,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     initSyrupImageCarousel();
+    initProofNumberReels();
 });
