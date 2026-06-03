@@ -572,17 +572,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productSplitTrack && productSplitStage && !isCompactViewport()) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
-            const splitTravel = 2.2;
+            const firstCard = productSplitStage.querySelector('.product-split-card');
+            const cardWidth = firstCard?.offsetWidth || 350;
+            const startOffset = clamp(cardWidth * 0.18, 48, 72);
+            const finalOffset = clamp(cardWidth + 32, 310, 410);
+            const sideOffset = startOffset + ((finalOffset - startOffset) * eased);
             productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
-            productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (splitTravel * eased)).toFixed(2)}vw`);
-            productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (0.35 * eased)).toFixed(2)}rem`);
-            productSplitStage.style.setProperty('--split-left-rotate', `${(-4 - (0.7 * eased)).toFixed(2)}deg`);
-            productSplitStage.style.setProperty('--split-center-x', '0vw');
-            productSplitStage.style.setProperty('--split-center-y', `${(-0.55 * eased).toFixed(2)}rem`);
-            productSplitStage.style.setProperty('--split-center-rotate', `${(0.45 * eased).toFixed(2)}deg`);
-            productSplitStage.style.setProperty('--split-right-x', `${(1.2 + (splitTravel * eased)).toFixed(2)}vw`);
-            productSplitStage.style.setProperty('--split-right-y', `${(1.1 + (0.35 * eased)).toFixed(2)}rem`);
-            productSplitStage.style.setProperty('--split-right-rotate', `${(4 + (0.7 * eased)).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-left-x', `${(-sideOffset).toFixed(1)}px`);
+            productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (0.9 * eased)).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-left-rotate', `${(-4 - (1.8 * eased)).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-center-x', '0px');
+            productSplitStage.style.setProperty('--split-center-y', `${(-1.2 * eased).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-center-rotate', `${(0.95 * eased).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-right-x', `${sideOffset.toFixed(1)}px`);
+            productSplitStage.style.setProperty('--split-right-y', `${(1.1 + (0.9 * eased)).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-right-rotate', `${(4 + (1.8 * eased)).toFixed(2)}deg`);
         };
 
         const updateProductSplit = () => {

@@ -2283,7 +2283,7 @@ body.cart-drawer-open {
     position: relative;
     overflow: hidden;
     border-top: 1px solid rgba(17, 24, 39, 0.06);
-    padding-bottom: 4rem;
+    padding-bottom: 2rem;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0) calc(100% - 42rem), #eef1f1 calc(100% - 37rem), #eef1f1 100%);
 }
@@ -2301,7 +2301,7 @@ body.cart-drawer-open {
 
 .testimonials-track {
     position: relative;
-    height: 128vh;
+    height: 122vh;
     overflow: hidden;
 }
 
@@ -2465,10 +2465,10 @@ body.cart-drawer-open {
 .lab-certificate-section {
     position: relative;
     margin-top: 0;
-    padding: 3.6rem 0 3.7rem;
+    padding: 2.25rem 0 2.35rem;
     overflow: hidden;
     background:
-        linear-gradient(180deg, #eef1f1 0, #eef1f1 2rem, #f7faf9 22rem, #f7faf9 100%);
+        linear-gradient(180deg, #eef1f1 0, #eef1f1 1.5rem, #f7faf9 14rem, #f7faf9 100%);
 }
 
 .lab-certificate-section::before {
@@ -2492,7 +2492,7 @@ body.cart-drawer-open {
 
 .lab-certificate-inner h2 {
     max-width: 8ch;
-    font-size: clamp(3.2rem, 8vw, 7rem);
+    font-size: clamp(2.75rem, 6.4vw, 5.6rem);
     line-height: 0.84;
     color: #081016;
 }
@@ -2500,7 +2500,7 @@ body.cart-drawer-open {
 .lab-certificate-link {
     position: relative;
     flex: 0 0 auto;
-    width: clamp(12rem, 22vw, 18rem);
+    width: clamp(9.5rem, 16vw, 13rem);
     aspect-ratio: 1;
     display: grid;
     place-items: center;
@@ -2600,7 +2600,7 @@ body.cart-drawer-open {
 
 .lab-certificate-link strong {
     font-family: 'Causten', 'Manrope', sans-serif;
-    font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+    font-size: clamp(1.75rem, 3.2vw, 2.7rem);
     line-height: 0.9;
     letter-spacing: 0;
 }
@@ -2616,7 +2616,7 @@ body.cart-drawer-open {
 }
 
 .product-split-track {
-    height: 150vh;
+    height: 185vh;
     position: relative;
 }
 
@@ -2631,13 +2631,13 @@ body.cart-drawer-open {
 
 .product-split-stage {
     --product-spread: 0.18;
-    --split-left-x: -3.4vw;
+    --split-left-x: -72px;
     --split-left-y: 0.95rem;
     --split-left-rotate: -4.6deg;
     --split-center-x: 0rem;
     --split-center-y: -0.35rem;
     --split-center-rotate: 0.25deg;
-    --split-right-x: 3.4vw;
+    --split-right-x: 72px;
     --split-right-y: 1.25rem;
     --split-right-rotate: 4.6deg;
     position: relative;
