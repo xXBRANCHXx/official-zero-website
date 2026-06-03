@@ -572,17 +572,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (productSplitTrack && productSplitStage && !isCompactViewport()) {
         const setProductSplitVars = (spread) => {
             const eased = 1 - Math.pow(1 - spread, 3);
-            const splitTravel = isCompactViewport() ? 26.9 : 28;
+            const splitTravel = 2.2;
             productSplitStage.style.setProperty('--product-spread', eased.toFixed(4));
             productSplitStage.style.setProperty('--split-left-x', `${(-1.2 - (splitTravel * eased)).toFixed(2)}vw`);
-            productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (1.2 * eased)).toFixed(2)}rem`);
-            productSplitStage.style.setProperty('--split-left-rotate', `${(-4 - (3 * eased)).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-left-y', `${(0.7 + (0.35 * eased)).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-left-rotate', `${(-4 - (0.7 * eased)).toFixed(2)}deg`);
             productSplitStage.style.setProperty('--split-center-x', '0vw');
-            productSplitStage.style.setProperty('--split-center-y', `${(-1.8 * eased).toFixed(2)}rem`);
-            productSplitStage.style.setProperty('--split-center-rotate', `${(1.5 * eased).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-center-y', `${(-0.55 * eased).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-center-rotate', `${(0.45 * eased).toFixed(2)}deg`);
             productSplitStage.style.setProperty('--split-right-x', `${(1.2 + (splitTravel * eased)).toFixed(2)}vw`);
-            productSplitStage.style.setProperty('--split-right-y', `${(1.1 + (1.2 * eased)).toFixed(2)}rem`);
-            productSplitStage.style.setProperty('--split-right-rotate', `${(4 + (3 * eased)).toFixed(2)}deg`);
+            productSplitStage.style.setProperty('--split-right-y', `${(1.1 + (0.35 * eased)).toFixed(2)}rem`);
+            productSplitStage.style.setProperty('--split-right-rotate', `${(4 + (0.7 * eased)).toFixed(2)}deg`);
         };
 
         const updateProductSplit = () => {
