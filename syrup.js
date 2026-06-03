@@ -1,6 +1,6 @@
 import { ZERO_PRODUCTS, applyCatalogToProduct, initProductPage, loadZeroCatalog } from './zero-products.js';
 
-const SYRUP_IMAGE_MODE = 'flavor'; // Change to 'carousel' for Plan B.
+const SYRUP_IMAGE_MODE = 'carousel';
 
 const SYRUP_CAROUSEL_IMAGES = [
     {
