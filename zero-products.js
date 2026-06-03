@@ -23,7 +23,7 @@ export const ZERO_PRODUCTS = {
         slug: 'syrup',
         name: 'ZERO Syrup',
         checkoutLabel: 'ZERO Syrup',
-        heroImage: '/ZERO Media/ZERO Syrup Images/Product Photos/Zero-Plain.jpg',
+        heroImage: '/ZERO Media/ZERO Syrup Renders/Plain.png',
         description: 'Zero-calorie syrup for coffee, refreshers, and daily drinks with a smoother finish than stevia.',
         options: [
             { id: 'plain', name: 'Plain', group: 'Coffee Flavors', image: '/ZERO Media/ZERO Syrup Images/Product Photos/Zero-Plain.jpg', description: 'No added flavor, just sweetness.', sizes: ['50ml', '250ml', '550ml'] },

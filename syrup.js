@@ -79,8 +79,8 @@ const initSyrupImageCarousel = () => {
 
     const animate = () => {
         const distance = targetPosition - position;
-        velocity += distance * 0.28;
-        velocity *= 0.64;
+        velocity += distance * 0.2;
+        velocity *= 0.72;
         position += velocity;
         updateTrack();
 
@@ -105,7 +105,7 @@ const initSyrupImageCarousel = () => {
 
         activeIndex = (activeIndex + offset + SYRUP_CAROUSEL_IMAGES.length) % SYRUP_CAROUSEL_IMAGES.length;
         targetPosition += offset;
-        velocity += offset * 0.18;
+        velocity += offset * 0.12;
         updateActiveSlide();
 
         if (!animationFrameId) {
