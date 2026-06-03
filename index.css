@@ -1998,6 +1998,14 @@ body.cart-drawer-open {
     gap: 1rem;
 }
 
+.syrup-page .syrup-builder-layout,
+.drops-page .syrup-builder-layout,
+.maple-page .syrup-builder-layout {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 860px;
+    margin: 0 auto;
+}
+
 .syrup-chooser-panel {
     display: grid;
     gap: 1.2rem;
