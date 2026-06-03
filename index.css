@@ -2465,10 +2465,11 @@ body.cart-drawer-open {
 .lab-certificate-section {
     position: relative;
     margin-top: 0;
-    padding: 1.35rem 0 1.45rem;
+    height: clamp(9.75rem, 16.5vw, 13.25rem);
+    padding: 0;
     overflow: hidden;
     background:
-        linear-gradient(180deg, #eef1f1 0, #eef1f1 1rem, #f7faf9 9rem, #f7faf9 100%);
+        linear-gradient(180deg, #eef1f1 0, #eef1f1 1.5rem, #f7faf9 14rem, #f7faf9 100%);
 }
 
 .lab-certificate-section::before {
@@ -2484,23 +2485,24 @@ body.cart-drawer-open {
 .lab-certificate-inner {
     position: relative;
     z-index: 1;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.25rem;
+    gap: 2rem;
 }
 
 .lab-certificate-inner h2 {
     max-width: 8ch;
-    font-size: clamp(2.15rem, 4.8vw, 4.25rem);
-    line-height: 0.88;
+    font-size: clamp(2.75rem, 6.4vw, 5.6rem);
+    line-height: 0.84;
     color: #081016;
 }
 
 .lab-certificate-link {
     position: relative;
     flex: 0 0 auto;
-    width: clamp(7.25rem, 11.5vw, 9.5rem);
+    width: clamp(9.5rem, 16vw, 13rem);
     aspect-ratio: 1;
     display: grid;
     place-items: center;
@@ -2542,13 +2544,13 @@ body.cart-drawer-open {
     top: 18%;
     right: 19%;
     z-index: 1;
-    width: 1.72rem;
-    height: 1.72rem;
+    width: 2.15rem;
+    height: 2.15rem;
     display: grid;
     place-items: center;
     border-radius: 999px;
     border: 1px solid currentColor;
-    font-size: 0.94rem;
+    font-size: 1.12rem;
     font-weight: 900;
     line-height: 1;
     transform: translate3d(0, 0, 0);
@@ -2591,16 +2593,16 @@ body.cart-drawer-open {
 }
 
 .lab-certificate-link span {
-    font-size: clamp(0.62rem, 0.8vw, 0.76rem);
+    font-size: clamp(0.76rem, 1vw, 0.92rem);
     font-weight: 900;
-    letter-spacing: 0.13rem;
+    letter-spacing: 0.18rem;
     color: currentColor;
     opacity: 0.58;
 }
 
 .lab-certificate-link strong {
     font-family: 'Causten', 'Manrope', sans-serif;
-    font-size: clamp(1.35rem, 2.35vw, 2rem);
+    font-size: clamp(1.75rem, 3.2vw, 2.7rem);
     line-height: 0.9;
     letter-spacing: 0;
 }
