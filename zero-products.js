@@ -319,6 +319,10 @@ export const createCartStore = () => {
             }
             emit();
         },
+        removeItem(itemKey) {
+            cart = cart.filter((entry) => entry.key !== itemKey);
+            emit();
+        },
         clear() {
             cart = [];
             emit();
@@ -408,9 +412,27 @@ export const initUniversalCartDrawer = () => {
                     <span>${formatPrice(item.price)} each${discount.active ? ` · was ${formatPrice(basePrice)}` : ''}</span>
                 </div>
                 <div class="syrup-cart-controls">
-                    <button type="button" data-cart-action="decrease" data-item-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">-</button>
-                    <span>${item.quantity}</span>
-                    <button type="button" data-cart-action="increase" data-item-key="${escapeHtml(item.key)}" aria-label="Increase quantity">+</button>
+                    <button type="button" data-cart-action="decrease" data-item-key="${escapeHtml(item.key)}" aria-label="Decrease quantity by one">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                            <path d="M5 12h14"></path>
+                        </svg>
+                    </button>
+                    <span class="syrup-cart-quantity" aria-label="Quantity">${item.quantity}</span>
+                    <button type="button" data-cart-action="increase" data-item-key="${escapeHtml(item.key)}" aria-label="Increase quantity by one">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                            <path d="M12 5v14"></path>
+                            <path d="M5 12h14"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="syrup-cart-remove" data-cart-action="remove" data-item-key="${escapeHtml(item.key)}" aria-label="Remove ${escapeHtml(item.label)} from cart">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 6h18"></path>
+                            <path d="M8 6V4h8v2"></path>
+                            <path d="M19 6l-1 14H6L5 6"></path>
+                            <path d="M10 11v5"></path>
+                            <path d="M14 11v5"></path>
+                        </svg>
+                    </button>
                 </div>
             `;
             cartItems.appendChild(itemNode);
@@ -461,6 +483,11 @@ export const initUniversalCartDrawer = () => {
     cartItems?.addEventListener('click', (event) => {
         const target = event.target.closest('[data-cart-action]');
         if (!target) return;
+        if (target.dataset.cartAction === 'remove') {
+            store.removeItem(target.dataset.itemKey);
+            render();
+            return;
+        }
         const delta = target.dataset.cartAction === 'increase' ? 1 : -1;
         store.updateQuantity(target.dataset.itemKey, delta);
         render();

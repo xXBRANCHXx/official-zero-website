@@ -2307,12 +2307,49 @@ body.cart-drawer-open {
 }
 
 .syrup-cart-controls button {
-    width: 32px;
-    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
     border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.08);
-    color: #f8fafc;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    background: rgba(255, 255, 255, 0.76);
+    color: var(--text);
+    cursor: pointer;
+    transition: transform var(--transition), border-color var(--transition), background var(--transition), color var(--transition);
+}
+
+.syrup-cart-controls button:hover,
+.syrup-cart-controls button:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(29, 191, 211, 0.34);
+    background: #ffffff;
+    outline: none;
+}
+
+.syrup-cart-controls svg {
+    width: 16px;
+    height: 16px;
+}
+
+.zero-cart-item .syrup-cart-quantity {
+    min-width: 1.45rem;
+    color: var(--text);
+    font-weight: 900;
+    text-align: center;
+}
+
+.syrup-cart-controls .syrup-cart-remove {
+    margin-left: 0.2rem;
+    color: #9f2f2f;
+}
+
+.syrup-cart-controls .syrup-cart-remove:hover,
+.syrup-cart-controls .syrup-cart-remove:focus-visible {
+    border-color: rgba(159, 47, 47, 0.22);
+    background: rgba(159, 47, 47, 0.08);
+    color: #7f1d1d;
 }
 
 .syrup-cart-footer {
