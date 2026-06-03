@@ -2244,6 +2244,38 @@ body.cart-drawer-open {
 .syrup-carousel-shell {
     position: relative;
     overflow: hidden;
+    align-items: stretch;
+    justify-content: stretch;
+    background: #fff;
+}
+
+.syrup-carousel-source-image {
+    display: none !important;
+}
+
+.syrup-carousel-track {
+    position: absolute;
+    inset: -1px;
+    display: flex;
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
+    transform: translate3d(calc(var(--syrup-carousel-position, 1) * -100%), 0, 0);
+    will-change: transform;
+}
+
+.syrup-carousel-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.syrup-page .syrup-carousel-shell .syrup-carousel-image {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    filter: none;
 }
 
 .syrup-carousel-arrow {
