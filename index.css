@@ -5571,11 +5571,27 @@ body.quick-add-open {
     background: #f7faf9;
 }
 
-.about-hero-visual .page-hero-image {
-    width: min(100%, 520px);
-    max-height: 30rem;
-    border-radius: 24px;
-    object-fit: contain;
+.about-page .about-hero {
+    min-height: 86svh;
+    padding-top: 8.5rem;
+}
+
+.about-page .about-hero .container {
+    display: grid;
+    align-content: center;
+}
+
+.about-page .about-hero .page-hero-grid {
+    grid-template-columns: 1fr;
+    max-width: 980px;
+}
+
+.about-page .about-hero .page-hero-title {
+    max-width: 12ch;
+}
+
+.about-page .about-hero .page-hero-subtitle {
+    max-width: 46rem;
 }
 
 .about-story-section,
@@ -5772,6 +5788,31 @@ body.quick-add-open {
     .about-story-section,
     .about-location-section {
         padding: 3.75rem 0;
+    }
+
+    .about-page .about-hero {
+        min-height: auto;
+        padding: 5.8rem 0 3.6rem;
+    }
+
+    .about-page .about-hero .page-hero-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .about-page .about-hero .page-hero-copy {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .about-page .about-hero .hero-kicker,
+    .about-page .about-hero .page-hero-title,
+    .about-page .about-hero .page-hero-subtitle,
+    .about-page .about-hero .page-hero-facts,
+    .about-page .about-hero .btn-cluster {
+        grid-column: auto;
+        grid-row: auto;
     }
 
     .about-story-layout,
