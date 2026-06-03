@@ -138,6 +138,22 @@ const getDiscountDisplay = (discount, basePrice, salePrice) => {
     };
 };
 
+const getDiscountToneClass = (percent) => {
+    const value = Number(percent) || 0;
+    if (value >= 100) return 'discount-ribbon-100';
+    if (value >= 75) return 'discount-ribbon-75';
+    if (value >= 50) return 'discount-ribbon-50';
+    if (value >= 25) return 'discount-ribbon-25';
+    return 'discount-ribbon-10';
+};
+
+const renderDiscountRibbon = (discount, extraClass = '') => {
+    if (!discount?.active) return '';
+    const classes = ['zero-discount-ribbon', getDiscountToneClass(discount.percent), extraClass].filter(Boolean).join(' ');
+    const label = `${discount.badge}${discount.label ? ` ${discount.label}` : ''}`;
+    return `<span class="${classes}">${escapeHtml(label)}</span>`;
+};
+
 const escapeHtml = (value) => String(value || '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -177,6 +193,7 @@ export const loadZeroCatalog = async () => {
             const response = await fetch(catalogUrl, {
                 headers: { Accept: 'application/json' },
                 credentials: 'omit',
+                cache: 'no-store',
             });
             if (!response.ok) throw new Error(`Inventory API ${response.status}`);
             const payload = await response.json();
@@ -387,7 +404,8 @@ export const initUniversalCartDrawer = () => {
             itemNode.innerHTML = `
                 <div>
                     <strong>${escapeHtml(item.label)}</strong>
-                    <span>${formatPrice(item.price)} each${discount.active ? ` · was ${formatPrice(basePrice)} · ${escapeHtml(discount.badge)}${discount.label ? ` ${escapeHtml(discount.label)}` : ''}` : ''}</span>
+                    ${renderDiscountRibbon(discount, 'zero-discount-ribbon-inline')}
+                    <span>${formatPrice(item.price)} each${discount.active ? ` · was ${formatPrice(basePrice)}` : ''}</span>
                 </div>
                 <div class="syrup-cart-controls">
                     <button type="button" data-cart-action="decrease" data-item-key="${escapeHtml(item.key)}" aria-label="Decrease quantity">-</button>
@@ -525,11 +543,11 @@ export const initProductPage = ({
             const displayPrice = priceForSelection(size, inventoryRow);
             const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
             const discount = discountForSelection(inventoryRow, displayPrice);
-            const discountLabel = discount.active ? `${discount.badge}${discount.label ? ` ${discount.label}` : ''}` : '';
             return `
-                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}" data-size-id="${size.id}" ${disabled ? 'disabled' : ''}>
+                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}${discount.active ? ' has-discount' : ''}" data-size-id="${size.id}" ${disabled ? 'disabled' : ''}>
+                    ${renderDiscountRibbon(discount)}
                     <strong>${size.label}</strong>
-                    <span>${formatPrice(displayPrice)}${originalPrice ? ` · was ${formatPrice(originalPrice)}` : ''}${discountLabel ? ` · ${escapeHtml(discountLabel)}` : ''}${size.note ? ` · ${size.note}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
+                    <span>${formatPrice(displayPrice)}${originalPrice ? ` · was ${formatPrice(originalPrice)}` : ''}${size.note ? ` · ${size.note}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
                 </button>
             `;
         }).join('');
@@ -553,15 +571,14 @@ export const initProductPage = ({
         const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
         const discount = discountForSelection(inventoryRow, displayPrice);
         if (selectedPrice) {
-            const discountCopy = discount.active ? ` · ${discount.badge}${discount.label ? ` ${discount.label}` : ''}` : '';
-            selectedPrice.textContent = originalPrice
-                ? `${formatPrice(displayPrice)} (was ${formatPrice(originalPrice)}${discountCopy})`
-                : formatPrice(displayPrice);
+            selectedPrice.innerHTML = `
+                <span class="zero-price-line">${formatPrice(displayPrice)}${originalPrice ? ` <small>was ${formatPrice(originalPrice)}</small>` : ''}</span>
+                ${renderDiscountRibbon(discount, 'zero-discount-ribbon-inline')}
+            `;
         }
         if (selectedSizeNote) {
             const stockCopy = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
-            const discountLabel = discount.active ? `${discount.badge}${discount.label ? ` ${discount.label}` : ''}` : '';
-            selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}${discountLabel ? ` · ${discountLabel}` : ''}${stockCopy ? ` · ${stockCopy}` : ''}`;
+            selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}${stockCopy ? ` · ${stockCopy}` : ''}`;
         }
         if (addButton) {
             addButton.disabled = Boolean(inventoryRow && !inventoryRow.available);
