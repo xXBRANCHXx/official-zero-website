@@ -2283,7 +2283,7 @@ body.cart-drawer-open {
     position: relative;
     overflow: hidden;
     border-top: 1px solid rgba(17, 24, 39, 0.06);
-    padding-bottom: 2rem;
+    padding-bottom: 1.1rem;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0) calc(100% - 42rem), #eef1f1 calc(100% - 37rem), #eef1f1 100%);
 }
@@ -2301,7 +2301,7 @@ body.cart-drawer-open {
 
 .testimonials-track {
     position: relative;
-    height: 122vh;
+    height: 96vh;
     overflow: hidden;
 }
 
@@ -2465,11 +2465,10 @@ body.cart-drawer-open {
 .lab-certificate-section {
     position: relative;
     margin-top: 0;
-    height: clamp(9.75rem, 16.5vw, 13.25rem);
-    padding: 0;
+    padding: 2.2rem 0 3.35rem;
     overflow: hidden;
     background:
-        linear-gradient(180deg, #eef1f1 0, #eef1f1 1.5rem, #f7faf9 14rem, #f7faf9 100%);
+        linear-gradient(180deg, #eef1f1 0, #eef1f1 1.5rem, #f7faf9 13rem, #f7faf9 100%);
 }
 
 .lab-certificate-section::before {
@@ -2485,7 +2484,6 @@ body.cart-drawer-open {
 .lab-certificate-inner {
     position: relative;
     z-index: 1;
-    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2855,7 +2853,7 @@ body.cart-drawer-open {
 
 @media (min-width: 901px) and (max-height: 760px) {
     .testimonials-track {
-        height: 136vh;
+        height: 104vh;
     }
 
     .testimonials-sticky {
