@@ -3782,6 +3782,23 @@ body.quick-add-open {
     white-space: nowrap;
 }
 
+.maple-page .page-proof-card {
+    align-content: center;
+    gap: 1.15rem;
+}
+
+.maple-page .page-proof-card span {
+    font-size: clamp(2.85rem, 5.2vw, 5.1rem);
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+.maple-page .page-proof-card strong {
+    font-size: 1.05rem;
+    line-height: 1.16;
+}
+
 .page-proof-card strong {
     display: block;
     color: var(--text);
