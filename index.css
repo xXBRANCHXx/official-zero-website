@@ -3329,11 +3329,10 @@ body.cart-drawer-open {
 }
 
 .footer-mark {
-    display: inline-flex;
-    font-size: 0.85rem;
-    font-weight: 900;
-    letter-spacing: 0.3rem;
-    color: rgba(226, 232, 240, 0.54);
+    display: block;
+    width: 4.2rem;
+    height: auto;
+    opacity: 0.72;
 }
 
 .footer-bottom {
