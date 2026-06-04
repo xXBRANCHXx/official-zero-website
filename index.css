@@ -2027,14 +2027,14 @@ body.cart-drawer-open {
 .syrup-page .syrup-visual-shell,
 .drops-page .syrup-visual-shell,
 .maple-page .syrup-visual-shell {
-    min-height: clamp(25rem, 42vw, 34rem);
+    min-height: clamp(21rem, 35vw, 29rem);
 }
 
 .syrup-page .syrup-visual-shell img,
 .drops-page .syrup-visual-shell img,
 .maple-page .syrup-visual-shell img {
     width: min(88%, 350px);
-    max-height: 30rem;
+    max-height: 27rem;
     object-fit: contain;
 }
 
@@ -2103,7 +2103,7 @@ body.cart-drawer-open {
 .syrup-choice-card:hover,
 .syrup-size-chip:hover {
     transform: translateY(-1px);
-    border-color: rgba(46, 146, 127, 0.22);
+    border-color: rgba(29, 191, 211, 0.24);
 }
 
 .syrup-size-chip:disabled {
@@ -2115,30 +2115,30 @@ body.cart-drawer-open {
 
 .syrup-choice-card.active,
 .syrup-size-chip.active {
-    border-color: rgba(46, 146, 127, 0.44);
-    background: rgba(46, 146, 127, 0.08);
-    box-shadow: 0 14px 28px rgba(46, 146, 127, 0.1);
+    border-color: rgba(29, 191, 211, 0.46);
+    background: rgba(29, 191, 211, 0.07);
+    box-shadow: 0 14px 28px rgba(29, 191, 211, 0.1);
 }
 
 .syrup-size-chip.has-discount {
-    padding-top: 2.15rem;
+    padding-top: 0.95rem;
 }
 
 .zero-discount-ribbon {
-    --discount-pill-bg: #111827;
+    --discount-pill-bg: #e11d48;
     --discount-pill-ink: #ffffff;
-    --discount-pill-shadow: rgba(15, 23, 42, 0.18);
+    --discount-pill-shadow: rgba(225, 29, 72, 0.18);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: fit-content;
     max-width: calc(100% - 1rem);
-    min-height: 1.18rem;
-    padding: 0.2rem 0.42rem;
+    min-height: 1.05rem;
+    padding: 0.16rem 0.38rem;
     border: 0;
     border-radius: 999px;
     color: var(--discount-pill-ink);
-    font-size: 0.66rem;
+    font-size: 0.62rem;
     font-weight: 950;
     line-height: 1;
     letter-spacing: 0.02em;
@@ -2148,10 +2148,7 @@ body.cart-drawer-open {
 }
 
 .syrup-size-chip > .zero-discount-ribbon {
-    position: absolute;
-    top: 0.58rem;
-    left: 0.72rem;
-    z-index: 1;
+    position: static;
 }
 
 .zero-discount-ribbon-inline {
@@ -2172,33 +2169,33 @@ body.cart-drawer-open {
 }
 
 .discount-ribbon-10 {
-    --discount-pill-bg: #f3f4f6;
-    --discount-pill-ink: #111827;
-    --discount-pill-shadow: rgba(15, 23, 42, 0.1);
+    --discount-pill-bg: #ef4444;
+    --discount-pill-ink: #ffffff;
+    --discount-pill-shadow: rgba(239, 68, 68, 0.16);
 }
 
 .discount-ribbon-25 {
-    --discount-pill-bg: #d1d5db;
-    --discount-pill-ink: #111827;
-    --discount-pill-shadow: rgba(15, 23, 42, 0.12);
+    --discount-pill-bg: #dc2626;
+    --discount-pill-ink: #ffffff;
+    --discount-pill-shadow: rgba(220, 38, 38, 0.18);
 }
 
 .discount-ribbon-50 {
-    --discount-pill-bg: #4b5563;
+    --discount-pill-bg: #b91c1c;
     --discount-pill-ink: #ffffff;
-    --discount-pill-shadow: rgba(15, 23, 42, 0.18);
+    --discount-pill-shadow: rgba(185, 28, 28, 0.2);
 }
 
 .discount-ribbon-75 {
-    --discount-pill-bg: #1f2937;
+    --discount-pill-bg: #991b1b;
     --discount-pill-ink: #ffffff;
-    --discount-pill-shadow: rgba(15, 23, 42, 0.22);
+    --discount-pill-shadow: rgba(153, 27, 27, 0.22);
 }
 
 .discount-ribbon-100 {
-    --discount-pill-bg: #050505;
+    --discount-pill-bg: #7f1d1d;
     --discount-pill-ink: #ffffff;
-    --discount-pill-shadow: rgba(0, 0, 0, 0.28);
+    --discount-pill-shadow: rgba(127, 29, 29, 0.24);
 }
 
 .syrup-choice-card span,
@@ -2215,7 +2212,7 @@ body.cart-drawer-open {
 .syrup-cart-footer .zero-discount-ribbon {
     display: inline-flex;
     color: var(--discount-pill-ink);
-    font-size: 0.66rem;
+    font-size: 0.62rem;
 }
 
 .syrup-choice-card strong,
@@ -2225,8 +2222,63 @@ body.cart-drawer-open {
     color: var(--text);
 }
 
+.syrup-size-chip .zero-size-price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.42rem;
+    margin-top: 0.34rem;
+    color: var(--text);
+    font-size: 0.98rem;
+}
+
+.syrup-size-chip .zero-size-price {
+    display: inline-block;
+    color: var(--text);
+    font-size: 0.98rem;
+    font-weight: 950;
+    line-height: 1.1;
+}
+
+.zero-size-compare,
+.zero-size-stock {
+    display: block;
+    margin-top: 0.18rem;
+    color: var(--text-soft);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.zero-size-compare {
+    text-decoration: line-through;
+}
+
+.zero-size-stock {
+    color: #991b1b;
+    text-decoration: none;
+}
+
 .syrup-selection-copy {
     color: var(--text-mid);
+    font-size: 0.95rem;
+    line-height: 1.55;
+}
+
+.syrup-page .showcase-panel .showcase-header,
+.drops-page .showcase-panel .showcase-header,
+.maple-page .showcase-panel .showcase-header,
+.syrup-page .syrup-size-summary,
+.drops-page .syrup-size-summary,
+.maple-page .syrup-size-summary {
+    display: none;
+}
+
+.syrup-page .showcase-panel,
+.drops-page .showcase-panel,
+.maple-page .showcase-panel {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
 }
 
 .syrup-visual-shell {
@@ -5839,7 +5891,7 @@ body.quick-add-open {
 }
 
 .quick-add-options .syrup-size-chip.has-discount {
-    padding-top: 2.05rem;
+    padding-top: 0.72rem;
 }
 
 .quick-add-options .syrup-size-chip > .zero-discount-ribbon {
@@ -6388,14 +6440,14 @@ body.quick-add-open {
 .syrup-page .syrup-visual-shell,
 .drops-page .syrup-visual-shell,
 .maple-page .syrup-visual-shell {
-    min-height: clamp(19rem, 30vw, 26rem);
+    min-height: clamp(18rem, 27vw, 23rem);
 }
 
 .syrup-page .syrup-visual-shell img,
 .drops-page .syrup-visual-shell img,
 .maple-page .syrup-visual-shell img {
-    width: min(86%, 330px);
-    max-height: 23rem;
+    width: min(82%, 310px);
+    max-height: 21rem;
 }
 
 .syrup-page .syrup-selection-copy,

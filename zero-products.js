@@ -147,6 +147,8 @@ const getDiscountToneClass = (percent) => {
     return 'discount-ribbon-10';
 };
 
+const PRODUCT_STICK_TO_IT_COPY = 'We do not use stevia because better-for-you only works when it is easy to keep using. Our view of healthy is the option that fits your daily routine, tastes clean, and helps you stick with it.';
+
 const renderDiscountRibbon = (discount, extraClass = '') => {
     if (!discount?.active) return '';
     const classes = ['zero-discount-ribbon', getDiscountToneClass(discount.percent), extraClass].filter(Boolean).join(' ');
@@ -566,15 +568,18 @@ export const initProductPage = ({
             const inventoryRow = findInventoryRow(selectedOptionId, size.id);
             const inStock = !inventoryRow || inventoryRow.available;
             const disabled = !isAvailable || !inStock;
-            const stockLabel = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
             const displayPrice = priceForSelection(size, inventoryRow);
             const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
             const discount = discountForSelection(inventoryRow, displayPrice);
             return `
                 <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}${discount.active ? ' has-discount' : ''}" data-size-id="${size.id}" ${disabled ? 'disabled' : ''}>
-                    ${renderDiscountRibbon(discount)}
                     <strong>${size.label}</strong>
-                    <span>${formatPrice(displayPrice)}${originalPrice ? ` · was ${formatPrice(originalPrice)}` : ''}${size.note ? ` · ${size.note}` : ''}${stockLabel ? ` · ${stockLabel}` : ''}</span>
+                    <span class="zero-size-price-row">
+                        <span class="zero-size-price">${formatPrice(displayPrice)}</span>
+                        ${renderDiscountRibbon(discount)}
+                    </span>
+                    ${originalPrice ? `<small class="zero-size-compare">${formatPrice(originalPrice)}</small>` : ''}
+                    ${!inStock ? '<small class="zero-size-stock">Sold out</small>' : ''}
                 </button>
             `;
         }).join('');
@@ -587,7 +592,7 @@ export const initProductPage = ({
         if (!option || !size) return;
 
         if (selectedName) selectedName.textContent = option.name;
-        if (selectedDescription) selectedDescription.textContent = option.description;
+        if (selectedDescription) selectedDescription.textContent = PRODUCT_STICK_TO_IT_COPY;
         if (selectedImage) {
             selectedImage.src = option.image;
             selectedImage.alt = `${option.name} ${product.name}`;
@@ -604,8 +609,7 @@ export const initProductPage = ({
             `;
         }
         if (selectedSizeNote) {
-            const stockCopy = inventoryRow ? (inventoryRow.available ? `${inventoryRow.stock} in stock` : 'Sold out') : '';
-            selectedSizeNote.textContent = `${size.label}${size.note ? ` · ${size.note}` : ''}${stockCopy ? ` · ${stockCopy}` : ''}`;
+            selectedSizeNote.textContent = '';
         }
         if (addButton) {
             addButton.disabled = Boolean(inventoryRow && !inventoryRow.available);
@@ -621,7 +625,6 @@ export const initProductPage = ({
 
     optionGrid.innerHTML = product.options.map((option) => `
         <button type="button" class="syrup-choice-card" data-option-id="${option.id}">
-            <span>${option.group}</span>
             <strong>${option.name}</strong>
         </button>
     `).join('');
