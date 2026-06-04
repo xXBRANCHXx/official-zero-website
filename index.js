@@ -38,6 +38,86 @@ const SOCIAL_LINKS = [
     },
 ];
 
+const SEARCH_ITEMS = [
+    {
+        title: 'ZERO Home',
+        category: 'Website',
+        href: '/index.html',
+        description: 'Start here for ZERO Foods Indonesia, zero sugar sweetness, product lines, reviews, and lab certification.',
+        keywords: ['home', 'zero foods', 'zero sugar', 'zero calorie', 'healthy choices', 'sweetness', 'lab certified'],
+    },
+    {
+        title: 'Catalog',
+        category: 'Shop',
+        href: '/catalog.html',
+        description: 'Compare ZERO Syrup, ZERO Drops, Maple Topping, and the full product lineup.',
+        keywords: ['catalog', 'shop', 'products', 'lineup', 'buy', 'order', 'compare'],
+    },
+    {
+        title: 'ZERO Syrup',
+        category: 'Product',
+        href: '/syrup.html',
+        description: 'Full-size zero-calorie syrup bottles for coffee, refreshers, tea, and daily drinks.',
+        keywords: ['syrup', 'drink bottle', 'coffee', 'refreshers', 'fruit flavors', 'plain', 'caramel', 'hazelnut', 'lemonade'],
+    },
+    {
+        title: 'ZERO Syrup in Catalog',
+        category: 'Catalog',
+        href: '/catalog.html#catalog-syrup',
+        description: 'See the catalog overview for the daily drink bottle.',
+        keywords: ['catalog syrup', 'daily drink bottle', 'syrup section'],
+    },
+    {
+        title: 'ZERO Drops',
+        category: 'Product',
+        href: '/drops.html',
+        description: 'Portable concentrated sweetener drops for sweetness anywhere.',
+        keywords: ['drops', 'dropper', 'portable sweetener', 'concentrated', '5ml', '10ml', '30ml', 'coffee drops'],
+    },
+    {
+        title: 'ZERO Drops in Catalog',
+        category: 'Catalog',
+        href: '/catalog.html#catalog-drops',
+        description: 'See the catalog overview for the portable sweetener format.',
+        keywords: ['catalog drops', 'portable sweetener', 'drops section'],
+    },
+    {
+        title: 'ZERO Maple Topping',
+        category: 'Product',
+        href: '/maple-topping.html',
+        description: 'A thicker zero-calorie maple pour for pancakes, waffles, yogurt bowls, and desserts.',
+        keywords: ['maple', 'maple topping', 'topping', 'pancakes', 'waffles', 'yogurt', 'dessert', 'food'],
+    },
+    {
+        title: 'Maple Topping in Catalog',
+        category: 'Catalog',
+        href: '/catalog.html#catalog-maple',
+        description: 'See the catalog overview for ZERO Maple Topping.',
+        keywords: ['catalog maple', 'maple section', 'heavier pour'],
+    },
+    {
+        title: 'ZFit',
+        category: 'Wellness',
+        href: '/zfit.html',
+        description: 'Functional wellness products including fiber syrup and apple cider vinegar syrup.',
+        keywords: ['zfit', 'wellness', 'fiber', 'prebiotic', 'acv', 'apple cider vinegar', 'mother', '250ml', '100ml'],
+    },
+    {
+        title: 'About ZERO',
+        category: 'Company',
+        href: '/about.html',
+        description: 'Meet ZERO Foods Indonesia and find the team in Sleman, Yogyakarta.',
+        keywords: ['about', 'company', 'team', 'yogyakarta', 'sleman', 'address', 'zero foods indonesia'],
+    },
+    {
+        title: 'Legal Info',
+        category: 'Information',
+        href: '/legal.html',
+        description: 'Read ZERO legal information, regulatory references, and sweetener positioning.',
+        keywords: ['legal', 'fine print', 'regulatory', 'sucralose', 'stevia', 'aspartame', 'safety'],
+    },
+];
+
 const normalizePath = (href) => {
     const path = href.split('#')[0] || '/index.html';
     return path === '/' ? '/index.html' : path;
@@ -48,6 +128,142 @@ const isCurrentHref = (href) => normalizePath(href) === normalizePath(window.loc
 const renderAnchor = ({ label, href }) => {
     const current = isCurrentHref(href);
     return `<a href="${href}"${current ? ' class="active" aria-current="page"' : ''}>${label}</a>`;
+};
+
+const normalizeSearchText = (value) => value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const escapeHtml = (value) => value.replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+}[char]));
+
+const getSearchScore = (item, query) => {
+    const normalizedTitle = normalizeSearchText(item.title);
+    const normalizedCategory = normalizeSearchText(item.category);
+    const normalizedDescription = normalizeSearchText(item.description);
+    const normalizedKeywords = item.keywords.map(normalizeSearchText);
+    const searchableText = [
+        normalizedTitle,
+        normalizedCategory,
+        normalizedDescription,
+        ...normalizedKeywords,
+    ].join(' ');
+    const queryTerms = query.split(' ').filter(Boolean);
+
+    if (!queryTerms.every((term) => searchableText.includes(term))) {
+        return 0;
+    }
+
+    let score = 8;
+    queryTerms.forEach((term) => {
+        if (normalizedTitle === term) score += 80;
+        if (normalizedTitle.startsWith(term)) score += 42;
+        if (normalizedTitle.includes(term)) score += 24;
+        if (normalizedKeywords.some((keyword) => keyword === term || keyword.startsWith(term))) score += 28;
+        if (normalizedCategory === 'product' || normalizedCategory === 'wellness') score += 50;
+        if (normalizedCategory.includes(term)) score += 12;
+        if (normalizedDescription.includes(term)) score += 6;
+    });
+
+    return score;
+};
+
+const getSearchResults = (query) => {
+    const normalizedQuery = normalizeSearchText(query);
+
+    if (!normalizedQuery) return [];
+
+    return SEARCH_ITEMS
+        .map((item) => ({ ...item, score: getSearchScore(item, normalizedQuery) }))
+        .filter((item) => item.score > 0)
+        .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+        .slice(0, 6);
+};
+
+const initSiteSearch = ({ searchPopout, mainSearch }) => {
+    if (!searchPopout || !mainSearch) return null;
+
+    const resultPanel = document.createElement('div');
+    resultPanel.id = 'search-results';
+    resultPanel.className = 'search-results-panel';
+    resultPanel.setAttribute('role', 'listbox');
+    resultPanel.setAttribute('aria-label', 'Search results');
+    resultPanel.setAttribute('aria-live', 'polite');
+    searchPopout.appendChild(resultPanel);
+    mainSearch.setAttribute('autocomplete', 'off');
+    mainSearch.setAttribute('aria-controls', 'search-results');
+
+    let currentResults = [];
+
+    const navigateTo = (href) => {
+        window.location.href = href;
+    };
+
+    const renderResults = () => {
+        currentResults = getSearchResults(mainSearch.value);
+        const hasQuery = normalizeSearchText(mainSearch.value).length > 0;
+        searchPopout.classList.toggle('search-results-open', hasQuery);
+
+        if (!hasQuery) {
+            resultPanel.innerHTML = '';
+            return;
+        }
+
+        if (!currentResults.length) {
+            resultPanel.innerHTML = `
+                <div class="search-empty-state" role="status">
+                    <strong>No results found</strong>
+                    <span>Try syrup, drops, maple, ZFit, about, or legal.</span>
+                </div>
+            `;
+            return;
+        }
+
+        resultPanel.innerHTML = currentResults.map((item, index) => `
+            <button class="search-result-item" type="button" role="option" data-search-index="${index}">
+                <span class="search-result-meta">${escapeHtml(item.category)}</span>
+                <strong>${escapeHtml(item.title)}</strong>
+                <span>${escapeHtml(item.description)}</span>
+            </button>
+        `).join('');
+    };
+
+    mainSearch.addEventListener('input', renderResults);
+    mainSearch.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter') return;
+
+        event.preventDefault();
+        if (currentResults[0]) {
+            navigateTo(currentResults[0].href);
+        }
+    });
+
+    resultPanel.addEventListener('click', (event) => {
+        const resultButton = event.target.closest('[data-search-index]');
+        if (!resultButton) return;
+
+        const result = currentResults[Number(resultButton.dataset.searchIndex)];
+        if (result) {
+            navigateTo(result.href);
+        }
+    });
+
+    return {
+        clear() {
+            mainSearch.value = '';
+            renderResults();
+        },
+        renderResults,
+    };
 };
 
 const initSmoothScroll = () => {
@@ -317,11 +533,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeSearch = document.getElementById('close-search');
     const moreTrigger = document.getElementById('more-trigger');
     const moreDropdown = document.getElementById('more-dropdown');
+    const siteSearch = initSiteSearch({ searchPopout, mainSearch });
 
     if (searchTrigger && searchPopout && morphIconBox && mainSearch) {
         searchTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             if (searchPopout.classList.contains('active')) {
+                siteSearch?.clear();
                 closeOverlay(searchPopout);
             } else if (isCompactViewport()) {
                 searchPopout.classList.add('active', 'expanded');
@@ -340,7 +558,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    closeSearch?.addEventListener('click', () => closeOverlay(searchPopout));
+    closeSearch?.addEventListener('click', () => {
+        siteSearch?.clear();
+        closeOverlay(searchPopout);
+    });
 
     if (moreTrigger && moreDropdown) {
         moreTrigger.addEventListener('click', (e) => {
@@ -358,12 +579,14 @@ document.addEventListener('DOMContentLoaded', () => {
             moreTrigger?.setAttribute('aria-expanded', 'false');
         }
         if (searchPopout && !searchPopout.contains(clickedNode) && !searchTrigger?.contains(clickedNode)) {
+            siteSearch?.clear();
             closeOverlay(searchPopout);
         }
     });
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
+            siteSearch?.clear();
             closeOverlay(searchPopout);
             moreDropdown?.classList.remove('active');
             moreTrigger?.setAttribute('aria-expanded', 'false');
