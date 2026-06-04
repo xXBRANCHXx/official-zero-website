@@ -6502,3 +6502,9 @@ body.quick-add-open {
         min-height: 17rem;
     }
 }
+
+.syrup-page .syrup-visual-shell,
+.drops-page .syrup-visual-shell {
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+}
