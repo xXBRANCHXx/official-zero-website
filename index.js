@@ -15,6 +15,29 @@ const PRODUCT_MENU_ITEMS = [
     { label: 'Maple Topping', href: '/maple-topping.html' },
 ];
 
+const SOCIAL_LINKS = [
+    {
+        label: 'YouTube',
+        href: 'https://www.youtube.com/@zerofoods.id.official',
+        icon: 'https://cdn.simpleicons.org/youtube/FFFFFF',
+    },
+    {
+        label: 'TikTok',
+        href: 'https://www.tiktok.com/@zerofoods.id',
+        icon: 'https://cdn.simpleicons.org/tiktok/FFFFFF',
+    },
+    {
+        label: 'Facebook',
+        href: 'https://www.facebook.com/profile.php?id=61573572337033',
+        icon: 'https://cdn.simpleicons.org/facebook/FFFFFF',
+    },
+    {
+        label: 'Instagram',
+        href: 'https://www.instagram.com/zerofoods.id/',
+        icon: 'https://cdn.simpleicons.org/instagram/FFFFFF',
+    },
+];
+
 const normalizePath = (href) => {
     const path = href.split('#')[0] || '/index.html';
     return path === '/' ? '/index.html' : path;
@@ -127,6 +150,17 @@ const syncScheduledDropsCopy = () => {
     });
 };
 
+const initFooterSocialLinks = () => {
+    document.querySelectorAll('[data-footer-socials]').forEach((container) => {
+        container.innerHTML = SOCIAL_LINKS.map((social) => `
+            <a class="footer-social-link" href="${social.href}" target="_blank" rel="noopener noreferrer" aria-label="${social.label}">
+                <img src="${social.icon}" alt="" aria-hidden="true" loading="lazy" width="20" height="20">
+                <span class="sr-only">${social.label}</span>
+            </a>
+        `).join('');
+    });
+};
+
 const initSiteLoader = () => {
     const loaderBar = document.getElementById('site-loader-bar');
     const loaderPercent = document.getElementById('site-loader-percent');
@@ -227,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSiteLoader();
     normalizeNavigation();
     syncScheduledDropsCopy();
+    initFooterSocialLinks();
     const cartApi = initUniversalCartDrawer();
     window.zeroCartApi = cartApi;
     initSmoothScroll();
