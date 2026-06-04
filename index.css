@@ -5588,11 +5588,11 @@ body.quick-add-open {
     }
 
     .footer-map {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .footer-column:last-child {
-        grid-column: auto;
+        grid-column: 1 / -1;
     }
 }
 
