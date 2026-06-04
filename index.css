@@ -3219,22 +3219,6 @@ body.cart-drawer-open {
     transform: translateY(44%);
 }
 
-.footer-logo {
-    display: block;
-    width: min(29rem, 100%);
-    height: auto;
-}
-
-.footer-map-logo {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: clamp(-1.8rem, -2.4vw, -0.7rem);
-    min-height: 0;
-    padding-top: 0;
-}
-
 .footer-title {
     max-width: 11ch;
     font-size: clamp(2.4rem, 6vw, 4.5rem);
@@ -5028,12 +5012,6 @@ body.quick-add-open {
 
     .footer-column:last-child {
         grid-column: 1 / -1;
-    }
-
-    .footer-map-logo {
-        justify-content: center;
-        margin-top: 0;
-        min-height: 0;
     }
 
     .footer-bottom {
