@@ -185,8 +185,8 @@ const initLegalReveals = () => {
             observer.unobserve(entry.target);
         });
     }, {
-        threshold: 0.18,
-        rootMargin: '0px 0px -8% 0px',
+        threshold: 0.06,
+        rootMargin: '0px 0px 18% 0px',
     });
 
     revealItems.forEach((item) => observer.observe(item));
