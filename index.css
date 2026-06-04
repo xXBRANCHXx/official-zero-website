@@ -3221,7 +3221,7 @@ body.cart-drawer-open {
 
 .footer-logo {
     display: block;
-    width: min(23rem, 100%);
+    width: min(29rem, 100%);
     height: auto;
 }
 
@@ -3230,8 +3230,8 @@ body.cart-drawer-open {
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
-    min-height: clamp(4.5rem, 10vw, 7.5rem);
-    padding-top: clamp(1rem, 2.4vw, 2rem);
+    min-height: clamp(3.4rem, 7vw, 5.4rem);
+    padding-top: clamp(0.35rem, 1vw, 0.9rem);
 }
 
 .footer-title {
@@ -5031,7 +5031,7 @@ body.quick-add-open {
 
     .footer-map-logo {
         justify-content: flex-start;
-        min-height: 4.75rem;
+        min-height: 3.8rem;
     }
 
     .footer-bottom {
