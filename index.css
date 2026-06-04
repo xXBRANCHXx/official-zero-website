@@ -3228,10 +3228,11 @@ body.cart-drawer-open {
 .footer-map-logo {
     grid-column: 1 / -1;
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    min-height: clamp(3.4rem, 7vw, 5.4rem);
-    padding-top: clamp(0.35rem, 1vw, 0.9rem);
+    justify-content: center;
+    align-items: center;
+    margin-top: clamp(-1.8rem, -2.4vw, -0.7rem);
+    min-height: 0;
+    padding-top: 0;
 }
 
 .footer-title {
@@ -5030,8 +5031,9 @@ body.quick-add-open {
     }
 
     .footer-map-logo {
-        justify-content: flex-start;
-        min-height: 3.8rem;
+        justify-content: center;
+        margin-top: 0;
+        min-height: 0;
     }
 
     .footer-bottom {
