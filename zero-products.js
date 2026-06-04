@@ -150,7 +150,7 @@ const getDiscountToneClass = (percent) => {
 const renderDiscountRibbon = (discount, extraClass = '') => {
     if (!discount?.active) return '';
     const classes = ['zero-discount-ribbon', getDiscountToneClass(discount.percent), extraClass].filter(Boolean).join(' ');
-    const label = `${discount.badge}${discount.label ? ` ${discount.label}` : ''}`;
+    const label = `${discount.badge}!`;
     return `<span class="${classes}">${escapeHtml(label)}</span>`;
 };
 
