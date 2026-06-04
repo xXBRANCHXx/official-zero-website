@@ -3783,13 +3783,28 @@ body.quick-add-open {
 }
 
 .maple-page .page-proof-card {
+    min-height: 16.5rem;
+    padding: clamp(1.25rem, 2vw, 1.7rem);
     align-content: center;
-    gap: 1.15rem;
+    gap: 0.72rem;
+}
+
+.maple-page .page-proof-layout {
+    grid-template-columns: 1fr;
+    gap: clamp(1.6rem, 3vw, 2.6rem);
+}
+
+.maple-page .page-proof-layout .section-heading {
+    max-width: 48rem;
+}
+
+.maple-page .page-proof-layout .section-heading h2 {
+    max-width: 13ch;
 }
 
 .maple-page .page-proof-card span {
-    font-size: clamp(2.85rem, 5.2vw, 5.1rem);
-    line-height: 0.86;
+    font-size: clamp(2.55rem, 4.4vw, 4.35rem);
+    line-height: 0.9;
     letter-spacing: -0.02em;
     white-space: nowrap;
 }
@@ -3797,6 +3812,13 @@ body.quick-add-open {
 .maple-page .page-proof-card strong {
     font-size: 1.05rem;
     line-height: 1.16;
+}
+
+.maple-page .page-proof-card p {
+    max-width: 18rem;
+    margin: 0.15rem auto 0;
+    font-size: 0.94rem;
+    line-height: 1.42;
 }
 
 .page-proof-card strong {
