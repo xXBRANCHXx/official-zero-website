@@ -12,6 +12,7 @@ export default defineConfig({
         mapleTopping: resolve(__dirname, 'maple-topping.html'),
         zfit: resolve(__dirname, 'zfit.html'),
         about: resolve(__dirname, 'about.html'),
+        social: resolve(__dirname, 'social.html'),
         legal: resolve(__dirname, 'legal.html'),
       },
     },

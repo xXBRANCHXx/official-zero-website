@@ -7,6 +7,7 @@ const PRIMARY_NAV_ITEMS = [
     { label: 'Catalog', href: '/catalog.html' },
     { label: 'ZFit', href: '/zfit.html' },
     { label: 'About', href: '/about.html' },
+    { label: 'Social', href: '/social.html' },
 ];
 
 const PRODUCT_MENU_ITEMS = [
@@ -108,6 +109,13 @@ const SEARCH_ITEMS = [
         href: '/about.html',
         description: 'Meet ZERO Foods Indonesia and find the team in Sleman, Yogyakarta.',
         keywords: ['about', 'company', 'team', 'yogyakarta', 'sleman', 'address', 'zero foods indonesia'],
+    },
+    {
+        title: 'ZERO Social',
+        category: 'Company',
+        href: '/social.html',
+        description: 'Watch Bang ZERO test real foods with a CGM and explain blood glucose spikes.',
+        keywords: ['social', 'cgm', 'blood sugar', 'glucose', 'food tests', 'spike', 'bang zero', 'chart'],
     },
     {
         title: 'Legal Info',
