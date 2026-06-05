@@ -1046,6 +1046,8 @@ body.cart-drawer-open {
     background: #05070a;
     color: #f8fafc;
     overflow: hidden;
+    max-width: 100%;
+    contain: paint;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -1054,7 +1056,8 @@ body.cart-drawer-open {
     display: flex;
     width: max-content;
     min-width: 100%;
-    overflow: hidden;
+    max-width: 100%;
+    overflow: clip;
     transform: translateZ(0);
 }
 
@@ -4245,10 +4248,14 @@ body.quick-add-open {
 
     .nav-right {
         margin-left: auto;
+        width: auto;
+        min-width: 0;
+        flex: 1 1 auto;
     }
 
     .nav-links {
         gap: 0.35rem;
+        min-width: 0;
     }
 
     .nav-links a {
@@ -4272,6 +4279,14 @@ body.quick-add-open {
     .zero-cart-drawer {
         width: 100vw;
         padding: 5.75rem 1rem 1rem;
+    }
+
+    .zero-cart-drawer:not(.active) {
+        display: none;
+    }
+
+    .zero-cart-backdrop:not(.active) {
+        display: none;
     }
 
     .zero-cart-actions {
@@ -4723,6 +4738,12 @@ body.quick-add-open {
     .habits-stage {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.8rem;
+    }
+
+    .habits-heading,
+    .habits-section .habit-card,
+    .habits-section.in-frame .habit-card {
+        transform: none !important;
     }
 
     .habits-heading h2 {
@@ -6783,6 +6804,13 @@ body.quick-add-open {
     .catalog-product-row {
         min-height: auto;
         padding: 2.35rem 0 2.6rem;
+    }
+
+    .catalog-product-row.zipper-left,
+    .catalog-product-row.zipper-right {
+        opacity: 1;
+        transform: none !important;
+        transition: none;
     }
 
     .catalog-product-row .catalog-detail-media {
