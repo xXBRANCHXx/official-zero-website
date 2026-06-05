@@ -571,6 +571,13 @@ document.addEventListener('DOMContentLoaded', () => {
         closeOverlay(searchPopout);
     });
 
+    closeSearch?.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        siteSearch?.clear();
+        closeOverlay(searchPopout);
+    });
+
     if (moreTrigger && moreDropdown) {
         moreTrigger.addEventListener('click', (e) => {
             e.stopPropagation();

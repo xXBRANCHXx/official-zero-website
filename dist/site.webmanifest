@@ -1,0 +1,16 @@
+{
+  "name": "ZERO Foods Indonesia",
+  "short_name": "ZERO",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/ZERO logos/ZERO Logo Black.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

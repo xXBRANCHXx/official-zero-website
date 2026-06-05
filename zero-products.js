@@ -694,8 +694,9 @@ export const initProductPage = ({
             const displayPrice = priceForSelection(size, inventoryRow);
             const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
             const discount = discountForSelection(inventoryRow, displayPrice);
+            const sizeAriaLabel = `${product.name} ${size.label} ${formatPrice(displayPrice)}${disabled ? ' unavailable' : ''}`;
             return `
-                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}${discount.active ? ' has-discount' : ''}" data-size-id="${size.id}" ${disabled ? 'disabled' : ''}>
+                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}${discount.active ? ' has-discount' : ''}" data-size-id="${size.id}" aria-label="${escapeHtml(sizeAriaLabel)}" ${disabled ? 'disabled' : ''}>
                     <strong>${size.label}</strong>
                     <span class="zero-size-price-row">
                         <span class="zero-size-price">${formatPrice(displayPrice)}</span>
@@ -747,7 +748,7 @@ export const initProductPage = ({
     };
 
     optionGrid.innerHTML = product.options.map((option) => `
-        <button type="button" class="syrup-choice-card" data-option-id="${option.id}">
+        <button type="button" class="syrup-choice-card" data-option-id="${option.id}" aria-label="Choose ${escapeHtml(option.name)} ${escapeHtml(product.name)}">
             <strong>${option.name}</strong>
         </button>
     `).join('');
