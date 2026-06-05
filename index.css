@@ -6304,7 +6304,8 @@ body.quick-add-open {
 
 .about-story-section,
 .about-team-section,
-.about-location-section {
+.about-location-section,
+.about-social-section {
     background: #f7faf9;
 }
 
@@ -6454,6 +6455,143 @@ body.quick-add-open {
     filter: saturate(0.92) contrast(1.02);
 }
 
+.about-social-section {
+    padding-top: 0;
+}
+
+.about-social-heading {
+    display: grid;
+    gap: 0.85rem;
+    max-width: 720px;
+    margin-bottom: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.about-social-heading h2 {
+    max-width: 11ch;
+    font-size: clamp(2.6rem, 5.4vw, 5.2rem);
+    line-height: 0.9;
+}
+
+.about-social-heading p {
+    max-width: 42rem;
+    color: var(--text-mid);
+}
+
+.about-social-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: minmax(190px, 16vw);
+    gap: 1rem;
+}
+
+.about-social-card {
+    position: relative;
+    display: flex;
+    min-height: 0;
+    overflow: hidden;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    border-radius: 24px;
+    background: #111827;
+    color: #ffffff;
+    text-decoration: none;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+    isolation: isolate;
+    transform: translateY(0);
+    transition: transform 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+}
+
+.about-social-card-large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.about-social-card-wide {
+    grid-column: span 2;
+}
+
+.about-social-photo,
+.about-social-overlay {
+    position: absolute;
+    inset: 0;
+}
+
+.about-social-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05) brightness(0.74);
+    transform: scale(1.01);
+    transition: filter 360ms ease, transform 420ms ease;
+    z-index: -2;
+}
+
+.about-social-overlay {
+    background:
+        linear-gradient(180deg, rgba(2, 6, 23, 0.08) 0%, rgba(2, 6, 23, 0.72) 100%),
+        linear-gradient(45deg, rgba(2, 6, 23, 0.52), transparent 58%);
+    z-index: -1;
+    transition: opacity 260ms ease;
+}
+
+.about-social-content {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.85rem;
+    width: 100%;
+    margin-top: auto;
+    padding: clamp(1rem, 2vw, 1.4rem);
+}
+
+.about-social-content > img {
+    flex: 0 0 auto;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.26);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(12px);
+}
+
+.about-social-content span {
+    display: grid;
+    gap: 0.14rem;
+    min-width: 0;
+}
+
+.about-social-content strong {
+    font-size: clamp(1.35rem, 2.2vw, 2rem);
+    line-height: 0.95;
+}
+
+.about-social-content small {
+    overflow-wrap: anywhere;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.08rem;
+    text-transform: uppercase;
+}
+
+.about-social-card:hover,
+.about-social-card:focus-visible {
+    border-color: rgba(6, 95, 70, 0.24);
+    box-shadow: 0 30px 72px rgba(15, 23, 42, 0.18);
+    transform: translateY(-6px);
+}
+
+.about-social-card:hover .about-social-photo,
+.about-social-card:focus-visible .about-social-photo {
+    filter: grayscale(0) contrast(1.02) brightness(0.92) saturate(1.08);
+    transform: scale(1.06);
+}
+
+.about-social-card:hover .about-social-overlay,
+.about-social-card:focus-visible .about-social-overlay {
+    opacity: 0.86;
+}
+
 @media (max-width: 1024px) {
     .about-story-layout,
     .about-location-layout {
@@ -6467,6 +6605,11 @@ body.quick-add-open {
 
     .about-map-shell {
         min-height: 420px;
+    }
+
+    .about-social-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: minmax(210px, 28vw);
     }
 }
 
@@ -6569,8 +6712,13 @@ body.quick-add-open {
 
     .about-story-section,
     .about-team-section,
-    .about-location-section {
+    .about-location-section,
+    .about-social-section {
         padding: 3.75rem 0;
+    }
+
+    .about-social-section {
+        padding-top: 0;
     }
 
     .about-team-section {
@@ -6595,9 +6743,7 @@ body.quick-add-open {
 
     .about-page .about-hero .hero-kicker,
     .about-page .about-hero .page-hero-title,
-    .about-page .about-hero .page-hero-subtitle,
-    .about-page .about-hero .page-hero-facts,
-    .about-page .about-hero .btn-cluster {
+    .about-page .about-hero .page-hero-subtitle {
         grid-column: auto;
         grid-row: auto;
     }
@@ -6608,7 +6754,8 @@ body.quick-add-open {
     }
 
     .about-story-copy h2,
-    .about-location-copy h2 {
+    .about-location-copy h2,
+    .about-social-heading h2 {
         max-width: 10ch;
         font-size: clamp(2.35rem, 11.5vw, 3.6rem);
     }
@@ -6625,6 +6772,19 @@ body.quick-add-open {
     }
 
     .team-photo-shell {
+        border-radius: 18px;
+    }
+
+    .about-social-grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(230px, 70vw);
+    }
+
+    .about-social-card,
+    .about-social-card-large,
+    .about-social-card-wide {
+        grid-column: span 1;
+        grid-row: span 1;
         border-radius: 18px;
     }
 }
