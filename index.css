@@ -342,7 +342,7 @@ body.cart-drawer-open {
     height: 100vh;
     padding: 6.25rem 1.25rem 1.25rem;
     display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr) auto auto auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto auto auto;
     gap: 1rem;
     background: rgba(248, 250, 252, 0.96);
     border-left: 1px solid rgba(15, 23, 42, 0.08);
@@ -427,6 +427,63 @@ body.cart-drawer-open {
     align-items: flex-end;
     padding-top: 0.2rem;
     border-top: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.zero-cart-customer {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);
+}
+
+.zero-cart-customer label {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.zero-cart-customer span {
+    color: var(--text-soft);
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.zero-cart-customer input,
+.zero-cart-customer textarea {
+    width: 100%;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    border-radius: 14px;
+    background: rgba(248, 250, 252, 0.86);
+    color: var(--text);
+    font: inherit;
+    font-size: 0.92rem;
+    outline: none;
+    padding: 0.76rem 0.85rem;
+    transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.zero-cart-customer textarea {
+    min-height: 5.4rem;
+    resize: vertical;
+}
+
+.zero-cart-customer input:focus,
+.zero-cart-customer textarea:focus {
+    background: #fff;
+    border-color: rgba(35, 80, 58, 0.36);
+    box-shadow: 0 0 0 3px rgba(35, 80, 58, 0.1);
+}
+
+.zero-cart-form-error {
+    margin: 0;
+    color: #9f2f2f;
+    font-size: 0.82rem;
+    font-weight: 800;
+    line-height: 1.4;
 }
 
 .zero-cart-actions {

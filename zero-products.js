@@ -271,7 +271,28 @@ const saveCart = (cart) => {
     window.dispatchEvent(new CustomEvent('zero-cart-updated', { detail: { cart } }));
 };
 
-const buildCheckoutMessage = (cart) => {
+const CUSTOMER_KEY = 'zero_products_customer_v1';
+
+export const loadCheckoutCustomer = () => {
+    try {
+        const customer = JSON.parse(localStorage.getItem(CUSTOMER_KEY) || '{}');
+        return {
+            fullName: String(customer.fullName || ''),
+            address: String(customer.address || ''),
+        };
+    } catch {
+        return { fullName: '', address: '' };
+    }
+};
+
+const saveCheckoutCustomer = (customer) => {
+    localStorage.setItem(CUSTOMER_KEY, JSON.stringify({
+        fullName: String(customer.fullName || ''),
+        address: String(customer.address || ''),
+    }));
+};
+
+const buildCheckoutMessage = (cart, customer = {}) => {
     const lines = [
         'Halo ZERO, saya ingin memesan produk ZERO.',
         '',
@@ -301,8 +322,8 @@ const buildCheckoutMessage = (cart) => {
     lines.push('');
     lines.push(`Total: ${formatPrice(total)}`);
     lines.push('');
-    lines.push('Nama:');
-    lines.push('Alamat:');
+    lines.push(`Nama: ${String(customer.fullName || '').trim()}`);
+    lines.push(`Alamat: ${String(customer.address || '').trim()}`);
     lines.push('Catatan:');
 
     return encodeURIComponent(lines.join('\n'));
@@ -325,9 +346,9 @@ export const createCartStore = () => {
         getTotal() {
             return cart.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
         },
-        getCheckoutUrl() {
+        getCheckoutUrl(customer = {}) {
             if (!cart.length) return '#';
-            return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${buildCheckoutMessage(cart)}`;
+            return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${buildCheckoutMessage(cart, customer)}`;
         },
         addItem(item) {
             const existing = cart.find((entry) => entry.key === item.key);
@@ -383,6 +404,17 @@ export const initUniversalCartDrawer = () => {
                 </div>
                 <p id="zero-cart-empty" class="zero-cart-empty">Your cart is empty. Add a ZERO product to start the order.</p>
                 <div id="zero-cart-items" class="zero-cart-items"></div>
+                <div class="zero-cart-customer" data-zero-checkout-customer>
+                    <label>
+                        <span>Full Name</span>
+                        <input id="zero-cart-full-name" type="text" autocomplete="name" maxlength="120" placeholder="Your full name">
+                    </label>
+                    <label>
+                        <span>Delivery Address</span>
+                        <textarea id="zero-cart-address" autocomplete="street-address" maxlength="500" rows="3" placeholder="Street, area, city, postal code"></textarea>
+                    </label>
+                    <p id="zero-cart-customer-error" class="zero-cart-form-error" hidden>Please add your full name and delivery address before checkout.</p>
+                </div>
                 <div class="zero-cart-summary">
                     <div>
                         <span>Items</span>
@@ -397,7 +429,7 @@ export const initUniversalCartDrawer = () => {
                     <button type="button" id="zero-cart-clear" class="n-btn">Clear Cart</button>
                     <a id="zero-cart-checkout" class="n-btn primary syrup-checkout-link disabled" href="#" target="_blank" aria-disabled="true">Checkout</a>
                 </div>
-                <p class="zero-cart-note">Checkout opens WhatsApp with product names, sizes, quantities, prices, and total already formatted.</p>
+                <p class="zero-cart-note">Checkout opens WhatsApp with your order, full name, delivery address, and total already formatted.</p>
             </aside>
         `);
     }
@@ -411,6 +443,38 @@ export const initUniversalCartDrawer = () => {
     const checkoutLink = document.getElementById('zero-cart-checkout');
     const clearButton = document.getElementById('zero-cart-clear');
     const closeButton = document.getElementById('zero-cart-close');
+    const fullNameInput = document.getElementById('zero-cart-full-name');
+    const addressInput = document.getElementById('zero-cart-address');
+    const customerError = document.getElementById('zero-cart-customer-error');
+
+    const setCustomerError = (message = '') => {
+        if (!customerError) return;
+        customerError.hidden = !message;
+        customerError.textContent = message;
+    };
+
+    const getCustomer = () => ({
+        fullName: String(fullNameInput?.value || '').trim(),
+        address: String(addressInput?.value || '').trim(),
+    });
+
+    const isCustomerComplete = () => {
+        const customer = getCustomer();
+        return customer.fullName.length > 1 && customer.address.length > 5;
+    };
+
+    const syncCheckoutCustomer = () => {
+        const customer = getCustomer();
+        saveCheckoutCustomer(customer);
+        if (isCustomerComplete()) {
+            setCustomerError('');
+        }
+        return customer;
+    };
+
+    const savedCustomer = loadCheckoutCustomer();
+    if (fullNameInput) fullNameInput.value = savedCustomer.fullName;
+    if (addressInput) addressInput.value = savedCustomer.address;
 
     const syncBubble = () => {
         if (!cartBubble || !cartBadge) return;
@@ -481,7 +545,7 @@ export const initUniversalCartDrawer = () => {
         } else {
             checkoutLink?.removeAttribute('aria-disabled');
             checkoutLink?.classList.remove('disabled');
-            if (checkoutLink) checkoutLink.href = store.getCheckoutUrl();
+            if (checkoutLink) checkoutLink.href = store.getCheckoutUrl(getCustomer());
         }
     };
 
@@ -508,6 +572,37 @@ export const initUniversalCartDrawer = () => {
     clearButton?.addEventListener('click', () => {
         store.clear();
         render();
+    });
+
+    fullNameInput?.addEventListener('input', () => {
+        syncCheckoutCustomer();
+        render();
+    });
+
+    addressInput?.addEventListener('input', () => {
+        syncCheckoutCustomer();
+        render();
+    });
+
+    checkoutLink?.addEventListener('click', (event) => {
+        if (checkoutLink.classList.contains('disabled')) {
+            event.preventDefault();
+            return;
+        }
+
+        const customer = syncCheckoutCustomer();
+        if (!customer.fullName || !customer.address) {
+            event.preventDefault();
+            setCustomerError('Please add your full name and delivery address before checkout.');
+            if (!customer.fullName) {
+                fullNameInput?.focus();
+            } else {
+                addressInput?.focus();
+            }
+            return;
+        }
+
+        checkoutLink.href = store.getCheckoutUrl(customer);
     });
 
     cartItems?.addEventListener('click', (event) => {
@@ -568,11 +663,11 @@ export const initProductPage = ({
     const findInventoryRow = (optionId, sizeId) => product.inventoryRows?.get(`${product.slug}:${optionId}:${sizeId}`) || null;
     const priceForSelection = (size, inventoryRow) => {
         const salePrice = Number(inventoryRow?.sale_price);
-        return Number.isFinite(salePrice) ? salePrice : Number(size?.price || 0);
+        return Number.isFinite(salePrice) && salePrice > 0 ? salePrice : Number(size?.price || 0);
     };
     const originalPriceForSelection = (inventoryRow, salePrice) => {
         const basePrice = Number(inventoryRow?.price);
-        return Number.isFinite(basePrice) && basePrice !== salePrice ? basePrice : null;
+        return Number.isFinite(basePrice) && basePrice > 0 && basePrice !== salePrice ? basePrice : null;
     };
     const discountForSelection = (inventoryRow, salePrice) => {
         const basePrice = Number(inventoryRow?.price);
