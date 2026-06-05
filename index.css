@@ -570,6 +570,8 @@ body.cart-drawer-open {
 
 .search-input-field {
     flex: 1;
+    height: 52px;
+    min-width: 0;
     border: 0;
     background: transparent;
     color: var(--text);
