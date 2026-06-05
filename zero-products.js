@@ -404,17 +404,6 @@ export const initUniversalCartDrawer = () => {
                 </div>
                 <p id="zero-cart-empty" class="zero-cart-empty">Your cart is empty. Add a ZERO product to start the order.</p>
                 <div id="zero-cart-items" class="zero-cart-items"></div>
-                <div class="zero-cart-customer" data-zero-checkout-customer>
-                    <label>
-                        <span>Full Name</span>
-                        <input id="zero-cart-full-name" type="text" autocomplete="name" maxlength="120" placeholder="Your full name">
-                    </label>
-                    <label>
-                        <span>Delivery Address</span>
-                        <textarea id="zero-cart-address" autocomplete="street-address" maxlength="500" rows="3" placeholder="Street, area, city, postal code"></textarea>
-                    </label>
-                    <p id="zero-cart-customer-error" class="zero-cart-form-error" hidden>Please add your full name and delivery address before checkout.</p>
-                </div>
                 <div class="zero-cart-summary">
                     <div>
                         <span>Items</span>
@@ -429,8 +418,34 @@ export const initUniversalCartDrawer = () => {
                     <button type="button" id="zero-cart-clear" class="n-btn">Clear Cart</button>
                     <a id="zero-cart-checkout" class="n-btn primary syrup-checkout-link disabled" href="#" target="_blank" aria-disabled="true">Checkout</a>
                 </div>
-                <p class="zero-cart-note">Checkout opens WhatsApp with your order, full name, delivery address, and total already formatted.</p>
+                <p class="zero-cart-note">Checkout opens WhatsApp with your order and total already formatted.</p>
             </aside>
+            <dialog id="zero-checkout-dialog" class="zero-checkout-dialog" aria-labelledby="zero-checkout-dialog-title" data-lenis-prevent>
+                <form id="zero-checkout-form" method="dialog" class="zero-cart-customer" data-zero-checkout-customer>
+                    <div class="zero-checkout-dialog-head">
+                        <div>
+                            <span class="showcase-badge">Checkout</span>
+                            <h2 id="zero-checkout-dialog-title">Delivery Details</h2>
+                        </div>
+                        <button type="button" id="zero-checkout-close" class="icon-btn zero-cart-close" aria-label="Close checkout form">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <label>
+                        <span>Full Name</span>
+                        <input id="zero-cart-full-name" type="text" autocomplete="name" maxlength="120" placeholder="Your full name">
+                    </label>
+                    <label>
+                        <span>Delivery Address</span>
+                        <textarea id="zero-cart-address" autocomplete="street-address" maxlength="500" rows="3" placeholder="Street, area, city, postal code"></textarea>
+                    </label>
+                    <p id="zero-cart-customer-error" class="zero-cart-form-error" hidden>Please add your full name and delivery address before checkout.</p>
+                    <div class="zero-cart-actions">
+                        <button type="button" id="zero-checkout-cancel" class="n-btn">Cancel</button>
+                        <button type="submit" class="n-btn primary">Continue to WhatsApp</button>
+                    </div>
+                </form>
+            </dialog>
         `);
     }
 
@@ -443,6 +458,10 @@ export const initUniversalCartDrawer = () => {
     const checkoutLink = document.getElementById('zero-cart-checkout');
     const clearButton = document.getElementById('zero-cart-clear');
     const closeButton = document.getElementById('zero-cart-close');
+    const checkoutDialog = document.getElementById('zero-checkout-dialog');
+    const checkoutForm = document.getElementById('zero-checkout-form');
+    const checkoutCloseButton = document.getElementById('zero-checkout-close');
+    const checkoutCancelButton = document.getElementById('zero-checkout-cancel');
     const fullNameInput = document.getElementById('zero-cart-full-name');
     const addressInput = document.getElementById('zero-cart-address');
     const customerError = document.getElementById('zero-cart-customer-error');
@@ -470,6 +489,36 @@ export const initUniversalCartDrawer = () => {
             setCustomerError('');
         }
         return customer;
+    };
+
+    const openCheckoutDialog = () => {
+        const savedCustomer = loadCheckoutCustomer();
+        if (fullNameInput) fullNameInput.value = savedCustomer.fullName;
+        if (addressInput) addressInput.value = savedCustomer.address;
+        setCustomerError('');
+
+        if (checkoutDialog?.showModal) {
+            checkoutDialog.showModal();
+        } else {
+            checkoutDialog?.setAttribute('open', '');
+        }
+
+        requestAnimationFrame(() => {
+            if (!fullNameInput?.value.trim()) {
+                fullNameInput?.focus();
+            } else {
+                addressInput?.focus();
+            }
+        });
+    };
+
+    const closeCheckoutDialog = () => {
+        if (checkoutDialog?.close) {
+            checkoutDialog.close();
+        } else {
+            checkoutDialog?.removeAttribute('open');
+        }
+        setCustomerError('');
     };
 
     const savedCustomer = loadCheckoutCustomer();
@@ -545,7 +594,7 @@ export const initUniversalCartDrawer = () => {
         } else {
             checkoutLink?.removeAttribute('aria-disabled');
             checkoutLink?.classList.remove('disabled');
-            if (checkoutLink) checkoutLink.href = store.getCheckoutUrl(getCustomer());
+            if (checkoutLink) checkoutLink.href = '#';
         }
     };
 
@@ -585,14 +634,26 @@ export const initUniversalCartDrawer = () => {
     });
 
     checkoutLink?.addEventListener('click', (event) => {
+        event.preventDefault();
         if (checkoutLink.classList.contains('disabled')) {
-            event.preventDefault();
             return;
         }
 
+        openCheckoutDialog();
+    });
+
+    checkoutCloseButton?.addEventListener('click', closeCheckoutDialog);
+    checkoutCancelButton?.addEventListener('click', closeCheckoutDialog);
+    checkoutDialog?.addEventListener('click', (event) => {
+        if (event.target === checkoutDialog) {
+            closeCheckoutDialog();
+        }
+    });
+
+    checkoutForm?.addEventListener('submit', (event) => {
+        event.preventDefault();
         const customer = syncCheckoutCustomer();
         if (!customer.fullName || !customer.address) {
-            event.preventDefault();
             setCustomerError('Please add your full name and delivery address before checkout.');
             if (!customer.fullName) {
                 fullNameInput?.focus();
@@ -602,7 +663,8 @@ export const initUniversalCartDrawer = () => {
             return;
         }
 
-        checkoutLink.href = store.getCheckoutUrl(customer);
+        window.open(store.getCheckoutUrl(customer), '_blank', 'noopener');
+        closeCheckoutDialog();
     });
 
     cartItems?.addEventListener('click', (event) => {
