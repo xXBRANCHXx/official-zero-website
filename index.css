@@ -6455,10 +6455,6 @@ body.quick-add-open {
     filter: saturate(0.92) contrast(1.02);
 }
 
-.about-social-section {
-    padding-top: 0;
-}
-
 .about-social-heading {
     display: grid;
     gap: 0.85rem;
@@ -6715,10 +6711,6 @@ body.quick-add-open {
     .about-location-section,
     .about-social-section {
         padding: 3.75rem 0;
-    }
-
-    .about-social-section {
-        padding-top: 0;
     }
 
     .about-team-section {
