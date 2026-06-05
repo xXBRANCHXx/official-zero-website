@@ -7068,6 +7068,124 @@ body.quick-add-open {
     min-height: 0;
 }
 
+.zfit-page .zfit-builder-section {
+    padding: clamp(4rem, 6vw, 5.8rem) 0;
+}
+
+.zfit-page .zfit-builder-section + .zfit-builder-section {
+    padding-top: 0;
+}
+
+.zfit-page .zfit-builder-section .container {
+    width: min(1280px, calc(100vw - 3rem));
+}
+
+.zfit-page .zfit-builder-section .section-heading {
+    margin-bottom: clamp(1.6rem, 3vw, 2.4rem);
+}
+
+.zfit-page .zfit-builder-section .section-heading h2 {
+    max-width: 13ch;
+    font-size: clamp(3rem, 4.6vw, 4.8rem);
+    line-height: 0.92;
+}
+
+.zfit-page .zfit-builder-section .section-heading p {
+    max-width: 48rem;
+    font-size: 1rem;
+}
+
+.zfit-page .syrup-builder-layout {
+    width: 100%;
+    max-width: none;
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.zfit-page .syrup-configurator {
+    grid-template-columns: minmax(390px, 0.9fr) minmax(0, 1.35fr);
+    align-items: stretch;
+    gap: clamp(1.1rem, 2vw, 1.6rem);
+}
+
+.zfit-page .syrup-configurator > .showcase-panel,
+.zfit-page .syrup-chooser-panel {
+    padding: clamp(1.15rem, 1.7vw, 1.45rem);
+    border-radius: 28px;
+}
+
+.zfit-page .syrup-configurator > .showcase-panel {
+    display: grid;
+    align-content: start;
+    gap: 1rem;
+}
+
+.zfit-page .showcase-panel .showcase-header,
+.zfit-page .syrup-size-summary {
+    display: none;
+}
+
+.zfit-page .syrup-visual-shell {
+    aspect-ratio: 1 / 1;
+    min-height: 0;
+}
+
+.zfit-page .syrup-visual-shell img {
+    width: min(82%, 310px);
+    max-height: 21rem;
+}
+
+.zfit-page .syrup-carousel-shell .syrup-carousel-image {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    filter: none;
+}
+
+.zfit-page .syrup-flavor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.zfit-page .syrup-size-selector {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.zfit-page .syrup-choice-card,
+.zfit-page .syrup-size-chip {
+    min-height: 5.3rem;
+    padding: 1.08rem 1rem;
+}
+
+.zfit-utility-grid {
+    margin-top: clamp(1.4rem, 2.5vw, 2rem);
+}
+
+@media (max-width: 1024px) {
+    .zfit-page .zfit-builder-section .container {
+        width: min(900px, calc(100vw - 2rem));
+    }
+
+    .zfit-page .syrup-configurator {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .zfit-page .zfit-builder-section {
+        padding: 3.25rem 0;
+    }
+
+    .zfit-page .zfit-builder-section .section-heading h2 {
+        font-size: clamp(2.25rem, 10vw, 3.35rem);
+        max-width: 11ch;
+    }
+
+    .zfit-page .syrup-flavor-grid,
+    .zfit-page .syrup-size-selector {
+        grid-template-columns: 1fr;
+    }
+}
+
 .syrup-page .page-hero-grid,
 .drops-page .page-hero-grid,
 .maple-page .page-hero-grid {

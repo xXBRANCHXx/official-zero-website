@@ -91,6 +91,34 @@ export const ZERO_PRODUCTS = {
             { id: '550ml', label: '550ml', price: 149000, note: 'Food topping format' },
         ],
     },
+    zfitFiberSyrup: {
+        slug: 'fiber-syrup',
+        name: 'ZFIT Fiber Syrup',
+        checkoutLabel: 'ZFIT Fiber Syrup',
+        heroImage: '/ZERO Media/ZFIT/Fiber Syrup Carousel/Fiber Syrup 1.jpg',
+        description: 'A prebiotic fiber syrup made for easy daily mixing.',
+        options: [
+            { id: 'unflavored', name: 'Unflavored', group: 'Fiber Syrup', image: '/ZERO Media/ZFIT/Fiber Syrup Carousel/Fiber Syrup 1.jpg', description: 'Prebiotic support without changing the drink profile.', sizes: ['250ml'] },
+            { id: 'lemonade-pomegranate', name: 'Lemonade Pomegranate', group: 'Fiber Syrup', image: '/ZERO Media/ZFIT/Fiber Syrup Carousel/Fiber Syrup 1.jpg', description: 'A sweeter fiber syrup profile for water and cold drinks.', sizes: ['250ml'] },
+        ],
+        sizes: [
+            { id: '250ml', label: '250ml', price: 129000, note: '6g fiber per serving' },
+        ],
+    },
+    zfitAcvs: {
+        slug: 'acvs',
+        name: 'ZFIT ACVS',
+        checkoutLabel: 'ZFIT ACVS',
+        heroImage: '/ZERO Media/ZFIT/ACVS Carousel/ACVS 1.jpg',
+        description: 'Apple cider vinegar syrup with the mother, built for easier daily use.',
+        options: [
+            { id: 'apple-cider-vinegar-syrup', name: 'Apple Cider Vinegar Syrup', group: 'ACVS', image: '/ZERO Media/ZFIT/ACVS Carousel/ACVS 1.jpg', description: 'Raw and unfiltered apple cider vinegar syrup.', sizes: ['100ml', '250ml'] },
+        ],
+        sizes: [
+            { id: '100ml', label: '100ml', price: 29500, note: 'Trial size' },
+            { id: '250ml', label: '250ml', price: 49500, note: 'Routine size' },
+        ],
+    },
 };
 
 if (isDropsFruit5mlLive()) {

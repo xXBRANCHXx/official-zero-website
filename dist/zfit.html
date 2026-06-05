@@ -10,8 +10,9 @@
     <link rel="preconnect" href="https://fonts.cdnfonts.com">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://fonts.cdnfonts.com/css/causten" rel="stylesheet">
-  <script type="module" crossorigin src="/assets/index-DjWXXSHM.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-CFOFWvix.css">
+  <script type="module" crossorigin src="/assets/zfit-C0aoK886.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/index-C5CIvkyr.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-ZcdcN-Is.css">
 </head>
 <body class="zfit-page">
     <nav class="floating-nav">
@@ -77,107 +78,125 @@
                     <div class="hero-kicker">ZFIT</div>
                     <h1 class="page-hero-title">Wellness That Fits Daily Life.</h1>
                     <p class="page-hero-subtitle">ZFIT extends ZERO's easy-living approach into fiber syrup and ACVS, so health products can fit into coffee, water, and daily routines without ruining the taste.</p>
-                    <div class="page-hero-facts">
-                        <span>Fiber Syrup: 6g fiber</span>
-                        <span>Fiber Syrup: Rp129.000</span>
-                        <span>ACVS: Rp29.500 to Rp49.500</span>
-                    </div>
-                    <div class="btn-cluster">
-                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn primary">Order on WhatsApp</a>
-                        <a href="https://www.tokopedia.com/zero-foods-indonesia" target="_blank" class="n-btn">View Tokopedia</a>
-                    </div>
                 </div>
                 <div class="page-hero-visual">
-                    <img class="page-hero-image" src="/ZERO Media/Fiber Syrup Lemonade Pomegranate.png" alt="ZFIT Fiber Syrup bottle">
+                    <img class="page-hero-image" src="/ZERO Media/ZFIT/Fiber Syrup Carousel/Fiber Syrup 1.jpg" alt="ZFIT Fiber Syrup bottle">
                 </div>
             </div>
         </div>
     </header>
 
-    <section id="fiber" class="timeline-section">
+    <section id="fiber" class="timeline-section syrup-builder-section zfit-builder-section">
         <div class="container">
             <div class="section-heading">
-                <span class="section-badge">ZFit Range</span>
-                <h2>Functional Products Without The Usual Friction.</h2>
-                <p>ZFit takes the same low-friction philosophy as ZERO and applies it to wellness products that have to fit into existing routines, not disrupt them.</p>
+                <span class="section-badge">Fiber Syrup</span>
+                <h2>Choose the fiber syrup that fits your drink.</h2>
+                <p>Fiber Syrup is the daily prebiotic format in ZFIT. Pick the flavor profile, add it to cart, and check out with the same ZERO cart used across the site.</p>
             </div>
 
-            <div class="grid-v6">
-                <div class="showcase-panel">
-                    <div class="showcase-header">
-                        <div>
-                            <span class="showcase-badge">Fiber Syrup</span>
-                            <h3>Prebiotic support in a sweeter, easier daily format.</h3>
-                        </div>
-                        <strong>Rp129.000</strong>
-                    </div>
-                    <div class="syrup-visual-shell" style="margin: 1rem 0;">
-                        <img src="/ZERO Media/Fiber Syrup UNFLAVORED.png" alt="Fiber Syrup">
-                    </div>
-                    <div class="showcase-list">
-                        <div class="showcase-row">
+            <div class="syrup-builder-layout">
+                <div class="syrup-configurator">
+                    <div class="showcase-panel">
+                        <div class="showcase-header">
                             <div>
-                                <strong>6g fiber per serving</strong>
-                                <span>Built for repeat daily use instead of occasional use.</span>
+                                <span class="showcase-badge" id="selected-fiber-group">Fiber Syrup</span>
+                                <h3 id="selected-fiber-name">Unflavored</h3>
                             </div>
-                            <em>Functional</em>
+                            <strong id="selected-fiber-price">Rp129.000</strong>
                         </div>
-                        <div class="showcase-row">
-                            <div>
-                                <strong>2 formats</strong>
-                                <span>Unflavored for mixing and Lemonade Pomegranate for a sweeter profile.</span>
-                            </div>
-                            <em>Flexible</em>
+                        <div class="syrup-visual-shell zfit-carousel-shell" data-zfit-carousel="fiber">
+                            <img id="selected-fiber-image" src="/ZERO Media/ZFIT/Fiber Syrup Carousel/Fiber Syrup 1.jpg" alt="ZFIT Fiber Syrup">
                         </div>
+                        <p class="syrup-selection-copy" id="selected-fiber-description">Prebiotic fiber support in a format that can fit into coffee, water, and daily drink routines.</p>
+                        <div class="syrup-size-summary" id="selected-fiber-size-note"></div>
                     </div>
-                    <div class="btn-cluster">
-                        <a href="https://www.tokopedia.com/zero-foods-indonesia" target="_blank" class="n-btn">Tokopedia</a>
-                        <a href="https://api.whatsapp.com/send?phone=6285842833973" target="_blank" class="n-btn">WhatsApp</a>
-                    </div>
-                </div>
 
-                <div class="showcase-panel showcase-panel-dark">
-                    <div class="showcase-header">
+                    <div class="feature-wireframe syrup-chooser-panel">
                         <div>
-                            <span class="showcase-badge">ACVS</span>
-                            <h3>Apple cider vinegar syrup with the mother, positioned for easier daily use.</h3>
+                            <strong class="syrup-panel-label">Choose A Flavor</strong>
+                            <div id="fiber-flavor-grid" class="syrup-flavor-grid"></div>
                         </div>
-                        <strong>Rp29.500 to Rp49.500</strong>
-                    </div>
-                    <div class="syrup-visual-shell" style="margin: 1rem 0; background: transparent;">
-                        <img src="/ZERO Media/100ml ACVS.png" alt="ACVS">
-                    </div>
-                    <div class="showcase-list">
-                        <div class="showcase-row">
-                            <div>
-                                <strong>Raw and unfiltered</strong>
-                                <span>Keeps the full ACV function while being easier to mix into drinks.</span>
-                            </div>
-                            <em>Core</em>
+                        <div>
+                            <strong class="syrup-panel-label">Choose A Size</strong>
+                            <div id="fiber-size-selector" class="syrup-size-selector"></div>
                         </div>
-                        <div class="showcase-row">
-                            <div>
-                                <strong>2 bottle sizes</strong>
-                                <span>100ml and 250ml formats depending on trial or routine usage.</span>
-                            </div>
-                            <em>Scaled</em>
+                        <div class="btn-cluster">
+                            <button type="button" id="add-fiber-to-cart" class="n-btn primary">Add To Cart</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="journey-grid page-journey-grid">
+            <div class="journey-grid page-journey-grid zfit-utility-grid">
                 <div class="journey-card">
-                    <strong>Positioning</strong>
-                    <p>ZFit is where ZERO expands from sweetness into broader wellness support.</p>
-                </div>
-                <div class="journey-card journey-card-dark">
-                    <strong>Behavior</strong>
-                    <p>The products are designed to fit existing coffee, water, and jamu habits instead of creating extra work.</p>
+                    <strong>6g Fiber</strong>
+                    <p>Built for repeat daily use instead of occasional use.</p>
                 </div>
                 <div class="journey-card">
-                    <strong>Sales path</strong>
-                    <p>Marketplace discovery plus direct ordering gives the line room to grow with repeat customers.</p>
+                    <strong>2 Profiles</strong>
+                    <p>Unflavored for mixing and Lemonade Pomegranate for a sweeter drink profile.</p>
+                </div>
+                <div class="journey-card">
+                    <strong>Cart Ready</strong>
+                    <p>Add Fiber Syrup directly to the ZERO cart without leaving the product page.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="acvs" class="timeline-section syrup-builder-section zfit-builder-section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="section-badge">ACVS</span>
+                <h2>Pick the ACVS bottle for the routine.</h2>
+                <p>ACVS keeps the apple cider vinegar function in an easier syrup format, with trial and routine sizes available from the page cart.</p>
+            </div>
+
+            <div class="syrup-builder-layout">
+                <div class="syrup-configurator">
+                    <div class="showcase-panel">
+                        <div class="showcase-header">
+                            <div>
+                                <span class="showcase-badge" id="selected-acvs-group">ACVS</span>
+                                <h3 id="selected-acvs-name">Apple Cider Vinegar Syrup</h3>
+                            </div>
+                            <strong id="selected-acvs-price">Rp49.500</strong>
+                        </div>
+                        <div class="syrup-visual-shell zfit-carousel-shell" data-zfit-carousel="acvs">
+                            <img id="selected-acvs-image" src="/ZERO Media/ZFIT/ACVS Carousel/ACVS 1.jpg" alt="ZFIT ACVS">
+                        </div>
+                        <p class="syrup-selection-copy" id="selected-acvs-description">Raw and unfiltered apple cider vinegar syrup with the mother, positioned for easier daily use.</p>
+                        <div class="syrup-size-summary" id="selected-acvs-size-note"></div>
+                    </div>
+
+                    <div class="feature-wireframe syrup-chooser-panel">
+                        <div>
+                            <strong class="syrup-panel-label">Product</strong>
+                            <div id="acvs-flavor-grid" class="syrup-flavor-grid"></div>
+                        </div>
+                        <div>
+                            <strong class="syrup-panel-label">Choose A Size</strong>
+                            <div id="acvs-size-selector" class="syrup-size-selector"></div>
+                        </div>
+                        <div class="btn-cluster">
+                            <button type="button" id="add-acvs-to-cart" class="n-btn primary">Add To Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="journey-grid page-journey-grid zfit-utility-grid">
+                <div class="journey-card">
+                    <strong>Raw and Unfiltered</strong>
+                    <p>Keeps the full ACV function while being easier to mix into drinks.</p>
+                </div>
+                <div class="journey-card">
+                    <strong>2 Bottle Sizes</strong>
+                    <p>100ml and 250ml formats support trial or routine usage.</p>
+                </div>
+                <div class="journey-card">
+                    <strong>Cart Ready</strong>
+                    <p>Add ACVS directly to cart and checkout from the site.</p>
                 </div>
             </div>
         </div>
@@ -202,9 +221,9 @@
                     <p>Apple cider vinegar syrup keeps the function while making daily use easier.</p>
                 </article>
                 <article class="page-proof-card">
-                    <span>2</span>
-                    <strong>Order paths</strong>
-                    <p>Marketplace browsing and direct WhatsApp ordering both stay visible.</p>
+                    <span>Cart</span>
+                    <strong>Direct ordering</strong>
+                    <p>ZFit products now use the same add-to-cart flow as the rest of the ZERO range.</p>
                 </article>
             </div>
         </div>
