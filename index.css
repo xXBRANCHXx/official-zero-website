@@ -6457,10 +6457,6 @@ body.quick-add-open {
     filter: saturate(0.92) contrast(1.02);
 }
 
-.about-social-teaser-section {
-    padding-top: 0;
-}
-
 .about-social-teaser {
     position: relative;
     display: grid;
@@ -6838,10 +6834,6 @@ body.quick-add-open {
     .about-social-teaser-section,
     .social-host-section {
         padding: 3.75rem 0;
-    }
-
-    .about-social-teaser-section {
-        padding-top: 0;
     }
 
     .about-team-section {
