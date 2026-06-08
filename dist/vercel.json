@@ -1,0 +1,51 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/catalog.html",
+      "destination": "/catalog",
+      "permanent": true
+    },
+    {
+      "source": "/syrup.html",
+      "destination": "/zero-syrup",
+      "permanent": true
+    },
+    {
+      "source": "/drops.html",
+      "destination": "/zero-drops",
+      "permanent": true
+    },
+    {
+      "source": "/maple-topping.html",
+      "destination": "/zero-maple-topping",
+      "permanent": true
+    },
+    {
+      "source": "/zfit.html",
+      "destination": "/zfit",
+      "permanent": true
+    },
+    {
+      "source": "/about.html",
+      "destination": "/about-zero",
+      "permanent": true
+    },
+    {
+      "source": "/social.html",
+      "destination": "/zero-social",
+      "permanent": true
+    },
+    {
+      "source": "/legal.html",
+      "destination": "/legal-info",
+      "permanent": true
+    }
+  ]
+}
