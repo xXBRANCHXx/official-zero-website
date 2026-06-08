@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/clean-routes.mjs",
+    "sync:routes": "node scripts/sync-root-routes.mjs",
+    "build": "node scripts/sync-root-routes.mjs && vite build && node scripts/clean-routes.mjs",
     "preview": "vite preview",
     "start": "vite"
   },

@@ -128,7 +128,7 @@ const SEARCH_ITEMS = [
 
 const normalizePath = (href) => {
     const path = href.split('#')[0] || '/';
-    return path === '/' ? '/' : path;
+    return path === '/' ? '/' : path.replace(/\/+$/, '');
 };
 
 const isCurrentHref = (href) => normalizePath(href) === normalizePath(window.location.pathname);
