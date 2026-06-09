@@ -434,14 +434,10 @@ const initSiteLoader = () => {
         }
     };
 
-    const waitForImages = async () => {
-        const images = Array.from(document.images).filter((image) => {
-            if (!compactViewport.matches) {
-                return true;
-            }
-
-            return image.closest('.hero-v6, .page-hero, .floating-nav');
-        });
+    const waitForCriticalImage = async () => {
+        const images = Array.from(document.querySelectorAll(
+            'img[fetchpriority="high"], .hero-main-image, .page-hero-image'
+        )).slice(0, 1);
 
         if (!images.length) {
             setProgress(0.78);
@@ -476,23 +472,11 @@ const initSiteLoader = () => {
         }));
     };
 
-    const windowLoaded = new Promise((resolve) => {
-        if (document.readyState === 'complete') {
-            resolve();
-            return;
-        }
-        window.addEventListener('load', resolve, { once: true });
-    });
-
     setProgress(0.08);
 
-    const ready = Promise.all([
-        waitForImages(),
-        document.fonts?.ready ?? Promise.resolve(),
-        windowLoaded,
-    ]);
-    const releaseFallbackMs = compactViewport.matches ? 1200 : 2400;
-    const minimumVisibleMs = compactViewport.matches ? 280 : 520;
+    const ready = waitForCriticalImage();
+    const releaseFallbackMs = compactViewport.matches ? 450 : 700;
+    const minimumVisibleMs = compactViewport.matches ? 80 : 120;
     const releaseFallback = new Promise((resolve) => window.setTimeout(resolve, releaseFallbackMs));
 
     Promise.race([ready, releaseFallback]).then(() => {

@@ -271,6 +271,22 @@ const saveCart = (cart) => {
     window.dispatchEvent(new CustomEvent('zero-cart-updated', { detail: { cart } }));
 };
 
+const trackCommerceEvent = (eventType, item = {}, ctaLocation = '') => {
+    window.dispatchEvent(new CustomEvent('zero-commerce-event', {
+        detail: {
+            eventType,
+            productCode: item.sku || item.key || '',
+            productLabel: item.productName || item.label || '',
+            flavorCode: item.optionId || '',
+            flavorLabel: item.optionName || '',
+            packageSize: item.sizeId || '',
+            packageLabel: item.sizeLabel || item.sizeId || '',
+            packagePrice: item.price || '',
+            ctaLocation,
+        },
+    }));
+};
+
 const CUSTOMER_KEY = 'zero_products_customer_v1';
 
 export const loadCheckoutCustomer = () => {
@@ -360,6 +376,7 @@ export const createCartStore = () => {
             }
 
             emit();
+            trackCommerceEvent('add_to_cart', item, window.location.pathname);
         },
         updateQuantity(itemKey, delta) {
             const item = cart.find((entry) => entry.key === itemKey);
@@ -663,6 +680,7 @@ export const initUniversalCartDrawer = () => {
             return;
         }
 
+        store.getCart().forEach((item) => trackCommerceEvent('checkout_click', item, 'Cart checkout'));
         window.open(store.getCheckoutUrl(customer), '_blank', 'noopener');
         closeCheckoutDialog();
     });

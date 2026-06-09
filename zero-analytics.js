@@ -1,6 +1,7 @@
 const ANALYTICS_ENDPOINT = import.meta.env.VITE_ZERO_ANALYTICS_ENDPOINT || window.ZERO_ANALYTICS_ENDPOINT || 'https://jenanggemi.com/analytics.php';
 const DEVICE_COOKIE = 'jg_analytics_device_id';
 const DEVICE_MAX_AGE = 60 * 60 * 24 * 365 * 2;
+const EVENT_QUEUE_KEY = 'zero_analytics_event_queue';
 
 const createDeviceId = () => {
     if (window.crypto?.randomUUID) return `device-${window.crypto.randomUUID()}`;
@@ -41,10 +42,7 @@ const createSessionId = () => {
     return created;
 };
 
-const sendEvent = (eventType, extra = {}) => {
-    if (!ANALYTICS_ENDPOINT) return;
-
-    const payload = {
+const buildEvent = (eventType, extra = {}) => ({
         event_type: eventType,
         session_id: createSessionId(),
         device_id: ensureDeviceId(),
@@ -58,27 +56,79 @@ const sendEvent = (eventType, extra = {}) => {
         referrer: document.referrer,
         occurred_at: new Date().toISOString(),
         ...extra,
-    };
+});
+
+const readQueuedEvents = () => {
+    try {
+        const queued = JSON.parse(localStorage.getItem(EVENT_QUEUE_KEY) || '[]');
+        return Array.isArray(queued) ? queued.slice(-20) : [];
+    } catch {
+        return [];
+    }
+};
+
+const writeQueuedEvents = (events) => {
+    try {
+        localStorage.setItem(EVENT_QUEUE_KEY, JSON.stringify(events.slice(-20)));
+    } catch {
+        // Analytics must never interrupt the storefront.
+    }
+};
+
+const sendBeaconPayload = (payload) => {
+    if (!ANALYTICS_ENDPOINT || !navigator.sendBeacon) return false;
+    return navigator.sendBeacon(
+        ANALYTICS_ENDPOINT,
+        new Blob([JSON.stringify(payload)], { type: 'text/plain' })
+    );
+};
+
+const sendPayload = async (payload) => {
+    if (!ANALYTICS_ENDPOINT) return false;
 
     const body = JSON.stringify(payload);
-    if (navigator.sendBeacon) {
-        navigator.sendBeacon(ANALYTICS_ENDPOINT, new Blob([body], { type: 'application/json' }));
-        return;
-    }
-
-    fetch(ANALYTICS_ENDPOINT, {
+    const response = await fetch(ANALYTICS_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body,
         keepalive: true,
         credentials: 'omit',
-    }).catch(() => {});
+    });
+    return response.ok;
+};
+
+const sendEvent = (eventType, extra = {}, useBeacon = false) => {
+    const payload = buildEvent(eventType, extra);
+    if (useBeacon && sendBeaconPayload(payload)) return;
+
+    sendPayload(payload).catch(() => {
+        writeQueuedEvents([...readQueuedEvents(), payload]);
+    });
+};
+
+const flushQueuedEvents = async () => {
+    const queued = readQueuedEvents();
+    if (!queued.length) return;
+
+    const remaining = [];
+    for (const payload of queued) {
+        try {
+            if (!await sendPayload(payload)) remaining.push(payload);
+        } catch {
+            remaining.push(payload);
+        }
+    }
+    writeQueuedEvents(remaining);
 };
 
 export const initZeroAnalytics = () => {
     if (!ANALYTICS_ENDPOINT) return;
 
     const startedAt = performance.now();
+    let visibleStartedAt = document.visibilityState === 'visible' ? performance.now() : null;
+    let visibleElapsedMs = 0;
+
+    flushQueuedEvents();
     sendEvent('page_view');
 
     document.addEventListener('click', (event) => {
@@ -91,14 +141,40 @@ export const initZeroAnalytics = () => {
         const href = link?.href || '';
         if (href.includes('api.whatsapp.com') || href.includes('wa.me')) {
             sendEvent('checkout_click', { cta_location: label || 'WhatsApp checkout' });
-        } else if (cta.id?.includes('add') || label.toLowerCase().includes('add to cart')) {
-            sendEvent('add_to_cart_click', { cta_location: label || cta.id || '' });
+        }
+    });
+
+    window.addEventListener('zero-commerce-event', (event) => {
+        const detail = event.detail || {};
+        sendEvent(detail.eventType || 'commerce_event', {
+            product_code: detail.productCode || '',
+            product_label: detail.productLabel || '',
+            flavor_code: detail.flavorCode || '',
+            flavor_label: detail.flavorLabel || '',
+            package_size: detail.packageSize || '',
+            package_label: detail.packageLabel || '',
+            package_price: String(detail.packagePrice || ''),
+            cta_location: detail.ctaLocation || '',
+        });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            visibleStartedAt = performance.now();
+            return;
+        }
+        if (visibleStartedAt !== null) {
+            visibleElapsedMs += performance.now() - visibleStartedAt;
+            visibleStartedAt = null;
         }
     });
 
     window.addEventListener('pagehide', () => {
+        if (visibleStartedAt !== null) {
+            visibleElapsedMs += performance.now() - visibleStartedAt;
+        }
         sendEvent('time_spent', {
-            elapsed_ms: Math.max(0, Math.round(performance.now() - startedAt)),
-        });
+            elapsed_ms: Math.max(0, Math.round(visibleElapsedMs || (performance.now() - startedAt))),
+        }, true);
     });
 };
