@@ -209,6 +209,7 @@ const renderSalesProof = (payload) => {
     if (!display) return false;
 
     count.textContent = display;
+    count.style.setProperty('--sales-proof-characters', String(Math.max(display.length, 6)));
     count.setAttribute('aria-label', `${display} units sold in ${year}`);
 
     const label = document.querySelector('[data-sales-proof-label]');

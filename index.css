@@ -1906,27 +1906,35 @@ body.cart-drawer-open {
 }
 
 .sales-proof-panel {
+    container-type: inline-size;
     display: grid;
-    gap: 0.8rem;
+    align-content: center;
+    justify-items: center;
+    gap: clamp(0.65rem, 1.8vw, 0.9rem);
+    min-height: clamp(17rem, 30vw, 25rem);
     padding: clamp(1.6rem, 4vw, 3rem);
     border-radius: 34px;
     background: linear-gradient(180deg, #16202a 0%, #0f161e 100%);
     color: #f8fafc;
+    text-align: center;
     box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18);
 }
 
 .sales-proof-panel strong {
     font-family: 'Causten', 'Manrope', sans-serif;
-    font-size: clamp(4.5rem, 13vw, 10rem);
-    line-height: 0.82;
-    letter-spacing: -0.025em;
+    max-width: 100%;
+    font-size: clamp(2.25rem, calc(112cqw / var(--sales-proof-characters, 6)), 8.25rem);
+    line-height: 0.9;
+    letter-spacing: 0;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
 }
 
 .sales-proof-panel span {
     font-size: clamp(1.35rem, 3vw, 2.4rem);
     font-weight: 800;
     line-height: 1;
-    letter-spacing: -0.025em;
+    letter-spacing: 0;
 }
 
 .sales-proof-panel p {
@@ -4231,6 +4239,10 @@ body.quick-add-open {
     .sales-proof-heading,
     .sales-proof-panel {
         transform: none;
+    }
+
+    .sales-proof-panel {
+        min-height: clamp(15.5rem, 48vw, 21rem);
     }
 
     .habits-layout {
