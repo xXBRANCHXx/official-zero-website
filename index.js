@@ -39,6 +39,18 @@ const SOCIAL_LINKS = [
     },
 ];
 
+const SALES_PROOF_ENDPOINT = import.meta.env.VITE_ZERO_SALES_PROOF_ENDPOINT
+    || window.ZERO_SALES_PROOF_ENDPOINT
+    || 'https://admin.jenanggemi.com/api/zero-sales-proof/';
+const SALES_PROOF_CACHE_KEY = 'zero_sales_proof_daily_v1';
+const SALES_PROOF_DATE_FORMATTER = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' });
+const SALES_PROOF_META_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Jakarta',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+});
+
 const SEARCH_ITEMS = [
     {
         title: 'ZERO Home',
@@ -153,6 +165,98 @@ const escapeHtml = (value) => value.replace(/[&<>"']/g, (char) => ({
     '"': '&quot;',
     "'": '&#39;',
 }[char]));
+
+const getJakartaDateKey = (date = new Date()) => SALES_PROOF_DATE_FORMATTER.format(date);
+
+const getJakartaYear = () => Number(getJakartaDateKey().slice(0, 4)) || new Date().getFullYear();
+
+const formatSalesProofNumber = (value) => {
+    const number = Number(value);
+    if (!Number.isFinite(number) || number < 1000) return '';
+    const rounded = Math.floor(number / 1000) * 1000;
+    return `${rounded.toLocaleString('en-US')}+`;
+};
+
+const readSalesProofCache = () => {
+    try {
+        const cached = JSON.parse(localStorage.getItem(SALES_PROOF_CACHE_KEY) || 'null');
+        return cached && typeof cached === 'object' ? cached : null;
+    } catch {
+        return null;
+    }
+};
+
+const writeSalesProofCache = (payload) => {
+    try {
+        localStorage.setItem(SALES_PROOF_CACHE_KEY, JSON.stringify(payload));
+    } catch {
+        // The proof counter is optional; storage failures should not affect the page.
+    }
+};
+
+const buildSalesProofUrl = (year) => {
+    const url = new URL(SALES_PROOF_ENDPOINT, window.location.origin);
+    url.searchParams.set('year', String(year));
+    return url.toString();
+};
+
+const renderSalesProof = (payload) => {
+    const count = document.querySelector('[data-sales-proof-count]');
+    if (!count || !payload) return false;
+
+    const year = Number(payload.year || getJakartaYear());
+    const display = String(payload.display || formatSalesProofNumber(payload.rounded_units)).trim();
+    if (!display) return false;
+
+    count.textContent = display;
+    count.setAttribute('aria-label', `${display} units sold in ${year}`);
+
+    const label = document.querySelector('[data-sales-proof-label]');
+    if (label) {
+        label.textContent = `Units sold in ${year}`;
+    }
+
+    const meta = document.querySelector('[data-sales-proof-meta]');
+    const dateSource = payload.updated_at || payload.cache_date;
+    const date = dateSource ? new Date(dateSource) : null;
+    if (meta && date && !Number.isNaN(date.getTime())) {
+        meta.textContent = `As of ${SALES_PROOF_META_DATE_FORMATTER.format(date)}, ZERO leads Indonesia's zero-calorie syrup category.`;
+    }
+
+    return true;
+};
+
+const initSalesProofCounter = async () => {
+    if (!document.querySelector('[data-sales-proof-count]') || !SALES_PROOF_ENDPOINT) return;
+
+    const todayKey = getJakartaDateKey();
+    const cached = readSalesProofCache();
+    if (cached?.date_key === todayKey && renderSalesProof(cached.payload)) {
+        return;
+    }
+
+    if (cached?.payload) {
+        renderSalesProof(cached.payload);
+    }
+
+    try {
+        const response = await fetch(buildSalesProofUrl(getJakartaYear()), {
+            headers: { Accept: 'application/json' },
+            credentials: 'omit',
+        });
+        if (!response.ok) return;
+
+        const payload = await response.json();
+        if (!payload?.ok || !renderSalesProof(payload)) return;
+
+        writeSalesProofCache({
+            date_key: todayKey,
+            payload,
+        });
+    } catch {
+        // Keep the baked-in fallback if the daily proof endpoint is unavailable.
+    }
+};
 
 const getSearchScore = (item, query) => {
     const normalizedTitle = normalizeSearchText(item.title);
@@ -500,6 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSiteLoader();
     normalizeNavigation();
     syncScheduledDropsCopy();
+    initSalesProofCounter();
     initFooterSocialLinks();
     initLegalReveals();
     const cartApi = initUniversalCartDrawer();
