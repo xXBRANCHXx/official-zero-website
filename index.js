@@ -2,6 +2,7 @@ import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 import { ZERO_RELEASES, initUniversalCartDrawer, isDropsFruit5mlLive } from './zero-products.js';
 import { initZeroAnalytics } from './zero-analytics.js';
+import { initZeroI18n } from './zero-i18n.js';
 
 const PRIMARY_NAV_ITEMS = [
     { label: 'Catalog', href: '/catalog' },
@@ -57,84 +58,84 @@ const SEARCH_ITEMS = [
         category: 'Website',
         href: '/',
         description: 'Start here for ZERO Foods Indonesia, zero sugar sweetness, product lines, reviews, and lab certification.',
-        keywords: ['home', 'zero foods', 'zero sugar', 'zero calorie', 'healthy choices', 'sweetness', 'lab certified'],
+        keywords: ['home', 'zero foods', 'zero sugar', 'zero calorie', 'healthy choices', 'sweetness', 'lab certified', 'beranda', 'bebas gula', 'nol kalori', 'pilihan sehat', 'manis', 'sertifikat lab'],
     },
     {
         title: 'Catalog',
         category: 'Shop',
         href: '/catalog',
         description: 'Compare ZERO Syrup, ZERO Drops, Maple Topping, and the full product lineup.',
-        keywords: ['catalog', 'shop', 'products', 'lineup', 'buy', 'order', 'compare'],
+        keywords: ['catalog', 'shop', 'products', 'lineup', 'buy', 'order', 'compare', 'katalog', 'belanja', 'produk', 'rangkaian', 'beli', 'pesan', 'bandingkan'],
     },
     {
         title: 'ZERO Syrup',
         category: 'Product',
         href: '/zero-syrup',
         description: 'Full-size zero-calorie syrup bottles for coffee, refreshers, tea, and daily drinks.',
-        keywords: ['syrup', 'drink bottle', 'coffee', 'refreshers', 'fruit flavors', 'plain', 'caramel', 'hazelnut', 'lemonade'],
+        keywords: ['syrup', 'drink bottle', 'coffee', 'refreshers', 'fruit flavors', 'plain', 'caramel', 'hazelnut', 'lemonade', 'sirup', 'botol minuman', 'kopi', 'minuman harian', 'rasa buah', 'original', 'karamel'],
     },
     {
         title: 'ZERO Syrup in Catalog',
         category: 'Catalog',
         href: '/catalog#catalog-syrup',
         description: 'See the catalog overview for the daily drink bottle.',
-        keywords: ['catalog syrup', 'daily drink bottle', 'syrup section'],
+        keywords: ['catalog syrup', 'daily drink bottle', 'syrup section', 'katalog syrup', 'bagian syrup', 'botol minuman harian'],
     },
     {
         title: 'ZERO Drops',
         category: 'Product',
         href: '/zero-drops',
         description: 'Portable concentrated sweetener drops for sweetness anywhere.',
-        keywords: ['drops', 'dropper', 'portable sweetener', 'concentrated', '5ml', '10ml', '30ml', 'coffee drops'],
+        keywords: ['drops', 'dropper', 'portable sweetener', 'concentrated', '5ml', '10ml', '30ml', 'coffee drops', 'tetes', 'pemanis portabel', 'pemanis pekat', 'drops kopi'],
     },
     {
         title: 'ZERO Drops in Catalog',
         category: 'Catalog',
         href: '/catalog#catalog-drops',
         description: 'See the catalog overview for the portable sweetener format.',
-        keywords: ['catalog drops', 'portable sweetener', 'drops section'],
+        keywords: ['catalog drops', 'portable sweetener', 'drops section', 'katalog drops', 'bagian drops', 'pemanis portabel'],
     },
     {
         title: 'ZERO Maple Topping',
         category: 'Product',
         href: '/zero-maple-topping',
         description: 'A thicker zero-calorie maple pour for pancakes, waffles, yogurt bowls, and desserts.',
-        keywords: ['maple', 'maple topping', 'topping', 'pancakes', 'waffles', 'yogurt', 'dessert', 'food'],
+        keywords: ['maple', 'maple topping', 'topping', 'pancakes', 'waffles', 'yogurt', 'dessert', 'food', 'pancake', 'makanan', 'tuangan kental'],
     },
     {
         title: 'Maple Topping in Catalog',
         category: 'Catalog',
         href: '/catalog#catalog-maple',
         description: 'See the catalog overview for ZERO Maple Topping.',
-        keywords: ['catalog maple', 'maple section', 'heavier pour'],
+        keywords: ['catalog maple', 'maple section', 'heavier pour', 'katalog maple', 'bagian maple', 'tuangan kental'],
     },
     {
         title: 'ZFit',
         category: 'Wellness',
         href: '/zfit',
         description: 'Functional wellness products including fiber syrup and apple cider vinegar syrup.',
-        keywords: ['zfit', 'wellness', 'fiber', 'prebiotic', 'acv', 'apple cider vinegar', 'mother', '250ml', '100ml'],
+        keywords: ['zfit', 'wellness', 'fiber', 'prebiotic', 'acv', 'apple cider vinegar', 'mother', '250ml', '100ml', 'serat', 'prebiotik', 'cuka apel', 'rutinitas sehat'],
     },
     {
         title: 'About ZERO',
         category: 'Company',
         href: '/about-zero',
         description: 'Meet ZERO Foods Indonesia and find the team in Sleman, Yogyakarta.',
-        keywords: ['about', 'company', 'team', 'yogyakarta', 'sleman', 'address', 'zero foods indonesia'],
+        keywords: ['about', 'company', 'team', 'yogyakarta', 'sleman', 'address', 'zero foods indonesia', 'tentang', 'perusahaan', 'tim', 'alamat', 'lokasi'],
     },
     {
         title: 'ZERO Social',
         category: 'Company',
         href: '/zero-social',
         description: 'Watch Bang ZERO test real foods with a CGM and explain blood glucose spikes.',
-        keywords: ['social', 'cgm', 'blood sugar', 'glucose', 'food tests', 'spike', 'bang zero', 'chart'],
+        keywords: ['social', 'cgm', 'blood sugar', 'glucose', 'food tests', 'spike', 'bang zero', 'chart', 'sosial', 'gula darah', 'glukosa', 'tes makanan', 'lonjakan', 'grafik'],
     },
     {
         title: 'Legal Info',
         category: 'Information',
         href: '/legal-info',
         description: 'Read ZERO legal information, regulatory references, and sweetener positioning.',
-        keywords: ['legal', 'fine print', 'regulatory', 'sucralose', 'stevia', 'aspartame', 'safety'],
+        keywords: ['legal', 'fine print', 'regulatory', 'sucralose', 'stevia', 'aspartame', 'safety', 'info legal', 'regulasi', 'sukralosa', 'keamanan'],
     },
 ];
 
@@ -603,6 +604,7 @@ const initSiteLoader = () => {
 document.addEventListener('DOMContentLoaded', () => {
     initZeroAnalytics();
     initSiteLoader();
+    initZeroI18n();
     normalizeNavigation();
     syncScheduledDropsCopy();
     initSalesProofCounter();
