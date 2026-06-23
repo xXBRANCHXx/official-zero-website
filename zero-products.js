@@ -1,6 +1,7 @@
 const CART_KEY = 'zero_products_cart_v1';
 const WHATSAPP_PHONE = '6285842833973';
 const CONFIGURED_INVENTORY_API_BASE_URL = (import.meta.env.VITE_ZERO_INVENTORY_API_BASE_URL || '').replace(/\/$/, '');
+const CONFIGURED_ORDER_API_URL = (import.meta.env.VITE_ZERO_ORDER_API_URL || '').trim();
 const currency = new Intl.NumberFormat('id-ID');
 const DROPS_FRUIT_5ML_START_ISO = '2026-06-15T00:00:00+07:00';
 
@@ -308,9 +309,11 @@ const saveCheckoutCustomer = (customer) => {
     }));
 };
 
-const buildCheckoutMessage = (cart, customer = {}) => {
+const buildCheckoutMessage = (cart, customer = {}, orderId = '') => {
     const lines = [
         'Halo ZERO, saya ingin memesan produk ZERO.',
+        '',
+        `Order ID: ${orderId}`,
         '',
         'Mohon jangan hapus atau ubah format pesanan ini agar admin bisa memproses dengan cepat.',
         '',
@@ -345,6 +348,48 @@ const buildCheckoutMessage = (cart, customer = {}) => {
     return encodeURIComponent(lines.join('\n'));
 };
 
+const createCheckoutIdempotencyKey = () => window.crypto?.randomUUID
+    ? `zero-${window.crypto.randomUUID()}`
+    : `zero-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+const getWebsiteOrderUrls = () => {
+    const urls = [CONFIGURED_ORDER_API_URL, window.ZERO_ORDER_API_URL];
+    if (['zerofoods.id', 'www.zerofoods.id'].includes(window.location.hostname.toLowerCase())) {
+        urls.push('https://admin.jenanggemi.com/api/zero-website-orders/');
+    }
+    return [...new Set(urls.map((value) => String(value || '').trim()).filter(Boolean))];
+};
+
+const createWebsiteOrder = async (cart, customer, idempotencyKey) => {
+    const payload = {
+        platform: 'zero_website',
+        idempotency_key: idempotencyKey,
+        customer: { name: customer.fullName, address: customer.address },
+        items: cart.map((item) => ({
+            item_key: item.itemKey || '',
+            sku: item.sku || item.key || '',
+            quantity: Number(item.quantity || 0),
+        })),
+    };
+    let lastError = new Error('ZERO order service is unavailable.');
+    for (const url of getWebsiteOrderUrls()) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-Idempotency-Key': idempotencyKey },
+                credentials: 'omit',
+                body: JSON.stringify(payload),
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok || !data.order?.order_id) throw new Error(data.error || `Order API ${response.status}`);
+            return data.order;
+        } catch (error) {
+            lastError = error instanceof Error ? error : lastError;
+        }
+    }
+    throw lastError;
+};
+
 export const createCartStore = () => {
     let cart = loadCart();
 
@@ -362,9 +407,9 @@ export const createCartStore = () => {
         getTotal() {
             return cart.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
         },
-        getCheckoutUrl(customer = {}) {
+        getCheckoutUrl(customer = {}, orderId = '') {
             if (!cart.length) return '#';
-            return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${buildCheckoutMessage(cart, customer)}`;
+            return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${buildCheckoutMessage(cart, customer, orderId)}`;
         },
         addItem(item) {
             const existing = cart.find((entry) => entry.key === item.key);
@@ -482,6 +527,8 @@ export const initUniversalCartDrawer = () => {
     const fullNameInput = document.getElementById('zero-cart-full-name');
     const addressInput = document.getElementById('zero-cart-address');
     const customerError = document.getElementById('zero-cart-customer-error');
+    const checkoutSubmitButton = checkoutForm?.querySelector('button[type="submit"]');
+    let checkoutIdempotencyKey = '';
 
     const setCustomerError = (message = '') => {
         if (!customerError) return;
@@ -667,7 +714,7 @@ export const initUniversalCartDrawer = () => {
         }
     });
 
-    checkoutForm?.addEventListener('submit', (event) => {
+    checkoutForm?.addEventListener('submit', async (event) => {
         event.preventDefault();
         const customer = syncCheckoutCustomer();
         if (!customer.fullName || !customer.address) {
@@ -680,9 +727,28 @@ export const initUniversalCartDrawer = () => {
             return;
         }
 
-        store.getCart().forEach((item) => trackCommerceEvent('checkout_click', item, 'Cart checkout'));
-        window.open(store.getCheckoutUrl(customer), '_blank', 'noopener');
-        closeCheckoutDialog();
+        const popup = window.open('', '_blank');
+        checkoutIdempotencyKey ||= createCheckoutIdempotencyKey();
+        if (checkoutSubmitButton) checkoutSubmitButton.disabled = true;
+        setCustomerError('Creating your order ID...');
+        try {
+            const order = await createWebsiteOrder(store.getCart(), customer, checkoutIdempotencyKey);
+            store.getCart().forEach((item) => trackCommerceEvent('checkout_click', { ...item, orderCode: order.order_id }, 'Cart checkout'));
+            const checkoutUrl = store.getCheckoutUrl(customer, order.order_id);
+            checkoutIdempotencyKey = '';
+            if (popup) {
+                popup.opener = null;
+                popup.location.href = checkoutUrl;
+            } else {
+                window.location.href = checkoutUrl;
+            }
+            closeCheckoutDialog();
+        } catch (error) {
+            popup?.close();
+            setCustomerError(error instanceof Error ? error.message : 'Unable to create the website order.');
+        } finally {
+            if (checkoutSubmitButton) checkoutSubmitButton.disabled = false;
+        }
     });
 
     cartItems?.addEventListener('click', (event) => {
@@ -868,6 +934,7 @@ export const initProductPage = ({
 
         onAdd?.({
             key: selectedSku || `${product.slug}:${option.id}:${size.id}`,
+            itemKey: inventoryRow?.item_key || `${product.slug}:${option.id}:${size.id}`,
             sku: selectedSku,
             productSlug: product.slug,
             productName: product.checkoutLabel,
