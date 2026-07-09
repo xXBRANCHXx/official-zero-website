@@ -360,6 +360,14 @@ const getWebsiteOrderUrls = () => {
     return [...new Set(urls.map((value) => String(value || '').trim()).filter(Boolean))];
 };
 
+const formatWebsiteOrderError = (error, status) => {
+    const message = String(error || '').trim();
+    if (/SQLSTATE\[[A-Z0-9]+\]/i.test(message)) {
+        return 'Website order service is unavailable.';
+    }
+    return message || `Order API ${status}`;
+};
+
 const createWebsiteOrder = async (cart, customer, idempotencyKey) => {
     const payload = {
         platform: 'zero_website',
@@ -381,7 +389,7 @@ const createWebsiteOrder = async (cart, customer, idempotencyKey) => {
                 body: JSON.stringify(payload),
             });
             const data = await response.json().catch(() => ({}));
-            if (!response.ok || !data.order?.order_id) throw new Error(data.error || `Order API ${response.status}`);
+            if (!response.ok || !data.order?.order_id) throw new Error(formatWebsiteOrderError(data.error, response.status));
             return data.order;
         } catch (error) {
             lastError = error instanceof Error ? error : lastError;
@@ -541,9 +549,11 @@ export const initUniversalCartDrawer = () => {
         address: String(addressInput?.value || '').trim(),
     });
 
+    const hasRequiredAddressContent = (address = '') => /[\p{L}\p{N}]/u.test(String(address));
+
     const isCustomerComplete = () => {
         const customer = getCustomer();
-        return customer.fullName.length > 1 && customer.address.length > 5;
+        return customer.fullName.length > 1 && hasRequiredAddressContent(customer.address);
     };
 
     const syncCheckoutCustomer = () => {
@@ -717,7 +727,7 @@ export const initUniversalCartDrawer = () => {
     checkoutForm?.addEventListener('submit', async (event) => {
         event.preventDefault();
         const customer = syncCheckoutCustomer();
-        if (!customer.fullName || !customer.address) {
+        if (!customer.fullName || !hasRequiredAddressContent(customer.address)) {
             setCustomerError('Please add your full name and delivery address before checkout.');
             if (!customer.fullName) {
                 fullNameInput?.focus();
