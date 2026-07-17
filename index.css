@@ -396,7 +396,7 @@ body.cart-drawer-open {
     height: 100vh;
     padding: 6.25rem 1.25rem 1.25rem;
     display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr) auto auto auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto auto auto;
     gap: 1rem;
     background: rgba(248, 250, 252, 0.96);
     border-left: 1px solid rgba(15, 23, 42, 0.08);
@@ -481,6 +481,77 @@ body.cart-drawer-open {
     align-items: flex-end;
     padding-top: 0.2rem;
     border-top: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.zero-cart-summary > div {
+    min-width: 0;
+}
+
+.zero-cart-voucher {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.85rem;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(17, 24, 39, 0.08);
+}
+
+.zero-cart-voucher > label {
+    color: var(--text-soft);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.zero-cart-voucher > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.5rem;
+}
+
+.zero-cart-voucher input {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid rgba(17, 24, 39, 0.1);
+    border-radius: 12px;
+    background: rgba(248, 250, 252, 0.86);
+    color: var(--text);
+    font: inherit;
+    padding: 0.68rem 0.78rem;
+    outline: none;
+}
+
+.zero-cart-voucher input:focus {
+    border-color: rgba(35, 80, 58, 0.36);
+    box-shadow: 0 0 0 3px rgba(35, 80, 58, 0.1);
+}
+
+.zero-cart-voucher .n-btn {
+    min-width: 76px;
+    padding-inline: 0.9rem;
+}
+
+.zero-cart-voucher p {
+    min-height: 1.15em;
+    margin: 0;
+    color: var(--text-soft);
+    font-size: 0.76rem;
+    line-height: 1.45;
+}
+
+.zero-cart-voucher p[data-state='success'] {
+    color: #23703b;
+    font-weight: 800;
+}
+
+.zero-cart-voucher p[data-state='error'] {
+    color: #9f2f2f;
+    font-weight: 800;
+}
+
+#zero-cart-voucher-discount strong {
+    color: #23703b;
 }
 
 .zero-cart-customer {

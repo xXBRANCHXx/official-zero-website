@@ -2,6 +2,7 @@ const CART_KEY = 'zero_products_cart_v1';
 const WHATSAPP_PHONE = '6285842833973';
 const CONFIGURED_INVENTORY_API_BASE_URL = (import.meta.env.VITE_ZERO_INVENTORY_API_BASE_URL || '').replace(/\/$/, '');
 const CONFIGURED_ORDER_API_URL = (import.meta.env.VITE_ZERO_ORDER_API_URL || '').trim();
+const CONFIGURED_VOUCHER_API_URL = (import.meta.env.VITE_ZERO_VOUCHER_API_URL || '').trim();
 const currency = new Intl.NumberFormat('id-ID');
 const DROPS_FRUIT_5ML_START_ISO = '2026-06-15T00:00:00+07:00';
 
@@ -309,11 +310,12 @@ const saveCheckoutCustomer = (customer) => {
     }));
 };
 
-const buildCheckoutMessage = (cart, customer = {}, orderId = '') => {
+const buildCheckoutMessage = (cart, customer = {}, order = {}) => {
+    const orderItems = new Map((Array.isArray(order.items) ? order.items : []).map((item) => [item.item_key, item]));
     const lines = [
         'Halo ZERO, saya ingin memesan produk ZERO.',
         '',
-        `Order ID: ${orderId}`,
+        `Order ID: ${order.order_id || ''}`,
         '',
         'Mohon jangan hapus atau ubah format pesanan ini agar admin bisa memproses dengan cepat.',
         '',
@@ -322,24 +324,33 @@ const buildCheckoutMessage = (cart, customer = {}, orderId = '') => {
 
     let total = 0;
     cart.forEach((item, index) => {
-        const lineTotal = item.price * item.quantity;
+        const authoritativeItem = orderItems.get(item.itemKey || '');
+        const unitGrossPrice = Number(authoritativeItem?.unit_gross_price ?? item.basePrice ?? item.price ?? 0);
+        const unitNetPrice = Number(authoritativeItem?.unit_net_price ?? item.price ?? 0);
+        const lineTotal = unitNetPrice * item.quantity;
         total += lineTotal;
-        const basePrice = Number(item.basePrice || item.price || 0);
-        const discount = getDiscountDisplay(item.discount, basePrice, item.price);
         const itemLabel = `${index + 1}. ${item.label}${item.sku ? ` [${item.sku}]` : ''} x${item.quantity}`;
-        if (discount.active) {
-            const baseLineTotal = basePrice * item.quantity;
-            const discountLineTotal = discount.amount * item.quantity;
+        if (unitNetPrice < unitGrossPrice) {
+            const baseLineTotal = unitGrossPrice * item.quantity;
+            const discountLineTotal = (unitGrossPrice - unitNetPrice) * item.quantity;
+            const discountPercent = unitGrossPrice > 0 ? Math.round((1 - (unitNetPrice / unitGrossPrice)) * 100) : 0;
             lines.push(`${itemLabel} = ${formatPrice(baseLineTotal)}`);
-            lines.push(`   Discount: -${formatPrice(discountLineTotal)} (${discount.percent}%)${discount.label ? ` ${discount.label}` : ''}`);
+            lines.push(`   Discount: -${formatPrice(discountLineTotal)} (${discountPercent}%)`);
             lines.push(`   Net: ${formatPrice(lineTotal)}`);
             return;
         }
         lines.push(`${itemLabel} = ${formatPrice(lineTotal)}`);
     });
 
+    if (order.voucher?.applied) {
+        const behavior = order.voucher.stacking_mode === 'override'
+            ? 'replaces other discounts'
+            : 'applies on top of other discounts';
+        lines.push('');
+        lines.push(`Event voucher applied: ${Number(order.voucher.discount_percent || 0)}% (${behavior})`);
+    }
     lines.push('');
-    lines.push(`Total: ${formatPrice(total)}`);
+    lines.push(`Total: ${formatPrice(Number(order.net_revenue ?? total))}`);
     lines.push('');
     lines.push(`Nama: ${String(customer.fullName || '').trim()}`);
     lines.push(`Alamat: ${String(customer.address || '').trim()}`);
@@ -360,6 +371,47 @@ const getWebsiteOrderUrls = () => {
     return [...new Set(urls.map((value) => String(value || '').trim()).filter(Boolean))];
 };
 
+const getVoucherValidationUrls = () => {
+    const urls = [CONFIGURED_VOUCHER_API_URL, window.ZERO_VOUCHER_API_URL];
+    if (['zerofoods.id', 'www.zerofoods.id'].includes(window.location.hostname.toLowerCase())) {
+        urls.push('https://admin.jenanggemi.com/api/zero-store/?action=validate_voucher');
+    }
+    urls.push(`${window.location.origin}/api/zero-store/?action=validate_voucher`);
+    return [...new Set(urls.map((value) => String(value || '').trim()).filter(Boolean))];
+};
+
+const validateVoucher = async (code, cart) => {
+    const payload = {
+        code,
+        items: cart.map((item) => ({
+            item_key: item.itemKey || '',
+            quantity: Number(item.quantity || 0),
+        })),
+    };
+    let lastError = new Error('Voucher service is unavailable.');
+    for (const url of getVoucherValidationUrls()) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                credentials: 'omit',
+                body: JSON.stringify(payload),
+            });
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok || !data.voucher?.applied) {
+                const rejection = new Error(formatWebsiteOrderError(data.error, response.status));
+                rejection.voucherRejected = response.status >= 400 && response.status < 500;
+                throw rejection;
+            }
+            return data;
+        } catch (error) {
+            if (error?.voucherRejected) throw error;
+            lastError = error instanceof Error ? error : lastError;
+        }
+    }
+    throw lastError;
+};
+
 const formatWebsiteOrderError = (error, status) => {
     const message = String(error || '').trim();
     if (/SQLSTATE\[[A-Z0-9]+\]/i.test(message)) {
@@ -368,11 +420,12 @@ const formatWebsiteOrderError = (error, status) => {
     return message || `Order API ${status}`;
 };
 
-const createWebsiteOrder = async (cart, customer, idempotencyKey) => {
+const createWebsiteOrder = async (cart, customer, idempotencyKey, voucherCode = '') => {
     const payload = {
         platform: 'zero_website',
         idempotency_key: idempotencyKey,
         customer: { name: customer.fullName, address: customer.address },
+        voucher_code: voucherCode,
         items: cart.map((item) => ({
             item_key: item.itemKey || '',
             sku: item.sku || item.key || '',
@@ -415,9 +468,9 @@ export const createCartStore = () => {
         getTotal() {
             return cart.reduce((sum, item) => sum + ((Number(item.price) || 0) * (Number(item.quantity) || 0)), 0);
         },
-        getCheckoutUrl(customer = {}, orderId = '') {
+        getCheckoutUrl(customer = {}, order = {}) {
             if (!cart.length) return '#';
-            return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${buildCheckoutMessage(cart, customer, orderId)}`;
+            return `https://api.whatsapp.com/send?phone=${WHATSAPP_PHONE}&text=${buildCheckoutMessage(cart, customer, order)}`;
         },
         addItem(item) {
             const existing = cart.find((entry) => entry.key === item.key);
@@ -474,10 +527,22 @@ export const initUniversalCartDrawer = () => {
                 </div>
                 <p id="zero-cart-empty" class="zero-cart-empty">Your cart is empty. Add a ZERO product to start the order.</p>
                 <div id="zero-cart-items" class="zero-cart-items"></div>
+                <form id="zero-cart-voucher-form" class="zero-cart-voucher" novalidate>
+                    <label for="zero-cart-voucher-code">Event voucher</label>
+                    <div>
+                        <input id="zero-cart-voucher-code" type="password" minlength="4" maxlength="64" autocomplete="off" spellcheck="false" placeholder="Voucher code">
+                        <button id="zero-cart-voucher-apply" type="submit" class="n-btn">Apply</button>
+                    </div>
+                    <p id="zero-cart-voucher-status" role="status" aria-live="polite"></p>
+                </form>
                 <div class="zero-cart-summary">
                     <div>
                         <span>Items</span>
                         <strong id="zero-cart-count">0 items</strong>
+                    </div>
+                    <div id="zero-cart-voucher-discount" hidden>
+                        <span>Voucher</span>
+                        <strong id="zero-cart-voucher-saving">-Rp0</strong>
                     </div>
                     <div>
                         <span>Total</span>
@@ -524,6 +589,12 @@ export const initUniversalCartDrawer = () => {
     const cartItems = document.getElementById('zero-cart-items');
     const cartCount = document.getElementById('zero-cart-count');
     const cartTotal = document.getElementById('zero-cart-total');
+    const voucherForm = document.getElementById('zero-cart-voucher-form');
+    const voucherInput = document.getElementById('zero-cart-voucher-code');
+    const voucherApplyButton = document.getElementById('zero-cart-voucher-apply');
+    const voucherStatus = document.getElementById('zero-cart-voucher-status');
+    const voucherDiscount = document.getElementById('zero-cart-voucher-discount');
+    const voucherSaving = document.getElementById('zero-cart-voucher-saving');
     const emptyState = document.getElementById('zero-cart-empty');
     const checkoutLink = document.getElementById('zero-cart-checkout');
     const clearButton = document.getElementById('zero-cart-clear');
@@ -537,6 +608,25 @@ export const initUniversalCartDrawer = () => {
     const customerError = document.getElementById('zero-cart-customer-error');
     const checkoutSubmitButton = checkoutForm?.querySelector('button[type="submit"]');
     let checkoutIdempotencyKey = '';
+    let appliedVoucher = null;
+    let appliedVoucherCode = '';
+    let appliedCartSignature = '';
+
+    const cartSignature = (cart) => cart
+        .map((item) => `${item.itemKey || item.key}:${Number(item.quantity || 0)}:${Number(item.price || 0)}:${Number(item.basePrice || 0)}`)
+        .sort()
+        .join('|');
+
+    const clearAppliedVoucher = (message = '') => {
+        appliedVoucher = null;
+        appliedVoucherCode = '';
+        appliedCartSignature = '';
+        if (voucherDiscount) voucherDiscount.hidden = true;
+        if (voucherStatus) {
+            voucherStatus.textContent = message;
+            voucherStatus.dataset.state = message ? 'notice' : '';
+        }
+    };
 
     const setCustomerError = (message = '') => {
         if (!customerError) return;
@@ -609,6 +699,9 @@ export const initUniversalCartDrawer = () => {
     const render = () => {
         store.syncFromStorage();
         const cart = store.getCart();
+        if (appliedVoucher && cartSignature(cart) !== appliedCartSignature) {
+            clearAppliedVoucher('Cart changed. Apply the voucher again to refresh the discount.');
+        }
         cartItems.innerHTML = '';
 
         if (!cart.length) {
@@ -656,9 +749,14 @@ export const initUniversalCartDrawer = () => {
         });
 
         const count = store.getCount();
-        const total = store.getTotal();
+        const subtotal = store.getTotal();
+        const voucherTotal = Number(appliedVoucher?.pricing?.total);
+        const total = appliedVoucher && Number.isFinite(voucherTotal) ? voucherTotal : subtotal;
+        const voucherSavings = Math.max(0, subtotal - total);
         cartCount.textContent = `${count} item${count === 1 ? '' : 's'}`;
         cartTotal.textContent = formatPrice(total);
+        if (voucherDiscount) voucherDiscount.hidden = !appliedVoucher || voucherSavings <= 0;
+        if (voucherSaving) voucherSaving.textContent = `-${formatPrice(voucherSavings)}`;
         syncBubble();
 
         if (!cart.length) {
@@ -694,7 +792,49 @@ export const initUniversalCartDrawer = () => {
     backdrop?.addEventListener('click', closeDrawer);
     clearButton?.addEventListener('click', () => {
         store.clear();
+        clearAppliedVoucher('');
+        if (voucherInput) voucherInput.value = '';
         render();
+    });
+
+    voucherForm?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const code = String(voucherInput?.value || '').trim();
+        const cart = store.getCart();
+        if (!cart.length) {
+            clearAppliedVoucher('Add an item before applying a voucher.');
+            return;
+        }
+        if (code.length < 4) {
+            clearAppliedVoucher('Enter the voucher code from the event.');
+            voucherInput?.focus();
+            return;
+        }
+        if (voucherApplyButton) voucherApplyButton.disabled = true;
+        if (voucherStatus) {
+            voucherStatus.textContent = 'Checking voucher...';
+            voucherStatus.dataset.state = 'notice';
+        }
+        try {
+            const result = await validateVoucher(code, cart);
+            appliedVoucher = result;
+            appliedVoucherCode = code;
+            appliedCartSignature = cartSignature(cart);
+            if (voucherStatus) {
+                const percent = Number(result.voucher?.discount_percent || 0);
+                const behavior = result.voucher?.stacking_mode === 'override'
+                    ? 'replaces other discounts'
+                    : 'applies on top of other discounts';
+                voucherStatus.textContent = `${percent}% voucher applied — ${behavior}.`;
+                voucherStatus.dataset.state = 'success';
+            }
+            render();
+        } catch (error) {
+            clearAppliedVoucher(error instanceof Error ? error.message : 'Unable to apply this voucher.');
+            if (voucherStatus) voucherStatus.dataset.state = 'error';
+        } finally {
+            if (voucherApplyButton) voucherApplyButton.disabled = false;
+        }
     });
 
     fullNameInput?.addEventListener('input', () => {
@@ -742,9 +882,9 @@ export const initUniversalCartDrawer = () => {
         if (checkoutSubmitButton) checkoutSubmitButton.disabled = true;
         setCustomerError('Creating your order ID...');
         try {
-            const order = await createWebsiteOrder(store.getCart(), customer, checkoutIdempotencyKey);
+            const order = await createWebsiteOrder(store.getCart(), customer, checkoutIdempotencyKey, appliedVoucherCode);
             store.getCart().forEach((item) => trackCommerceEvent('checkout_click', { ...item, orderCode: order.order_id }, 'Cart checkout'));
-            const checkoutUrl = store.getCheckoutUrl(customer, order.order_id);
+            const checkoutUrl = store.getCheckoutUrl(customer, order);
             checkoutIdempotencyKey = '';
             if (popup) {
                 popup.opener = null;
