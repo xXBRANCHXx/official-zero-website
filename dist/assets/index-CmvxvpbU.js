@@ -11,35 +11,39 @@ var at=Object.defineProperty;var nt=(e,t,a)=>t in e?at(e,t,{enumerable:!0,config
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <p id="zero-cart-empty" class="zero-cart-empty">Your cart is empty. Add a ZERO product to start the order.</p>
-                <div id="zero-cart-items" class="zero-cart-items"></div>
-                <form id="zero-cart-voucher-form" class="zero-cart-voucher" novalidate>
-                    <label for="zero-cart-voucher-code">Event voucher</label>
-                    <div>
-                        <input id="zero-cart-voucher-code" type="password" minlength="4" maxlength="64" autocomplete="off" spellcheck="false" placeholder="Voucher code">
-                        <button id="zero-cart-voucher-apply" type="submit" class="n-btn">Apply</button>
-                    </div>
-                    <p id="zero-cart-voucher-status" role="status" aria-live="polite"></p>
-                </form>
-                <div class="zero-cart-summary">
-                    <div>
-                        <span>Items</span>
-                        <strong id="zero-cart-count">0 items</strong>
-                    </div>
-                    <div id="zero-cart-voucher-discount" hidden>
-                        <span>Voucher</span>
-                        <strong id="zero-cart-voucher-saving">-Rp0</strong>
-                    </div>
-                    <div>
-                        <span>Total</span>
-                        <strong id="zero-cart-total">Rp0</strong>
+                <div class="zero-cart-body">
+                    <p id="zero-cart-empty" class="zero-cart-empty">Your cart is empty. Add a ZERO product to start the order.</p>
+                    <div id="zero-cart-items" class="zero-cart-items"></div>
+                    <div class="zero-cart-checkout-panel">
+                        <form id="zero-cart-voucher-form" class="zero-cart-voucher" novalidate>
+                            <label for="zero-cart-voucher-code">Event voucher</label>
+                            <div>
+                                <input id="zero-cart-voucher-code" type="password" minlength="4" maxlength="64" autocomplete="off" spellcheck="false" placeholder="Voucher code">
+                                <button id="zero-cart-voucher-apply" type="submit" class="n-btn">Apply</button>
+                            </div>
+                            <p id="zero-cart-voucher-status" role="status" aria-live="polite"></p>
+                        </form>
+                        <div class="zero-cart-summary">
+                            <div>
+                                <span>Items</span>
+                                <strong id="zero-cart-count">0 items</strong>
+                            </div>
+                            <div id="zero-cart-voucher-discount" hidden>
+                                <span>Voucher</span>
+                                <strong id="zero-cart-voucher-saving">-Rp0</strong>
+                            </div>
+                            <div>
+                                <span>Total</span>
+                                <strong id="zero-cart-total">Rp0</strong>
+                            </div>
+                        </div>
+                        <div class="zero-cart-actions">
+                            <button type="button" id="zero-cart-clear" class="n-btn">Clear Cart</button>
+                            <a id="zero-cart-checkout" class="n-btn primary syrup-checkout-link disabled" href="#" target="_blank" aria-disabled="true">Checkout</a>
+                        </div>
+                        <p class="zero-cart-note">Checkout opens WhatsApp with your order and total already formatted.</p>
                     </div>
                 </div>
-                <div class="zero-cart-actions">
-                    <button type="button" id="zero-cart-clear" class="n-btn">Clear Cart</button>
-                    <a id="zero-cart-checkout" class="n-btn primary syrup-checkout-link disabled" href="#" target="_blank" aria-disabled="true">Checkout</a>
-                </div>
-                <p class="zero-cart-note">Checkout opens WhatsApp with your order and total already formatted.</p>
             </aside>
             <dialog id="zero-checkout-dialog" class="zero-checkout-dialog" aria-labelledby="zero-checkout-dialog-title" data-lenis-prevent>
                 <form id="zero-checkout-form" method="dialog" class="zero-cart-customer" data-zero-checkout-customer>
