@@ -3,6 +3,8 @@ const WHATSAPP_PHONE = '6285842833973';
 const CONFIGURED_INVENTORY_API_BASE_URL = (import.meta.env.VITE_ZERO_INVENTORY_API_BASE_URL || '').replace(/\/$/, '');
 const CONFIGURED_ORDER_API_URL = (import.meta.env.VITE_ZERO_ORDER_API_URL || '').trim();
 const CONFIGURED_VOUCHER_API_URL = (import.meta.env.VITE_ZERO_VOUCHER_API_URL || '').trim();
+const CONFIGURED_COMMERCE_API_URL = (import.meta.env.VITE_ZERO_COMMERCE_API_URL || '').trim();
+const COMMERCE_CHECKOUT_ENABLED = String(import.meta.env.VITE_ZERO_COMMERCE_ENABLED || '').toLowerCase() === 'true';
 const currency = new Intl.NumberFormat('id-ID');
 const DROPS_FRUIT_5ML_START_ISO = '2026-06-15T00:00:00+07:00';
 
@@ -297,9 +299,14 @@ export const loadCheckoutCustomer = () => {
         return {
             fullName: String(customer.fullName || ''),
             address: String(customer.address || ''),
+            phone: String(customer.phone || ''),
+            email: String(customer.email || ''),
+            areaId: String(customer.areaId || ''),
+            areaName: String(customer.areaName || ''),
+            postalCode: String(customer.postalCode || ''),
         };
     } catch {
-        return { fullName: '', address: '' };
+        return { fullName: '', address: '', phone: '', email: '', areaId: '', areaName: '', postalCode: '' };
     }
 };
 
@@ -307,6 +314,11 @@ const saveCheckoutCustomer = (customer) => {
     localStorage.setItem(CUSTOMER_KEY, JSON.stringify({
         fullName: String(customer.fullName || ''),
         address: String(customer.address || ''),
+        phone: String(customer.phone || ''),
+        email: String(customer.email || ''),
+        areaId: String(customer.areaId || ''),
+        areaName: String(customer.areaName || ''),
+        postalCode: String(customer.postalCode || ''),
     }));
 };
 
@@ -451,6 +463,42 @@ const createWebsiteOrder = async (cart, customer, idempotencyKey, voucherCode = 
     throw lastError;
 };
 
+const getCommerceApiUrl = (action, query = {}) => {
+    const configured = CONFIGURED_COMMERCE_API_URL || window.ZERO_COMMERCE_API_URL || '';
+    if (!configured) throw new Error('ZERO commerce API is not configured.');
+    const url = new URL(configured, window.location.origin);
+    url.searchParams.set('action', action);
+    Object.entries(query).forEach(([key, value]) => url.searchParams.set(key, String(value)));
+    return url.toString();
+};
+
+const commerceRequest = async (action, { method = 'GET', body, query, idempotencyKey } = {}) => {
+    const response = await fetch(getCommerceApiUrl(action, query), {
+        method,
+        headers: {
+            Accept: 'application/json',
+            ...(body ? { 'Content-Type': 'application/json' } : {}),
+            ...(idempotencyKey ? { 'X-Idempotency-Key': idempotencyKey } : {}),
+        },
+        credentials: 'omit',
+        body: body ? JSON.stringify(body) : undefined,
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data.ok) {
+        throw new Error(String(data.error || `ZERO commerce API ${response.status}`));
+    }
+    return data;
+};
+
+const commerceCartPayload = (cart, voucherCode = '') => ({
+    voucher_code: voucherCode,
+    items: cart.map((item) => ({
+        item_key: item.itemKey || '',
+        sku: item.sku || item.key || '',
+        quantity: Number(item.quantity || 0),
+    })),
+});
+
 export const createCartStore = () => {
     let cart = loadCart();
 
@@ -555,7 +603,7 @@ export const initUniversalCartDrawer = () => {
                             <button type="button" id="zero-cart-clear" class="n-btn">Clear Cart</button>
                             <a id="zero-cart-checkout" class="n-btn primary syrup-checkout-link disabled" href="#" target="_blank" aria-disabled="true">Checkout</a>
                         </div>
-                        <p class="zero-cart-note">Checkout opens WhatsApp with your order and total already formatted.</p>
+                        <p class="zero-cart-note">${COMMERCE_CHECKOUT_ENABLED ? 'Shipping is quoted by Biteship. Payment is processed securely by Duitku.' : 'Checkout opens WhatsApp with your order and total already formatted.'}</p>
                     </div>
                 </div>
             </aside>
@@ -574,14 +622,40 @@ export const initUniversalCartDrawer = () => {
                         <span>Full Name</span>
                         <input id="zero-cart-full-name" type="text" autocomplete="name" maxlength="120" placeholder="Your full name">
                     </label>
+                    <div id="zero-commerce-contact-fields" class="zero-commerce-contact-fields"${COMMERCE_CHECKOUT_ENABLED ? '' : ' hidden'}>
+                        <label>
+                            <span>Phone</span>
+                            <input id="zero-cart-phone" type="tel" autocomplete="tel" maxlength="30" placeholder="08xxxxxxxxxx">
+                        </label>
+                        <label>
+                            <span>Email</span>
+                            <input id="zero-cart-email" type="email" autocomplete="email" maxlength="160" placeholder="you@example.com">
+                        </label>
+                    </div>
+                    <div id="zero-commerce-location" class="zero-commerce-location"${COMMERCE_CHECKOUT_ENABLED ? '' : ' hidden'}>
+                        <label>
+                            <span>District or postal code</span>
+                            <input id="zero-cart-area-search" type="search" autocomplete="off" maxlength="120" placeholder="Search Biteship location">
+                        </label>
+                        <div id="zero-cart-area-results" class="zero-commerce-area-results" role="listbox" hidden></div>
+                        <p id="zero-cart-selected-area" class="zero-commerce-selected-area">No Biteship area selected.</p>
+                    </div>
                     <label>
-                        <span>Delivery Address</span>
-                        <textarea id="zero-cart-address" autocomplete="street-address" maxlength="500" rows="3" placeholder="Street, area, city, postal code"></textarea>
+                        <span>Detailed Delivery Address</span>
+                        <textarea id="zero-cart-address" autocomplete="street-address" maxlength="500" rows="3" placeholder="Street, building number, RT/RW, landmark"></textarea>
                     </label>
+                    <div id="zero-commerce-rates" class="zero-commerce-rates"${COMMERCE_CHECKOUT_ENABLED ? '' : ' hidden'}>
+                        <div class="zero-commerce-rates-head">
+                            <span>Shipping service</span>
+                            <button id="zero-cart-get-rates" type="button" class="n-btn">Get rates</button>
+                        </div>
+                        <div id="zero-cart-rate-options" class="zero-commerce-rate-options"></div>
+                        <p id="zero-cart-commerce-total" class="zero-commerce-total" hidden></p>
+                    </div>
                     <p id="zero-cart-customer-error" class="zero-cart-form-error" hidden>Please add your full name and delivery address before checkout.</p>
                     <div class="zero-cart-actions">
                         <button type="button" id="zero-checkout-cancel" class="n-btn">Cancel</button>
-                        <button type="submit" class="n-btn primary">Continue to WhatsApp</button>
+                        <button type="submit" class="n-btn primary">${COMMERCE_CHECKOUT_ENABLED ? 'Pay with Duitku' : 'Continue to WhatsApp'}</button>
                     </div>
                 </form>
             </dialog>
@@ -609,22 +683,43 @@ export const initUniversalCartDrawer = () => {
     const checkoutCancelButton = document.getElementById('zero-checkout-cancel');
     const fullNameInput = document.getElementById('zero-cart-full-name');
     const addressInput = document.getElementById('zero-cart-address');
+    const phoneInput = document.getElementById('zero-cart-phone');
+    const emailInput = document.getElementById('zero-cart-email');
+    const areaSearchInput = document.getElementById('zero-cart-area-search');
+    const areaResults = document.getElementById('zero-cart-area-results');
+    const selectedAreaText = document.getElementById('zero-cart-selected-area');
+    const getRatesButton = document.getElementById('zero-cart-get-rates');
+    const rateOptions = document.getElementById('zero-cart-rate-options');
+    const commerceTotal = document.getElementById('zero-cart-commerce-total');
     const customerError = document.getElementById('zero-cart-customer-error');
     const checkoutSubmitButton = checkoutForm?.querySelector('button[type="submit"]');
     let checkoutIdempotencyKey = '';
+    let checkoutPublicToken = '';
     let appliedVoucher = null;
     let appliedVoucherCode = '';
     let appliedCartSignature = '';
+    let selectedArea = null;
+    let selectedRate = null;
+    let quotedCartSignature = '';
+    let areaSearchTimer = 0;
 
     const cartSignature = (cart) => cart
         .map((item) => `${item.itemKey || item.key}:${Number(item.quantity || 0)}:${Number(item.price || 0)}:${Number(item.basePrice || 0)}`)
         .sort()
         .join('|');
 
+    const clearRates = (message = '') => {
+        selectedRate = null;
+        quotedCartSignature = '';
+        if (rateOptions) rateOptions.innerHTML = message ? `<p>${escapeHtml(message)}</p>` : '';
+        if (commerceTotal) commerceTotal.hidden = true;
+    };
+
     const clearAppliedVoucher = (message = '') => {
         appliedVoucher = null;
         appliedVoucherCode = '';
         appliedCartSignature = '';
+        if (COMMERCE_CHECKOUT_ENABLED) clearRates('Voucher changed. Refresh shipping rates.');
         if (voucherDiscount) voucherDiscount.hidden = true;
         if (voucherStatus) {
             voucherStatus.textContent = message;
@@ -641,13 +736,63 @@ export const initUniversalCartDrawer = () => {
     const getCustomer = () => ({
         fullName: String(fullNameInput?.value || '').trim(),
         address: String(addressInput?.value || '').trim(),
+        phone: String(phoneInput?.value || '').trim(),
+        email: String(emailInput?.value || '').trim(),
+        areaId: String(selectedArea?.id || ''),
+        areaName: String(selectedArea?.name || ''),
+        postalCode: String(selectedArea?.postal_code || ''),
     });
 
     const hasRequiredAddressContent = (address = '') => /[\p{L}\p{N}]/u.test(String(address));
 
     const isCustomerComplete = () => {
         const customer = getCustomer();
-        return customer.fullName.length > 1 && hasRequiredAddressContent(customer.address);
+        if (!COMMERCE_CHECKOUT_ENABLED) {
+            return customer.fullName.length > 1 && hasRequiredAddressContent(customer.address);
+        }
+        return customer.fullName.length > 1
+            && hasRequiredAddressContent(customer.address)
+            && customer.phone.replace(/\D/g, '').length >= 8
+            && customer.email.includes('@')
+            && Boolean(customer.areaId);
+    };
+
+    const setSelectedArea = (area) => {
+        selectedArea = area?.id ? area : null;
+        if (selectedAreaText) {
+            selectedAreaText.textContent = selectedArea ? selectedArea.name : 'No Biteship area selected.';
+            selectedAreaText.dataset.state = selectedArea ? 'selected' : '';
+        }
+        if (areaSearchInput && selectedArea) areaSearchInput.value = selectedArea.name;
+        if (areaResults) areaResults.hidden = true;
+        clearRates(selectedArea ? 'Click “Get rates” to load live Biteship prices.' : '');
+        syncCheckoutCustomer();
+    };
+
+    const renderRates = (rates, itemsSubtotal, totalWeightGrams) => {
+        if (!rateOptions) return;
+        selectedRate = null;
+        rateOptions.innerHTML = '';
+        rates.forEach((rate, index) => {
+            const label = document.createElement('label');
+            label.className = 'zero-commerce-rate';
+            label.innerHTML = `
+                <input type="radio" name="zero-shipping-rate" value="${index}">
+                <span>
+                    <strong>${escapeHtml(`${rate.courier_name} ${rate.courier_service_name}`)}</strong>
+                    <small>${escapeHtml(rate.courier_duration || 'Delivery estimate unavailable')} · ${formatPrice(rate.shipping_price)}</small>
+                </span>
+            `;
+            label.querySelector('input')?.addEventListener('change', () => {
+                selectedRate = rate;
+                if (commerceTotal) {
+                    commerceTotal.hidden = false;
+                    commerceTotal.textContent = `Products ${formatPrice(itemsSubtotal)} + shipping ${formatPrice(rate.shipping_price)} = ${formatPrice(rate.payment_total)} · ${totalWeightGrams} g`;
+                }
+                setCustomerError('');
+            });
+            rateOptions.appendChild(label);
+        });
     };
 
     const syncCheckoutCustomer = () => {
@@ -663,6 +808,13 @@ export const initUniversalCartDrawer = () => {
         const savedCustomer = loadCheckoutCustomer();
         if (fullNameInput) fullNameInput.value = savedCustomer.fullName;
         if (addressInput) addressInput.value = savedCustomer.address;
+        if (phoneInput) phoneInput.value = savedCustomer.phone;
+        if (emailInput) emailInput.value = savedCustomer.email;
+        setSelectedArea(savedCustomer.areaId ? {
+            id: savedCustomer.areaId,
+            name: savedCustomer.areaName,
+            postal_code: savedCustomer.postalCode,
+        } : null);
         setCustomerError('');
 
         if (checkoutDialog?.showModal) {
@@ -692,6 +844,17 @@ export const initUniversalCartDrawer = () => {
     const savedCustomer = loadCheckoutCustomer();
     if (fullNameInput) fullNameInput.value = savedCustomer.fullName;
     if (addressInput) addressInput.value = savedCustomer.address;
+    if (phoneInput) phoneInput.value = savedCustomer.phone;
+    if (emailInput) emailInput.value = savedCustomer.email;
+    selectedArea = savedCustomer.areaId ? {
+        id: savedCustomer.areaId,
+        name: savedCustomer.areaName,
+        postal_code: savedCustomer.postalCode,
+    } : null;
+    if (selectedAreaText && selectedArea) {
+        selectedAreaText.textContent = selectedArea.name;
+        selectedAreaText.dataset.state = 'selected';
+    }
 
     const syncBubble = () => {
         if (!cartBubble || !cartBadge) return;
@@ -703,6 +866,9 @@ export const initUniversalCartDrawer = () => {
     const render = () => {
         store.syncFromStorage();
         const cart = store.getCart();
+        if (selectedRate && cartSignature(cart) !== quotedCartSignature) {
+            clearRates('Cart changed. Refresh the shipping rates.');
+        }
         if (appliedVoucher && cartSignature(cart) !== appliedCartSignature) {
             clearAppliedVoucher('Cart changed. Apply the voucher again to refresh the discount.');
         }
@@ -824,6 +990,7 @@ export const initUniversalCartDrawer = () => {
             appliedVoucher = result;
             appliedVoucherCode = code;
             appliedCartSignature = cartSignature(cart);
+            if (COMMERCE_CHECKOUT_ENABLED) clearRates('Voucher changed the item total. Refresh shipping rates.');
             if (voucherStatus) {
                 const percent = Number(result.voucher?.discount_percent || 0);
                 const behavior = result.voucher?.stacking_mode === 'override'
@@ -851,6 +1018,77 @@ export const initUniversalCartDrawer = () => {
         render();
     });
 
+    phoneInput?.addEventListener('input', syncCheckoutCustomer);
+    emailInput?.addEventListener('input', syncCheckoutCustomer);
+
+    areaSearchInput?.addEventListener('input', () => {
+        if (!COMMERCE_CHECKOUT_ENABLED) return;
+        selectedArea = null;
+        if (selectedAreaText) {
+            selectedAreaText.textContent = 'No Biteship area selected.';
+            selectedAreaText.dataset.state = '';
+        }
+        clearRates('');
+        window.clearTimeout(areaSearchTimer);
+        const query = areaSearchInput.value.trim();
+        if (query.length < 3) {
+            if (areaResults) areaResults.hidden = true;
+            return;
+        }
+        areaSearchTimer = window.setTimeout(async () => {
+            if (!areaResults) return;
+            areaResults.hidden = false;
+            areaResults.innerHTML = '<p>Searching Biteship areas…</p>';
+            try {
+                const result = await commerceRequest('areas', { query: { q: query } });
+                areaResults.innerHTML = '';
+                if (!result.areas.length) {
+                    areaResults.innerHTML = '<p>No matching area found.</p>';
+                    return;
+                }
+                result.areas.forEach((area) => {
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.setAttribute('role', 'option');
+                    button.textContent = area.name;
+                    button.addEventListener('click', () => setSelectedArea(area));
+                    areaResults.appendChild(button);
+                });
+            } catch (error) {
+                areaResults.innerHTML = `<p>${escapeHtml(error instanceof Error ? error.message : 'Area search failed.')}</p>`;
+            }
+        }, 400);
+    });
+
+    getRatesButton?.addEventListener('click', async () => {
+        if (!selectedArea) {
+            setCustomerError('Search for and select a Biteship destination area first.');
+            areaSearchInput?.focus();
+            return;
+        }
+        getRatesButton.disabled = true;
+        clearRates('Loading live Biteship rates…');
+        setCustomerError('');
+        try {
+            const cart = store.getCart();
+            const result = await commerceRequest('rates', {
+                method: 'POST',
+                body: {
+                    ...commerceCartPayload(cart, appliedVoucherCode),
+                    destination_area_id: selectedArea.id,
+                    destination_area_name: selectedArea.name,
+                    destination_postal_code: selectedArea.postal_code,
+                },
+            });
+            quotedCartSignature = cartSignature(cart);
+            renderRates(result.rates, result.items_subtotal, result.total_weight_grams);
+        } catch (error) {
+            clearRates(error instanceof Error ? error.message : 'Unable to load shipping rates.');
+        } finally {
+            getRatesButton.disabled = false;
+        }
+    });
+
     checkoutLink?.addEventListener('click', (event) => {
         event.preventDefault();
         if (checkoutLink.classList.contains('disabled')) {
@@ -871,8 +1109,10 @@ export const initUniversalCartDrawer = () => {
     checkoutForm?.addEventListener('submit', async (event) => {
         event.preventDefault();
         const customer = syncCheckoutCustomer();
-        if (!customer.fullName || !hasRequiredAddressContent(customer.address)) {
-            setCustomerError('Please add your full name and delivery address before checkout.');
+        if (!isCustomerComplete()) {
+            setCustomerError(COMMERCE_CHECKOUT_ENABLED
+                ? 'Add your name, phone, email, detailed address, and select a Biteship area.'
+                : 'Please add your full name and delivery address before checkout.');
             if (!customer.fullName) {
                 fullNameInput?.focus();
             } else {
@@ -883,9 +1123,43 @@ export const initUniversalCartDrawer = () => {
 
         const popup = window.open('', '_blank');
         checkoutIdempotencyKey ||= createCheckoutIdempotencyKey();
+        checkoutPublicToken ||= `zero-public-${createCheckoutIdempotencyKey()}-${createCheckoutIdempotencyKey()}`;
         if (checkoutSubmitButton) checkoutSubmitButton.disabled = true;
-        setCustomerError('Creating your order ID...');
+        setCustomerError(COMMERCE_CHECKOUT_ENABLED ? 'Creating your Duitku payment…' : 'Creating your order ID...');
         try {
+            if (COMMERCE_CHECKOUT_ENABLED) {
+                if (!selectedRate) {
+                    throw new Error('Select a Biteship shipping service before payment.');
+                }
+                const cart = store.getCart();
+                const result = await commerceRequest('checkout', {
+                    method: 'POST',
+                    idempotencyKey: checkoutIdempotencyKey,
+                    body: {
+                        ...commerceCartPayload(cart, appliedVoucherCode),
+                        idempotency_key: checkoutIdempotencyKey,
+                        public_token: checkoutPublicToken,
+                        quote_token: selectedRate.quote_token,
+                        customer: {
+                            name: customer.fullName,
+                            phone: customer.phone,
+                            email: customer.email,
+                            address: customer.address,
+                        },
+                    },
+                });
+                cart.forEach((item) => trackCommerceEvent('checkout_click', { ...item, orderCode: result.checkout.order_id }, 'Duitku checkout'));
+                checkoutIdempotencyKey = '';
+                checkoutPublicToken = '';
+                if (popup) {
+                    popup.opener = null;
+                    popup.location.href = result.checkout.payment_url;
+                } else {
+                    window.location.href = result.checkout.payment_url;
+                }
+                closeCheckoutDialog();
+                return;
+            }
             const order = await createWebsiteOrder(store.getCart(), customer, checkoutIdempotencyKey, appliedVoucherCode);
             store.getCart().forEach((item) => trackCommerceEvent('checkout_click', { ...item, orderCode: order.order_id }, 'Cart checkout'));
             const checkoutUrl = store.getCheckoutUrl(customer, order);

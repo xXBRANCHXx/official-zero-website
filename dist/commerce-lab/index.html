@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>ZERO Commerce Lab</title>
+    <link rel="icon" href="/ZERO logos/ZERO Logo Cropped Black.svg" type="image/svg+xml">
+  <script type="module" crossorigin src="/assets/commerceLab-QppaL0IG.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/assets/commerce-lab-Byvtwx_v.css">
+</head>
+<body>
+    <header class="lab-header">
+        <a href="/" class="lab-brand" aria-label="ZERO home"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO"></a>
+        <div><span class="lab-kicker">Sandbox blueprint</span><h1>Commerce API Lab</h1></div>
+        <span class="lab-mode">TEST MODE</span>
+    </header>
+    <main>
+        <section class="lab-intro">
+            <div><p class="eyebrow">Biteship × Duitku × ZERO</p><h2>Click any stage to see the exact API call and JSON.</h2></div>
+            <p>The browser calls only ZERO endpoints. Provider keys and payment signatures stay on the ZERO server. A Biteship order is created only after Duitku’s signed server callback confirms payment.</p>
+        </section>
+        <section class="flow-shell" aria-labelledby="flow-title">
+            <div class="section-head">
+                <div><span>Visual request path</span><h2 id="flow-title">From location to printable A5 label</h2></div>
+                <div class="legend"><span><i class="browser"></i> Browser</span><span><i class="zero"></i> ZERO server</span><span><i class="provider"></i> Provider</span></div>
+            </div>
+            <div id="commerce-flow" class="commerce-flow" aria-label="Commerce integration stages"></div>
+        </section>
+        <section class="api-inspector" aria-live="polite">
+            <div class="inspector-copy">
+                <span id="api-owner" class="api-owner">ZERO server</span>
+                <h2 id="api-name">Select an API stage</h2>
+                <p id="api-purpose">The exact route, caller, request JSON, and response JSON will appear here.</p>
+                <dl>
+                    <div><dt>Method</dt><dd id="api-method">—</dd></div>
+                    <div><dt>Endpoint</dt><dd><code id="api-endpoint">—</code></dd></div>
+                    <div><dt>Called by</dt><dd id="api-caller">—</dd></div>
+                </dl>
+                <p id="api-security" class="security-note"></p>
+            </div>
+            <div class="json-panel">
+                <div class="json-tabs" role="tablist" aria-label="JSON view">
+                    <button type="button" role="tab" data-json-tab="request" aria-selected="true">Request JSON</button>
+                    <button type="button" role="tab" data-json-tab="response" aria-selected="false">Response JSON</button>
+                </div>
+                <div class="json-title-row"><span id="json-caption">Request body</span><button id="copy-json" type="button">Copy JSON</button></div>
+                <pre><code id="api-json">{}</code></pre>
+            </div>
+        </section>
+        <section class="guardrails">
+            <article><span>01</span><h3>Server totals</h3><p>Cart prices, voucher discounts, SKU weights, shipping, and Duitku amount are recalculated server-side.</p></article>
+            <article><span>02</span><h3>Signed quote</h3><p>Each Biteship rate becomes a 15-minute HMAC-signed quote tied to the exact cart and weight.</p></article>
+            <article><span>03</span><h3>Callback truth</h3><p>The browser redirect never marks an order paid. Only Duitku’s verified HMAC callback can do that.</p></article>
+            <article><span>04</span><h3>A5 label</h3><p>Biteship has no label API. ZERO builds an authenticated A5 label from the returned waybill, route, courier, and addresses.</p></article>
+        </section>
+    </main>
+</body>
+</html>

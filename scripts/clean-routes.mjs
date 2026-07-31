@@ -15,6 +15,8 @@ const routes = [
     ['social.html', 'zero-social'],
     ['legal.html', 'legal-info'],
     ['articles.html', 'articles'],
+    ['commerce-lab.html', 'commerce-lab'],
+    ['payment-status.html', 'payment-status'],
 ];
 
 for (const [fileName, routePath] of routes) {

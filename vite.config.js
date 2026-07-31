@@ -15,6 +15,8 @@ export default defineConfig({
         social: resolve(__dirname, 'social.html'),
         legal: resolve(__dirname, 'legal.html'),
         articles: resolve(__dirname, 'articles.html'),
+        commerceLab: resolve(__dirname, 'commerce-lab.html'),
+        paymentStatus: resolve(__dirname, 'payment-status.html'),
       },
     },
   },

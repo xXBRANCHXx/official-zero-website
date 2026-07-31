@@ -8,4 +8,6 @@
 /social.html /zero-social 301
 /legal.html /legal-info 301
 /articles.html /articles 301
+/commerce-lab.html /commerce-lab 301
+/payment-status.html /payment-status 301
 /articles/* /articles/index.html 200

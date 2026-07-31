@@ -51,6 +51,16 @@
       "source": "/articles.html",
       "destination": "/articles",
       "permanent": true
+    },
+    {
+      "source": "/commerce-lab.html",
+      "destination": "/commerce-lab",
+      "permanent": true
+    },
+    {
+      "source": "/payment-status.html",
+      "destination": "/payment-status",
+      "permanent": true
     }
   ],
   "rewrites": [
