@@ -23,8 +23,11 @@ for (const topic of ['healthy-eating', 'keeping-fit', 'losing-weight', 'diabetes
 }
 
 expect((html.match(/images\.unsplash\.com/g) || []).length >= 4, 'Each topic needs fitting online photography.');
+expect(html.includes('href="/index.css"') && html.includes('class="floating-nav"') && html.includes('class="footer-shell"'), 'Articles must reuse the official ZERO site navigation, typography, and footer system.');
 expect(css.includes('.topic-card::before') && css.includes('mix-blend-mode: color'), 'Topic images need the blue duotone overlay.');
 expect(css.includes('.topic-card:hover img') && css.includes('filter: none'), 'Topic photography must return to full color on hover.');
+expect(css.includes('--articles-accent: #1dbfd3') && !css.includes('#071b54'), 'The article experience must use the site cyan branding instead of the old purple-heavy treatment.');
+expect(js.includes('const initMotion') && js.includes("addEventListener('pointermove'") && js.includes('IntersectionObserver'), 'The bento and article cards need polished reveal and pointer animations.');
 expect(js.includes("isSandbox ? 'noindex, nofollow, noarchive'"), 'Sandbox routes must remain outside search indexes.');
 expect(js.includes("'@type': 'Article'") && html.includes('data-articles-schema'), 'Article pages need structured Article metadata.');
 expect(js.includes('datePublished') && js.includes('mainEntityOfPage'), 'Article schema needs publication and canonical page data.');

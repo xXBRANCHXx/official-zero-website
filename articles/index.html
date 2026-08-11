@@ -17,30 +17,51 @@
     <meta name="twitter:title" content="ZERO Articles | Practical Guides for Healthier Daily Habits" data-articles-twitter-title>
     <meta name="twitter:description" content="Practical guidance for eating well, keeping fit, losing weight sustainably, and understanding diabetes remission." data-articles-twitter-description>
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&amp;fit=crop&amp;w=1600&amp;q=85" data-articles-twitter-image>
-    <meta name="theme-color" content="#071b54">
+    <meta name="theme-color" content="#ffffff">
     <link rel="icon" type="image/svg+xml" href="/ZERO logos/ZERO Logo Black.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.cdnfonts.com">
     <link rel="preconnect" href="https://images.unsplash.com">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.cdnfonts.com/css/causten" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"><link href="https://fonts.cdnfonts.com/css/causten" rel="stylesheet"></noscript>
+    <link rel="stylesheet" href="/index.css">
     <link rel="stylesheet" href="/articles.css">
     <script type="application/ld+json" data-articles-schema>
     {"@context":"https://schema.org","@type":"CollectionPage","name":"ZERO Articles","url":"https://zerofoods.id/articles/","publisher":{"@type":"Organization","name":"ZERO Foods Indonesia","url":"https://zerofoods.id/"}}
     </script>
 </head>
-<body>
+<body class="articles-page site-loading">
+    <div id="site-loader" class="site-loader" role="status" aria-live="polite" aria-label="Loading ZERO website">
+        <div class="site-loader-inner">
+            <span class="site-loader-brand">ZERO</span>
+            <div class="site-loader-track" aria-hidden="true"><span id="site-loader-bar" class="site-loader-bar"></span></div>
+            <span id="site-loader-percent" class="site-loader-percent">0%</span>
+        </div>
+    </div>
+
     <a class="articles-skip" href="#articles-content">Skip to articles</a>
-    <header class="articles-site-header">
-        <a class="articles-brand" href="/" aria-label="ZERO home">
-            <img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" width="56" height="56">
-        </a>
-        <nav aria-label="Articles navigation">
-            <a href="/catalog">Catalog</a>
-            <a href="/zfit">ZFit</a>
-            <a href="/about-zero">About</a>
-            <a href="/articles/" aria-current="page">Articles</a>
-        </nav>
-    </header>
+    <nav class="floating-nav" aria-label="Primary navigation">
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li class="nav-logo-slot"><a href="/" id="nav-logo" aria-label="ZERO Home"><img src="/ZERO logos/ZERO Logo Black.svg" alt="ZERO" width="1375" height="1375"></a></li>
+                <li><div class="search-anchor"><button id="search-trigger" class="icon-btn" aria-label="Open search"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button></div></li>
+                <li class="desktop-only"><a href="/catalog">Catalog</a></li>
+                <li class="desktop-only"><a href="/zfit">ZFit</a></li>
+                <li class="desktop-only"><a href="/about-zero">About</a></li>
+                <li class="more-menu"><button id="more-trigger" class="icon-btn" aria-label="Open menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle><circle cx="5" cy="12" r="1.5"></circle></svg></button></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="search-popout" class="search-morph-container global-overlay">
+        <div class="search-icon-box" id="morph-icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+        <input type="text" id="main-search" class="search-input-field" placeholder="Search ZERO" aria-label="Search ZERO website">
+        <div id="close-search" class="search-close-x" role="button" tabindex="0" aria-label="Close search">×</div>
+    </div>
+    <div id="more-dropdown" class="glass-dropdown global-overlay" role="navigation" aria-label="More navigation">
+        <a href="/">Home</a><a href="/catalog" class="mobile-only">Catalog</a><a href="/zero-syrup">Syrup</a><a href="/zero-drops">Drops</a><a href="/zero-maple-topping">Maple Topping</a><a href="/zfit" class="mobile-only">ZFit</a><a href="/about-zero">About</a><a href="/zero-social">Social</a><a href="/legal-info">Legal Info</a>
+    </div>
 
     <div class="articles-sandbox-banner" data-sandbox-banner hidden>
         <strong>Sandbox view</strong>
@@ -49,15 +70,23 @@
 
     <main id="articles-content" data-articles-app data-endpoint="https://admin.jenanggemi.com/api/public-blog/">
         <section class="articles-hero" data-library-hero>
-            <p class="articles-kicker">ZERO EDITORIAL</p>
-            <h1>Ideas for a healthier<br><em>everyday.</em></h1>
-            <p class="articles-intro">Clear, useful guidance for eating well, moving more, managing weight, and building healthier metabolic habits.</p>
+            <div class="container articles-hero-layout">
+                <div class="articles-hero-copy">
+                    <span class="section-badge">ZERO Editorial</span>
+                    <h1><span>Ideas for a healthier</span><em>everyday.</em></h1>
+                    <p class="articles-intro">Clear, useful guidance for eating well, moving more, managing weight, and building healthier metabolic habits.</p>
+                </div>
+                <div class="articles-hero-mark" aria-hidden="true">
+                    <div class="articles-orbit"><span>0</span><i></i><i></i><i></i><i></i></div>
+                    <small>Useful ideas.<br>Nothing extra.</small>
+                </div>
+            </div>
         </section>
 
         <section class="topic-bento" aria-labelledby="topic-heading" data-topic-bento>
             <div class="topic-bento-heading">
-                <p class="articles-kicker">EXPLORE BY TOPIC</p>
-                <h2 id="topic-heading">Four ways to begin.</h2>
+                <span class="section-badge">Explore by topic</span>
+                <h2 id="topic-heading">Four ways to <span>begin.</span></h2>
             </div>
             <div class="topic-bento-grid">
                 <a class="topic-card topic-card-healthy" href="/articles/healthy-eating/" data-topic-link="healthy-eating">
@@ -88,11 +117,26 @@
         </section>
     </main>
 
-    <footer class="articles-footer">
-        <a href="/">ZERO Foods Indonesia</a>
-        <p>General wellness information only. It does not replace advice from a qualified healthcare professional.</p>
-        <p class="articles-photo-credit">Topic photography via <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.</p>
+    <footer class="footer-section">
+        <div class="footer-shell">
+            <div class="footer-brand-flood" aria-hidden="true"><img src="/ZERO logos/ZERO Logo Cropped.svg" alt="" width="2794" height="774"></div>
+            <div class="container footer-inner">
+                <div class="footer-brand-block">
+                    <h2 class="footer-title">Healthy choices, <br>made easier.</h2>
+                    <p class="footer-copy">ZERO Foods Indonesia creates low-calorie syrups, drops, toppings, and useful guidance for easier daily routines.</p>
+                    <p class="footer-meta">WhatsApp: +62 858-4283-3973<br>Jl. Jombor Tegal No.124 A, Sleman, Yogyakarta</p>
+                </div>
+                <div class="footer-map">
+                    <div class="footer-column"><h3 class="footer-heading">Shop</h3><div class="footer-links"><a href="/catalog">Catalog</a><a href="/zero-syrup">ZERO Syrup</a><a href="/zero-drops">ZERO Drops</a><a href="/zero-maple-topping">Maple Topping</a></div></div>
+                    <div class="footer-column"><h3 class="footer-heading">Company</h3><div class="footer-links"><a href="/about-zero">About</a><a href="/articles/">Articles</a><a href="/zero-social">Social</a><a href="/legal-info">Legal Info</a></div></div>
+                    <div class="footer-column"><h3 class="footer-heading">Follow</h3><p class="footer-note">New stories, flavors, product drops, and ordering updates from the official ZERO channels.</p><div class="footer-socials" data-footer-socials aria-label="ZERO social media"></div></div>
+                </div>
+                <p class="articles-health-note">General wellness information only. It does not replace advice from a qualified healthcare professional. Topic photography via <a href="https://unsplash.com" target="_blank" rel="noopener noreferrer">Unsplash</a>.</p>
+                <div class="footer-bottom"><img class="footer-mark" src="/ZERO logos/ZERO Logo White.svg" alt="ZERO" width="1375" height="1375"><span>Copyright 2026 ZERO Foods Indonesia. All rights reserved.</span></div>
+            </div>
+        </div>
     </footer>
+    <script type="module" src="/index.js"></script>
     <script type="module" src="/articles.js"></script>
 </body>
 </html>

@@ -39,6 +39,19 @@ if (app) {
   const results = document.querySelector('[data-results]');
   const bento = document.querySelector('[data-topic-bento]');
   const libraryHero = document.querySelector('[data-library-hero]');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  const revealObserver = 'IntersectionObserver' in window && !reduceMotion.matches
+    ? new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const delay = Number(entry.target.dataset.revealDelay || 0);
+        window.setTimeout(() => entry.target.classList.add('is-visible'), delay);
+        revealObserver.unobserve(entry.target);
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -7% 0px' })
+    : null;
 
   const escapeHtml = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -80,12 +93,48 @@ if (app) {
     if (element) element.textContent = JSON.stringify(schema);
   };
 
+  const initMotion = () => {
+    const revealables = [...document.querySelectorAll('.topic-card:not([data-reveal-ready]), .article-card:not([data-reveal-ready]), .article-reveal:not([data-reveal-ready])')];
+    revealables.forEach((element, index) => {
+      element.dataset.revealReady = 'true';
+      element.dataset.revealDelay = String(Math.min(index % 4, 3) * 90);
+      if (reduceMotion.matches || element.getBoundingClientRect().top < window.innerHeight * 1.08) {
+        window.setTimeout(() => element.classList.add('is-visible'), Number(element.dataset.revealDelay));
+      } else if (revealObserver) {
+        revealObserver.observe(element);
+      } else {
+        element.classList.add('is-visible');
+      }
+    });
+
+    if (!finePointer.matches || reduceMotion.matches) return;
+    document.querySelectorAll('.topic-card:not([data-parallax-ready])').forEach((cardElement) => {
+      cardElement.dataset.parallaxReady = 'true';
+      cardElement.addEventListener('pointermove', (event) => {
+        const bounds = cardElement.getBoundingClientRect();
+        const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+        const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+        cardElement.style.setProperty('--image-x', `${((x - .5) * -12).toFixed(2)}px`);
+        cardElement.style.setProperty('--image-y', `${((y - .5) * -12).toFixed(2)}px`);
+        cardElement.style.setProperty('--glow-x', `${(x * 100).toFixed(1)}%`);
+        cardElement.style.setProperty('--glow-y', `${(y * 100).toFixed(1)}%`);
+      });
+      cardElement.addEventListener('pointerleave', () => {
+        cardElement.style.setProperty('--image-x', '0px');
+        cardElement.style.setProperty('--image-y', '0px');
+        cardElement.style.setProperty('--glow-x', '50%');
+        cardElement.style.setProperty('--glow-y', '50%');
+      });
+    });
+  };
+
   const updateRouteLinks = () => {
     document.querySelectorAll('[data-topic-link]').forEach((link) => {
       link.href = topicPath(link.dataset.topicLink);
     });
-    const navArticle = document.querySelector('.articles-site-header nav a[href^="/articles"]');
-    if (navArticle) navArticle.href = `${routeBase}/`;
+    document.querySelectorAll('a[href="/articles/"], a[href="/articles"]').forEach((link) => {
+      link.href = `${routeBase}/`;
+    });
   };
 
   const updateTopicCounts = (posts) => {
@@ -144,6 +193,7 @@ if (app) {
         }))
       }
     });
+    initMotion();
   };
 
   const renderArticle = (post) => {
@@ -155,14 +205,14 @@ if (app) {
     bento.hidden = true;
     results.innerHTML = `<article class="article-view">
       <header class="article-view-header">
-        <a class="article-view-topic" href="${topicPath(post.topic)}">${escapeHtml(topic.label)}</a>
-        <h1>${escapeHtml(post.title)}</h1>
-        <p class="article-view-excerpt">${escapeHtml(post.excerpt)}</p>
-        <div class="article-view-meta"><span>By ${escapeHtml(post.author || 'ZERO Editorial')}</span><span>${Number(post.reading_minutes || 1)} min read</span>${published ? `<span>Published ${escapeHtml(published)}</span>` : ''}${updated && updated !== published ? `<span>Updated ${escapeHtml(updated)}</span>` : ''}</div>
+        <a class="article-view-topic article-reveal" href="${topicPath(post.topic)}">${escapeHtml(topic.label)}</a>
+        <h1 class="article-reveal">${escapeHtml(post.title)}</h1>
+        <p class="article-view-excerpt article-reveal">${escapeHtml(post.excerpt)}</p>
+        <div class="article-view-meta article-reveal"><span>By ${escapeHtml(post.author || 'ZERO Editorial')}</span><span>${Number(post.reading_minutes || 1)} min read</span>${published ? `<span>Published ${escapeHtml(published)}</span>` : ''}${updated && updated !== published ? `<span>Updated ${escapeHtml(updated)}</span>` : ''}</div>
       </header>
-      ${image ? `<img class="article-view-cover" src="${escapeHtml(image)}" alt="${escapeHtml(post.title)}" fetchpriority="high">` : ''}
-      <div class="article-body">${post.body_html || '<p>This article is being prepared.</p>'}</div>
-      <footer class="article-view-footer"><a href="${topicPath(post.topic)}">← More in ${escapeHtml(topic.label)}</a><a href="${routeBase}/">All topics</a></footer>
+      ${image ? `<img class="article-view-cover article-reveal" src="${escapeHtml(image)}" alt="${escapeHtml(post.title)}" fetchpriority="high">` : ''}
+      <div class="article-body article-reveal">${post.body_html || '<p>This article is being prepared.</p>'}</div>
+      <footer class="article-view-footer article-reveal"><a href="${topicPath(post.topic)}">← More in ${escapeHtml(topic.label)}</a><a href="${routeBase}/">All topics</a></footer>
     </article>`;
 
     const title = post.seo_title || `${post.title} | ZERO Foods Indonesia`;
@@ -195,6 +245,7 @@ if (app) {
       articleSection: topic.label,
       inLanguage: 'en'
     });
+    initMotion();
   };
 
   const renderUnavailable = (message = '') => {
@@ -239,5 +290,6 @@ if (app) {
     }
   };
 
+  initMotion();
   load();
 }
