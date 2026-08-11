@@ -116,14 +116,10 @@ if (app) {
         const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
         cardElement.style.setProperty('--image-x', `${((x - .5) * -12).toFixed(2)}px`);
         cardElement.style.setProperty('--image-y', `${((y - .5) * -12).toFixed(2)}px`);
-        cardElement.style.setProperty('--glow-x', `${(x * 100).toFixed(1)}%`);
-        cardElement.style.setProperty('--glow-y', `${(y * 100).toFixed(1)}%`);
       });
       cardElement.addEventListener('pointerleave', () => {
         cardElement.style.setProperty('--image-x', '0px');
         cardElement.style.setProperty('--image-y', '0px');
-        cardElement.style.setProperty('--glow-x', '50%');
-        cardElement.style.setProperty('--glow-y', '50%');
       });
     });
   };
@@ -160,6 +156,8 @@ if (app) {
   const renderLibrary = (posts) => {
     const filtered = selectedTopic ? posts.filter((post) => post.topic === selectedTopic) : posts;
     const topic = selectedTopic ? topicDetails[selectedTopic] : null;
+    bento.hidden = Boolean(topic);
+    results.classList.toggle('is-topic-view', Boolean(topic));
     const heading = topic ? topic.label : 'Latest stories';
     const eyebrow = topic ? 'EXPLORE THE TOPIC' : 'NEW FROM ZERO';
     results.innerHTML = `<div class="articles-results-head">
@@ -203,6 +201,7 @@ if (app) {
     const updated = safeDate(post.updated_at);
     libraryHero.hidden = true;
     bento.hidden = true;
+    results.classList.add('is-topic-view');
     results.innerHTML = `<article class="article-view">
       <header class="article-view-header">
         <a class="article-view-topic article-reveal" href="${topicPath(post.topic)}">${escapeHtml(topic.label)}</a>
