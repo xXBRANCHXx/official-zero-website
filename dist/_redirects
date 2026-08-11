@@ -7,3 +7,5 @@
 /about.html /about-zero 301
 /social.html /zero-social 301
 /legal.html /legal-info 301
+/articles.html /articles 301
+/articles/* /articles/index.html 200

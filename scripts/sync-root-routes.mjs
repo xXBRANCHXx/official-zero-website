@@ -13,6 +13,7 @@ const routes = [
     ['about.html', 'about-zero'],
     ['social.html', 'zero-social'],
     ['legal.html', 'legal-info'],
+    ['articles.html', 'articles'],
 ];
 
 for (const [sourceFile, routePath] of routes) {

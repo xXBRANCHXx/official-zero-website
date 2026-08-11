@@ -14,6 +14,7 @@ const routes = [
     ['about.html', 'about-zero'],
     ['social.html', 'zero-social'],
     ['legal.html', 'legal-info'],
+    ['articles.html', 'articles'],
 ];
 
 for (const [fileName, routePath] of routes) {
@@ -29,6 +30,7 @@ for (const [fileName, routePath] of routes) {
 
 const redirectLines = routes.map(([fileName, routePath]) => `/${fileName} /${routePath} 301`);
 redirectLines.unshift('/index.html / 301');
+redirectLines.push('/articles/* /articles/index.html 200');
 writeFileSync(join(distRoot, '_redirects'), `${redirectLines.join('\n')}\n`);
 
 const vercelConfig = {
@@ -41,6 +43,9 @@ const vercelConfig = {
             destination: `/${routePath}`,
             permanent: true,
         })),
+    ],
+    rewrites: [
+        { source: '/articles/:path*', destination: '/articles/index.html' },
     ],
 };
 

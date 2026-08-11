@@ -43,6 +43,9 @@ const SOCIAL_LINKS = [
 const SALES_PROOF_ENDPOINT = import.meta.env.VITE_ZERO_SALES_PROOF_ENDPOINT
     || window.ZERO_SALES_PROOF_ENDPOINT
     || 'https://admin.jenanggemi.com/api/zero-sales-proof/';
+const ARTICLES_ENDPOINT = import.meta.env.VITE_ZERO_ARTICLES_ENDPOINT
+    || window.ZERO_ARTICLES_ENDPOINT
+    || 'https://admin.jenanggemi.com/api/public-blog/';
 const SALES_PROOF_CACHE_KEY = 'zero_sales_proof_daily_v1';
 const SALES_PROOF_DATE_FORMATTER = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' });
 const SALES_PROOF_META_DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
@@ -468,6 +471,28 @@ const normalizeNavigation = () => {
     }
 };
 
+const initArticleNavigation = async () => {
+    try {
+        const url = new URL(ARTICLES_ENDPOINT);
+        url.searchParams.set('action', 'config');
+        const response = await fetch(url, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+        const payload = await response.json();
+        if (!response.ok || !payload.available || payload.visibility !== 'live') return;
+
+        const navLinks = document.querySelector('.nav-links');
+        const moreMenu = navLinks?.querySelector('.more-menu');
+        if (navLinks && moreMenu && !navLinks.querySelector('[data-articles-nav]')) {
+            const navItem = document.createElement('li');
+            navItem.className = 'nav-primary-link';
+            navItem.dataset.articlesNav = '';
+            navItem.innerHTML = renderAnchor({ label: 'Articles', href: '/articles/' });
+            navLinks.insertBefore(navItem, moreMenu);
+        }
+    } catch (_error) {
+        // Article navigation stays hidden if the delivery service is unavailable.
+    }
+};
+
 const syncScheduledDropsCopy = () => {
     const release = ZERO_RELEASES.dropsFruit5ml;
     const isLive = isDropsFruit5mlLive();
@@ -606,6 +631,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSiteLoader();
     initZeroI18n();
     normalizeNavigation();
+    initArticleNavigation();
     syncScheduledDropsCopy();
     initSalesProofCounter();
     initFooterSocialLinks();

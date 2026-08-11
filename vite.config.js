@@ -14,6 +14,7 @@ export default defineConfig({
         about: resolve(__dirname, 'about.html'),
         social: resolve(__dirname, 'social.html'),
         legal: resolve(__dirname, 'legal.html'),
+        articles: resolve(__dirname, 'articles.html'),
       },
     },
   },

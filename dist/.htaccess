@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Keep clean, shareable topic and article URLs on the static Articles app.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^articles(?:/.*)?$ /articles/index.html [L]

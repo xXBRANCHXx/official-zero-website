@@ -15,6 +15,7 @@ const routes = [
     { path: '/about-zero/', file: 'about.html' },
     { path: '/zero-social/', file: 'social.html' },
     { path: '/legal-info/', file: 'legal.html' },
+    { path: '/articles/', file: 'articles.html' },
 ];
 
 const escapeXml = (value) => String(value)
