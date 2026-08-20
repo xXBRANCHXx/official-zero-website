@@ -8378,3 +8378,102 @@ body.quick-add-open {
         display: none;
     }
 }
+
+/* Mobile product-page polish: give the bottle room to read and keep ordering compact. */
+@media (max-width: 768px) {
+    .syrup-page .page-hero-grid {
+        min-height: min(42rem, calc(100svh - 7.5rem));
+        align-content: center;
+    }
+
+    .syrup-page .page-hero-visual {
+        grid-column: 7 / -1;
+        grid-row: 2 / 5;
+        min-height: 22rem;
+        padding: 3.6rem 0 0;
+        justify-content: center;
+        align-items: flex-start;
+        transform: translateX(0.35rem);
+        overflow: visible;
+    }
+
+    .syrup-page .page-hero-image {
+        flex: 0 0 auto;
+        width: clamp(18.5rem, 93vw, 22rem);
+        max-width: none;
+        max-height: none;
+        height: auto;
+        filter: drop-shadow(0 24px 30px rgba(15, 23, 42, 0.15));
+    }
+
+    .syrup-page .syrup-flavor-grid,
+    .drops-page .syrup-flavor-grid {
+        gap: 0.5rem;
+    }
+
+    .syrup-page .syrup-choice-card,
+    .drops-page .syrup-choice-card {
+        min-height: 3.55rem;
+        padding: 0.62rem 0.72rem;
+        border-radius: 14px;
+    }
+
+    .syrup-page .syrup-choice-card strong,
+    .drops-page .syrup-choice-card strong {
+        font-size: 0.84rem;
+        line-height: 1.15;
+    }
+
+    .syrup-page .syrup-size-selector,
+    .drops-page .syrup-size-selector,
+    .maple-page .syrup-size-selector {
+        gap: 0.5rem;
+    }
+
+    .syrup-page .syrup-size-chip,
+    .drops-page .syrup-size-chip,
+    .maple-page .syrup-size-chip {
+        min-height: 4.2rem;
+        padding: 0.7rem 0.72rem;
+        border-radius: 14px;
+    }
+
+    .zero-cart-drawer {
+        padding: 5.25rem 0.9rem 0.9rem;
+        gap: 0.75rem;
+    }
+
+    .zero-cart-body,
+    .zero-cart-checkout-panel {
+        gap: 0.75rem;
+    }
+
+    .zero-cart-items {
+        gap: 0.5rem;
+    }
+
+    .zero-cart-item {
+        gap: 0.65rem;
+        padding: 0.68rem 0.72rem;
+        border-radius: 14px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    .zero-cart-item strong {
+        font-size: 0.88rem;
+        line-height: 1.2;
+    }
+
+    .zero-cart-item span {
+        font-size: 0.76rem;
+    }
+
+    .zero-cart-item .syrup-cart-controls {
+        gap: 0.35rem;
+    }
+
+    .zero-cart-item .syrup-cart-controls button {
+        width: 30px;
+        height: 30px;
+    }
+}
