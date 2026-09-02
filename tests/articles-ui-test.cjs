@@ -35,6 +35,7 @@ expect(js.includes('datePublished') && js.includes('mainEntityOfPage'), 'Article
 expect(html.includes('data-youtube-player-dialog') && html.includes('data-youtube-player-link'), 'Published articles need a focused YouTube player with an external fallback link.');
 expect(js.includes('youtube-nocookie.com/embed/') && js.includes('data-youtube-trigger'), 'Published YouTube cards must open the privacy-enhanced embedded player.');
 expect(css.includes('figure[data-youtube-id]') && css.includes('[data-youtube-thumbnail]'), 'Published YouTube cards need responsive landing-page preview styling.');
+expect(css.includes('var(--youtube-width,100%)') && css.includes('margin: .75em auto 1.2em'), 'Published videos must honor compact saved widths without oversized article spacing.');
 expect(nav.includes("payload.visibility !== 'live'") && nav.includes("label: 'Articles'"), 'Main-site article navigation must only appear in live mode.');
 expect(redirects.includes('/articles/* /articles/index.html 200'), 'Clean article URLs need a static-host rewrite.');
 expect(sitemap.includes("path: '/articles/'"), 'The article collection must be discoverable in the sitemap.');
