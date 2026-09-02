@@ -187,10 +187,35 @@
 .article-body [data-image-frame] { position: relative; aspect-ratio: var(--crop-aspect,auto); overflow: hidden; border-radius: 18px; }
 .article-body [data-image-frame] img { position: absolute; top: var(--crop-image-top,0); left: var(--crop-image-left,0); width: var(--crop-image-width,100%); height: var(--crop-image-height,100%); max-width: none; object-fit: cover; }
 .article-body figcaption { margin-top: .5rem; color: var(--articles-muted); font-size: .72rem; }
+.article-body figure[data-youtube-id] { clear: both; width: 100% !important; float: none !important; margin: 2.4em auto !important; }
+.article-body [data-youtube-trigger] { display: block; color: inherit; text-decoration: none; }
+.article-body [data-youtube-thumbnail] { position: relative; aspect-ratio: 16/9; overflow: hidden; border-radius: 20px; background: #111827; box-shadow: 0 22px 60px rgba(15,23,42,.2); cursor: pointer; }
+.article-body [data-youtube-thumbnail]::after { position: absolute; inset: 0; background: rgba(3,10,14,.14); content: ''; pointer-events: none; transition: background .3s ease; }
+.article-body [data-youtube-thumbnail] img { width: 100%; height: 100%; object-fit: cover; transition: filter .35s ease, transform .55s cubic-bezier(.16,1,.3,1); }
+.article-body [data-youtube-trigger]:hover [data-youtube-thumbnail]::after { background: rgba(3,10,14,.28); }
+.article-body [data-youtube-trigger]:hover img { filter: brightness(.88); transform: scale(1.025); }
+.article-body [data-youtube-play] { position: absolute; z-index: 2; top: 50%; left: 50%; display: grid; width: 68px; height: 49px; place-items: center; padding-left: 4px; transform: translate(-50%,-50%); border-radius: 14px; background: #ff0033; color: #fff; box-shadow: 0 14px 34px rgba(0,0,0,.32); font: 800 21px/1 Arial,sans-serif; }
+.article-body [data-youtube-label] { position: absolute; z-index: 2; right: 18px; bottom: 17px; padding: .48rem .7rem; border-radius: 999px; background: rgba(3,10,14,.72); color: #fff; font-size: .68rem; font-weight: 800; line-height: 1; }
+.article-body figure[data-youtube-id] figcaption { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: .65rem; }
+.article-body [data-youtube-platform] { font-size: .65rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
+.article-body [data-youtube-link] { color: var(--articles-accent-deep); font-size: .68rem; font-weight: 800; text-decoration: none; }
+.article-body [data-youtube-link]:hover { text-decoration: underline; }
 .article-view-footer { display: flex; justify-content: space-between; gap: 1.2rem; clear: both; margin-top: 5rem; padding: 1.5rem 0 7rem; border-top: 1px solid rgba(17,24,39,.1); }
 .article-view-footer a { color: var(--articles-ink); font-size: .8rem; font-weight: 800; }
 .article-reveal { opacity: 0; transform: translateY(2rem); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
 .article-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+.article-youtube-dialog { width: min(920px,calc(100vw - 2rem)); max-height: calc(100vh - 2rem); padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 24px; background: #090b0a; color: #fff; box-shadow: 0 40px 120px rgba(0,0,0,.62); }
+.article-youtube-dialog::backdrop { background: rgba(3,6,9,.82); backdrop-filter: blur(9px); }
+.article-youtube-player > header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1rem; background: #111512; }
+.article-youtube-player > header strong { font-size: .72rem; }
+.article-youtube-player > header button { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border: 0; border-radius: 50%; background: #242925; color: #fff; cursor: pointer; font-size: 1.2rem; }
+.article-youtube-frame { aspect-ratio: 16/9; background: #000; }
+.article-youtube-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.article-youtube-player > footer { display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; padding: .85rem 1rem; background: #111512; }
+.article-youtube-player > footer span { color: #929a94; font-size: .62rem; }
+.article-youtube-player > footer a { flex: 0 0 auto; color: #fff; font-size: .68rem; font-weight: 800; text-decoration: none; }
+.article-youtube-player > footer a:hover { text-decoration: underline; }
 
 .articles-health-note { grid-column: 1/-1; max-width: 780px; margin-top: 2.2rem; color: rgba(255,255,255,.48); font-size: .68rem; line-height: 1.6; }
 .articles-health-note a { color: rgba(255,255,255,.72); }
@@ -223,6 +248,7 @@
   .article-body figure,
   .article-body figure[data-align="left"],
   .article-body figure[data-align="right"] { width: 100% !important; float: none; margin: 2em auto; }
+  .article-youtube-player > footer { align-items: flex-start; flex-direction: column; }
 }
 
 @media (prefers-reduced-motion: reduce) {

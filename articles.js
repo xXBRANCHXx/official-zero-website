@@ -37,6 +37,9 @@ if (app) {
   const selectedSlug = selectedTopic && routeParts[1] ? routeParts[1] : '';
   const routeBase = isSandbox ? '/articles/sandbox' : '/articles';
   const results = document.querySelector('[data-results]');
+  const youtubeDialog = document.querySelector('[data-youtube-player-dialog]');
+  const youtubeFrame = document.querySelector('[data-youtube-player-frame]');
+  const youtubeLink = document.querySelector('[data-youtube-player-link]');
   const bento = document.querySelector('[data-topic-bento]');
   const libraryHero = document.querySelector('[data-library-hero]');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -59,6 +62,24 @@ if (app) {
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
+
+  const closeYoutubePlayer = () => {
+    youtubeFrame?.replaceChildren();
+    if (youtubeDialog?.open) youtubeDialog.close();
+  };
+
+  const openYoutubePlayer = (videoId) => {
+    if (!/^[A-Za-z0-9_-]{11}$/.test(videoId) || !youtubeDialog || !youtubeFrame || !youtubeLink) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+    iframe.title = 'YouTube video player';
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+    iframe.allowFullscreen = true;
+    youtubeFrame.replaceChildren(iframe);
+    youtubeLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+    youtubeDialog.showModal();
+  };
 
   const articlePath = (post) => `${routeBase}/${encodeURIComponent(post.topic)}/${encodeURIComponent(post.slug)}/`;
   const topicPath = (topic) => `${routeBase}/${encodeURIComponent(topic)}/`;
@@ -290,5 +311,16 @@ if (app) {
   };
 
   initMotion();
+  results.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-youtube-trigger]');
+    if (!trigger) return;
+    const videoId = trigger.closest('figure[data-youtube-id]')?.dataset.youtubeId || '';
+    if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) return;
+    event.preventDefault();
+    openYoutubePlayer(videoId);
+  });
+  document.querySelector('[data-youtube-player-close]')?.addEventListener('click', closeYoutubePlayer);
+  youtubeDialog?.addEventListener('click', (event) => { if (event.target === youtubeDialog) closeYoutubePlayer(); });
+  youtubeDialog?.addEventListener('close', () => youtubeFrame?.replaceChildren());
   load();
 }
