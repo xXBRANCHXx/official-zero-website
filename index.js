@@ -17,6 +17,16 @@ const PRODUCT_MENU_ITEMS = [
     { label: 'Maple Topping', href: '/zero-maple-topping' },
 ];
 
+const MOBILE_MENU_ITEMS = [
+    { label: 'Home', href: '/', mobileOnly: true },
+    { label: 'Catalog', href: '/catalog', mobileOnly: true },
+    ...PRODUCT_MENU_ITEMS,
+    { label: 'ZFit', href: '/zfit', mobileOnly: true },
+    { label: 'About', href: '/about-zero', mobileOnly: true },
+    { label: 'Social', href: '/zero-social', mobileOnly: true },
+    { label: 'Legal Info', href: '/legal-info', mobileOnly: true },
+];
+
 const SOCIAL_LINKS = [
     {
         label: 'YouTube',
@@ -149,9 +159,10 @@ const normalizePath = (href) => {
 
 const isCurrentHref = (href) => normalizePath(href) === normalizePath(window.location.pathname);
 
-const renderAnchor = ({ label, href }) => {
+const renderAnchor = ({ label, href }, className = '') => {
     const current = isCurrentHref(href);
-    return `<a href="${href}"${current ? ' class="active" aria-current="page"' : ''}>${label}</a>`;
+    const classes = [className, current ? 'active' : ''].filter(Boolean).join(' ');
+    return `<a href="${href}"${classes ? ` class="${classes}"` : ''}${current ? ' aria-current="page"' : ''}>${label}</a>`;
 };
 
 const normalizeSearchText = (value) => value
@@ -455,7 +466,7 @@ const normalizeNavigation = () => {
 
     if (moreTrigger) {
         moreTrigger.className = `icon-btn product-menu-trigger${productMenuIsActive ? ' active' : ''}`;
-        moreTrigger.setAttribute('aria-label', 'Open product menu');
+        moreTrigger.setAttribute('aria-label', 'Open navigation menu');
         moreTrigger.setAttribute('aria-haspopup', 'true');
         moreTrigger.setAttribute('aria-expanded', 'false');
         moreTrigger.innerHTML = `
@@ -466,8 +477,10 @@ const normalizeNavigation = () => {
     }
 
     if (moreDropdown) {
-        moreDropdown.setAttribute('aria-label', 'Product menu');
-        moreDropdown.innerHTML = PRODUCT_MENU_ITEMS.map(renderAnchor).join('');
+        moreDropdown.setAttribute('aria-label', 'Site navigation menu');
+        moreDropdown.innerHTML = MOBILE_MENU_ITEMS
+            .map((item) => renderAnchor(item, item.mobileOnly ? 'mobile-nav-only' : ''))
+            .join('');
     }
 };
 
@@ -486,7 +499,20 @@ const initArticleNavigation = async () => {
             navItem.className = 'nav-primary-link';
             navItem.dataset.articlesNav = '';
             navItem.innerHTML = renderAnchor({ label: 'Articles', href: '/articles/' });
-            navLinks.insertBefore(navItem, moreMenu);
+            const socialNavItem = navLinks.querySelector('a[href="/zero-social"]')?.closest('li');
+            navLinks.insertBefore(navItem, socialNavItem || moreMenu);
+        }
+
+        const moreDropdown = document.getElementById('more-dropdown');
+        if (moreDropdown && !moreDropdown.querySelector('[data-articles-nav]')) {
+            const articleLink = document.createElement('a');
+            articleLink.href = '/articles/';
+            articleLink.className = `mobile-nav-only${isCurrentHref('/articles/') ? ' active' : ''}`;
+            articleLink.dataset.articlesNav = '';
+            articleLink.textContent = 'Articles';
+            if (isCurrentHref('/articles/')) articleLink.setAttribute('aria-current', 'page');
+            const socialMenuLink = moreDropdown.querySelector('a[href="/zero-social"]');
+            moreDropdown.insertBefore(articleLink, socialMenuLink);
         }
     } catch (_error) {
         // Article navigation stays hidden if the delivery service is unavailable.

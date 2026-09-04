@@ -905,6 +905,10 @@ body.cart-drawer-open {
     display: none;
 }
 
+.mobile-nav-only {
+    display: none;
+}
+
 .more-menu {
     display: block;
     flex: 0 0 auto;
@@ -4734,6 +4738,10 @@ body.quick-add-open {
         display: none;
     }
 
+    .mobile-nav-only {
+        display: block;
+    }
+
     .language-switch-shell {
         top: 60px;
         left: 0.72rem;
@@ -4943,6 +4951,13 @@ body.quick-add-open {
     .search-morph-container.expanded,
     .glass-dropdown {
         width: calc(100vw - 2rem);
+    }
+
+    .glass-dropdown {
+        max-height: calc(100dvh - 5.25rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
     }
 
     .global-overlay {

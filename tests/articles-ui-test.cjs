@@ -38,6 +38,8 @@ expect(css.includes('figure[data-youtube-id]') && css.includes('[data-youtube-th
 expect(css.includes('var(--youtube-width,100%)') && css.includes('margin: .75em auto 1.2em'), 'Published videos must honor compact saved widths without oversized article spacing.');
 expect(css.includes('data-youtube-align="left"') && css.includes('data-youtube-align="right"'), 'Published videos must honor saved horizontal placement.');
 expect(nav.includes("payload.visibility !== 'live'") && nav.includes("label: 'Articles'"), 'Main-site article navigation must only appear in live mode.');
+expect(nav.includes("articleLink.className = `mobile-nav-only") && nav.includes("a[href=\"/zero-social\"]"), 'Live Articles must be added to the mobile menu before Social.');
+expect(nav.includes("{ label: 'Social', href: '/zero-social', mobileOnly: true }"), 'Desktop primary links such as Social must also be present in the mobile menu.');
 expect(redirects.includes('/articles/* /articles/index.html 200'), 'Clean article URLs need a static-host rewrite.');
 expect(sitemap.includes("path: '/articles/'"), 'The article collection must be discoverable in the sitemap.');
 expect(robots.includes('Allow: /'), 'Search and AI crawlers must be allowed to access live pages.');
