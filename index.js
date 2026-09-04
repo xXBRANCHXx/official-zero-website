@@ -24,7 +24,6 @@ const MOBILE_MENU_ITEMS = [
     { label: 'ZFit', href: '/zfit', mobileOnly: true },
     { label: 'About', href: '/about-zero', mobileOnly: true },
     { label: 'Social', href: '/zero-social', mobileOnly: true },
-    { label: 'Legal Info', href: '/legal-info', mobileOnly: true },
 ];
 
 const SOCIAL_LINKS = [
