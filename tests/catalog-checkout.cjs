@@ -72,9 +72,28 @@ const row = (option,size,price,extra={}) => ({item_key:`syrup:${option}:${size}`
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.keyboard.press('Escape');
  }
+ // Campaign pages retain their URLs and use the same live selector and checkout.
+ assert.equal(await page.locator('.catalog-product-link[href="/zero-syrup/"]').count(),1);
+ assert.equal(await page.locator('.catalog-product-link[href="/zero-drops/"]').count(),1);
+ rows.push(row('plain','30ml',49000,{product_slug:'drops',product_name:'ZERO Drops',item_key:'drops:plain:30ml'}),row('new-flavor','5ml',20000,{product_slug:'drops',product_name:'ZERO Drops',item_key:'drops:new-flavor:5ml'}));
+ for(const product of [{slug:'syrup',width:1440,price:'72.000',priceId:'selected-syrup-price'},{slug:'drops',width:390,price:'18.000',priceId:'selected-drops-price'}]) {
+  await page.setViewportSize({width:product.width,height:900});
+  await page.goto(`${base}/zero-${product.slug}/?utm_source=campaign-test&utm_campaign=product-test`);
+  assert.equal(new URL(page.url()).pathname,`/zero-${product.slug}/`);
+  assert.equal(new URL(page.url()).searchParams.get('utm_campaign'),'product-test');
+  await page.locator('[data-option-id="new-flavor"]').click();
+  assert.match(await page.locator(`#${product.priceId}`).innerText(),new RegExp(product.price));
+  await page.locator(`#add-${product.slug}-to-cart`).click();
+  await page.locator('#zero-cart-drawer.active').waitFor();
+  await page.waitForFunction(()=>document.querySelector('#zero-cart-refresh-status').textContent==='');
+  assert.equal(await page.evaluate(slug=>window.zeroCartApi.store.getCart().some(item=>item.productSlug===slug&&item.optionId==='new-flavor'),product.slug),true);
+  await page.locator('#zero-cart-checkout').click();await page.locator('#zero-checkout-dialog[open]').waitFor();
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ }
+ await page.goto(`${base}/catalog/`);
  rows=rows.map(r=>({...r,status:'inactive',available:false}));await page.reload();await page.locator('.catalog-availability').first().waitFor();assert.equal(await page.locator('[data-product=syrup]').isDisabled(),true);
  failure=true;await page.reload();await page.locator('.catalog-availability').first().waitFor();assert.match(await page.locator('.catalog-availability').first().innerText(),/Unable to load/);
  assert.deepEqual(errors,[]);
- console.log('Catalog / checkout browser checks passed: dynamic flavors, sizes, pricing, zero-price sale, hidden items, cart persistence, quantity, voucher, retry idempotency, WhatsApp handoff, refreshed prices, stock limits, API failure, focus restoration, four viewport sizes.');
+ console.log('Catalog / checkout browser checks passed: dynamic flavors, sizes, pricing, zero-price sale, hidden items, cart persistence, quantity, voucher, retry idempotency, WhatsApp handoff, refreshed prices, stock limits, API failure, focus restoration, four viewport sizes, dedicated campaign pages.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1);});

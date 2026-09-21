@@ -68,3 +68,6 @@
 .catalog-page .quick-add-footer .zero-discount-ribbon { margin-top:4px; }
 
 .catalog-shop #catalog-products { padding-top:0; padding-bottom:0; }
+
+.catalog-product-link { display:flex; align-items:center; justify-content:center; gap:8px; color:var(--text); font-size:13px; margin:0 0 20px; text-decoration:underline; text-underline-offset:3px; }
+.catalog-product-link:hover { color:var(--accent-strong); }

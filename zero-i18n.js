@@ -327,6 +327,7 @@ const ID_TRANSLATIONS = {
     'Variant': 'Varian',
     'View': 'Lihat',
     'View Catalog': 'Lihat Katalog',
+    'View Syrup': 'Lihat Syrup',
     'View Drops': 'Lihat Drops',
     'View Maple Topping': 'Lihat Maple Topping',
     'View ZERO lab certificate results': 'Lihat hasil sertifikat lab ZERO',
