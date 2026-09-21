@@ -1,19 +1,7 @@
+import { ZERO_PRODUCT_GALLERIES } from './product-galleries.js';
 import { ZERO_PRODUCTS, applyCatalogToProduct, initProductPage, loadZeroCatalog } from './zero-products.js';
 
-const DROPS_CAROUSEL_IMAGES = [
-    {
-        src: '/ZERO Media/ZERO Drops Images/Carousel/ZERO Drops Carousel 1.jpg',
-        alt: 'ZERO Drops product image',
-    },
-    {
-        src: '/ZERO Media/ZERO Drops Images/Carousel/ZERO Drops Carousel 2.jpg',
-        alt: 'ZERO Drops flavor drops image',
-    },
-    {
-        src: '/ZERO Media/ZERO Drops Images/Carousel/ZERO Drops Carousel 3.jpg',
-        alt: 'ZERO Drops compact product page image',
-    },
-];
+const DROPS_CAROUSEL_IMAGES = ZERO_PRODUCT_GALLERIES.drops;
 
 const withDropsCarouselImages = (product) => {
     const firstCarouselImage = DROPS_CAROUSEL_IMAGES[0]?.src;

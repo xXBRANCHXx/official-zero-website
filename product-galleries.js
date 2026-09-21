@@ -1,0 +1,49 @@
+// Shared product photography, independent of the selected flavor.
+export const ZERO_PRODUCT_GALLERIES = {
+    syrup: [
+        {
+            src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Meet Mini.png',
+            alt: 'ZERO Syrup Meet Mini campaign image',
+        },
+        {
+            src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Carousel 1.jpg',
+            alt: 'ZERO Syrup product lineup',
+        },
+        {
+            src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Carousel 2.jpg',
+            alt: 'ZERO Syrup product bottles',
+        },
+        {
+            src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Carousel 3.jpg',
+            alt: 'ZERO Syrup bottle selection',
+        },
+    ],
+    drops: [
+        {
+            src: '/ZERO Media/ZERO Drops Images/Carousel/ZERO Drops Carousel 1.jpg',
+            alt: 'ZERO Drops product image',
+        },
+        {
+            src: '/ZERO Media/ZERO Drops Images/Carousel/ZERO Drops Carousel 2.jpg',
+            alt: 'ZERO Drops flavor drops image',
+        },
+        {
+            src: '/ZERO Media/ZERO Drops Images/Carousel/ZERO Drops Carousel 3.jpg',
+            alt: 'ZERO Drops compact product page image',
+        },
+    ],
+    mapleTopping: [
+        {
+            src: '/ZERO Media/ZERO Maple Topping Images/Carousel/Maple Topping Carousel 1.jpg',
+            alt: 'ZERO Maple Topping product image',
+        },
+        {
+            src: '/ZERO Media/ZERO Maple Topping Images/Carousel/Maple Topping Carousel 2.jpg',
+            alt: 'ZERO Maple Topping pour image',
+        },
+        {
+            src: '/ZERO Media/ZERO Maple Topping Images/Carousel/Maple Topping Carousel 3.jpg',
+            alt: 'ZERO Maple Topping online product image',
+        },
+    ],
+};

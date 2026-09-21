@@ -1,25 +1,9 @@
+import { ZERO_PRODUCT_GALLERIES } from './product-galleries.js';
 import { ZERO_PRODUCTS, applyCatalogToProduct, initProductPage, loadZeroCatalog } from './zero-products.js';
 
 const SYRUP_IMAGE_MODE = 'carousel';
 
-const SYRUP_CAROUSEL_IMAGES = [
-    {
-        src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Meet Mini.png',
-        alt: 'ZERO Syrup Meet Mini campaign image',
-    },
-    {
-        src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Carousel 1.jpg',
-        alt: 'ZERO Syrup product lineup',
-    },
-    {
-        src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Carousel 2.jpg',
-        alt: 'ZERO Syrup product bottles',
-    },
-    {
-        src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Carousel 3.jpg',
-        alt: 'ZERO Syrup bottle selection',
-    },
-];
+const SYRUP_CAROUSEL_IMAGES = ZERO_PRODUCT_GALLERIES.syrup;
 
 const withSyrupCarouselImages = (product) => {
     if (SYRUP_IMAGE_MODE !== 'carousel') return product;

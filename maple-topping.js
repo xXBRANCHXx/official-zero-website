@@ -1,19 +1,7 @@
+import { ZERO_PRODUCT_GALLERIES } from './product-galleries.js';
 import { ZERO_PRODUCTS, applyCatalogToProduct, initProductPage, loadZeroCatalog } from './zero-products.js';
 
-const MAPLE_CAROUSEL_IMAGES = [
-    {
-        src: '/ZERO Media/ZERO Maple Topping Images/Carousel/Maple Topping Carousel 1.jpg',
-        alt: 'ZERO Maple Topping product image',
-    },
-    {
-        src: '/ZERO Media/ZERO Maple Topping Images/Carousel/Maple Topping Carousel 2.jpg',
-        alt: 'ZERO Maple Topping pour image',
-    },
-    {
-        src: '/ZERO Media/ZERO Maple Topping Images/Carousel/Maple Topping Carousel 3.jpg',
-        alt: 'ZERO Maple Topping online product image',
-    },
-];
+const MAPLE_CAROUSEL_IMAGES = ZERO_PRODUCT_GALLERIES.mapleTopping;
 
 const withMapleCarouselImages = (product) => {
     const firstCarouselImage = MAPLE_CAROUSEL_IMAGES[0]?.src;
