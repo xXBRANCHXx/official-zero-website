@@ -4,6 +4,10 @@ const SYRUP_IMAGE_MODE = 'carousel';
 
 const SYRUP_CAROUSEL_IMAGES = [
     {
+        src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Meet Mini.png',
+        alt: 'ZERO Syrup Meet Mini campaign image',
+    },
+    {
         src: '/ZERO Media/ZERO Syrup Images/Carousel/Syrup Carousel 1.jpg',
         alt: 'ZERO Syrup product lineup',
     },

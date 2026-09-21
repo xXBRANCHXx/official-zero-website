@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <div class="quick-add-scroll" data-lenis-prevent>
                     <div class="quick-add-configurator">
                         <div class="quick-add-summary">
-                            <div class="quick-add-photo"><img id="qa-image" src="${escape(product.heroImage)}" alt="${escape(product.name)}"></div>
                             <div class="quick-add-heading"><span class="showcase-badge" id="qa-group"></span><h2 id="quick-add-title">${escape(product.name)}</h2><div class="quick-add-selected"><span>Selected Variant</span><strong id="qa-name"></strong></div></div>
                         </div>
                         <div class="quick-add-options syrup-chooser-panel">
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 </div>
                 <div class="quick-add-footer"><div id="qa-price" aria-live="polite"></div><button type="button" id="qa-add-btn" class="n-btn primary">Add To Cart</button></div>`;
-            initProductPage({ product, dom: {optionGridId:'qa-flavor-grid',sizeSelectorId:'qa-size-selector',selectedNameId:'qa-name',selectedDescriptionId:'qa-desc',selectedImageId:'qa-image',selectedGroupId:'qa-group',selectedPriceId:'qa-price',selectedSizeNoteId:'qa-size-note',addButtonId:'qa-add-btn'},
+            initProductPage({ product, dom: {optionGridId:'qa-flavor-grid',sizeSelectorId:'qa-size-selector',selectedNameId:'qa-name',selectedDescriptionId:'qa-desc',selectedGroupId:'qa-group',selectedPriceId:'qa-price',selectedSizeNoteId:'qa-size-note',addButtonId:'qa-add-btn'},
                 defaultOptionId: product.options[0]?.id, defaultSizeId: product.sizes[0]?.id,
                 onAdd: item => {
                     window.zeroCartApi?.store.addItem(item);
