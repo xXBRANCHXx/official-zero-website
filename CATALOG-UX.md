@@ -4,6 +4,10 @@ The catalog keeps the existing ZERO copy, photos, translations and flavor → si
 selection. The catalog feed now determines the visible flavors and sizes, including
 new dashboard entries. Missing or inactive entries cannot be added to the cart.
 
+Images stay at the product level: the catalog selector has no flavor photos, and
+the dedicated product pages keep their shared carousels. The supplied Meet Mini
+image leads the Syrup carousel and appears on its catalog card.
+
 The existing cart storage key, voucher API, order API, idempotency keys, WhatsApp
 handoff and optional Biteship/Duitku flow remain in place. Opening the cart and
 starting checkout refresh the saved item prices and availability. Checkout shows
