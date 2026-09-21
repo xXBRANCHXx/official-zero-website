@@ -74,6 +74,17 @@ const ID_TRANSLATIONS = {
     'Choose product variants': 'Pilih varian produk',
     'Choose the dropper that fits your routine.': 'Pilih Drops.',
     'Choose the fiber syrup that fits your drink.': 'Pilih Fiber.',
+    'Detailed delivery address': 'Alamat pengiriman lengkap',
+    'Street, building number, RT/RW, landmark': 'Jalan, nomor rumah, RT/RW, patokan',
+    'Event voucher': 'Voucher acara',
+    'Voucher code': 'Kode voucher',
+    'Apply': 'Gunakan',
+    'Selected Variant': 'Varian pilihan',
+    'Currently unavailable': 'Saat ini tidak tersedia',
+    'No sizes are currently available.': 'Belum ada ukuran yang tersedia.',
+    'Unable to load current prices. Please reload and try again.': 'Harga belum dapat dimuat. Muat ulang halaman dan coba lagi.',
+    'Checking current prices…': 'Memeriksa harga terbaru…',
+    'This quantity is unavailable. Update or remove this item.': 'Jumlah ini tidak tersedia. Ubah jumlah atau hapus produk ini.',
     'Choose Your ZERO.': 'Pilih ZERO.',
     'Classic caramel coffee syrup.': 'Sirup karamel klasik untuk kopi.',
     'Classic caramel sweetness.': 'Manis karamel klasik.',
@@ -433,6 +444,9 @@ export const translateText = (value, language = currentLanguage) => {
     if (!text || language !== 'id') return text;
 
     if (ID_TRANSLATIONS[text]) return ID_TRANSLATIONS[text];
+
+    const flavorsMatch = text.match(/^(\d+) flavors$/);
+    if (flavorsMatch) return `${flavorsMatch[1]} varian`;
 
     const asOfMatch = text.match(/^As of (.+), ZERO leads Indonesia's zero-calorie syrup category\.$/);
     if (asOfMatch) {
