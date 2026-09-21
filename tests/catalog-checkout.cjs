@@ -32,7 +32,12 @@ const row = (option,size,price,extra={}) => ({item_key:`syrup:${option}:${size}`
  });
  assert.deepEqual(models,{options:['new-flavor'],sizes:['750ml'],zero:0,fallback:123,hidden:0,offline:true});
  await page.locator('[data-product=syrup]').click();
+ assert.equal(await page.locator('.quick-add-gallery-slide').count(),4);
+ assert.match(await page.locator('.quick-add-gallery-slide img').first().getAttribute('src'),/Syrup Meet Mini\.png$/);
+ await page.locator('[data-gallery-next]').click();
+ await page.waitForFunction(()=>document.querySelector('.quick-add-gallery-position').textContent==='2 / 4');
  await page.locator('[data-option-id=new-flavor]').click();
+ assert.equal(await page.locator('.quick-add-gallery-position').innerText(),'2 / 4','flavor selection must not reset the shared gallery');
  assert.equal(await page.locator('[data-size-id="750ml"]').getAttribute('aria-pressed'),'true');
  assert.match(await page.locator('#qa-price').innerText(),/72.000/);
  await page.locator('[data-option-id=plain]').click();await page.locator('[data-size-id="250ml"]').click();
@@ -72,6 +77,33 @@ const row = (option,size,price,extra={}) => ({item_key:`syrup:${option}:${size}`
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
   await page.keyboard.press('Escape');
  }
+ // A long live catalog must scroll with real wheel/keyboard input while the footer stays on screen.
+ const normalRows=rows;
+ rows=[...rows,...Array.from({length:32},(_,i)=>row(`extra-${i}`,'250ml',45000,{option_name:`Extra flavor ${i+1}`}))];
+ await page.reload();await page.locator('[data-product=syrup]:not([disabled])').waitFor();
+ for(const [width,height] of [[1894,904],[1440,700],[950,560],[390,664],[844,390],[320,568]]){
+  await page.setViewportSize({width,height});await page.locator('[data-product=syrup]').click();
+  const modal=await page.locator('#quick-add-modal').boundingBox();
+  assert(modal.y>=0&&modal.y+modal.height<=height,`modal fits ${width}x${height}`);
+  const scroll=page.locator('.quick-add-scroll');
+  assert(await scroll.evaluate(el=>el.scrollHeight>el.clientHeight),`long catalog overflows at ${width}x${height}`);
+  const pageY=await page.evaluate(()=>scrollY),bounds=await scroll.boundingBox();
+  await page.mouse.move(bounds.x+bounds.width/2,bounds.y+Math.min(100,bounds.height/2));await page.mouse.wheel(0,650);
+  await page.waitForFunction(()=>document.querySelector('.quick-add-scroll').scrollTop>50,null,{timeout:5000})
+   .catch(error=>{throw new Error(`Wheel did not scroll the modal at ${width}x${height}`,{cause:error});});
+  assert.equal(await page.evaluate(()=>scrollY),pageY,'wheel must stay inside the modal');
+  await scroll.focus();await page.keyboard.press('End');
+  await page.waitForFunction(()=>{const el=document.querySelector('.quick-add-scroll');return el.scrollHeight-el.clientHeight-el.scrollTop<2;});
+  await page.locator('[data-option-id=extra-31]').click();
+  assert.equal(await page.locator('[data-option-id=extra-31]').getAttribute('aria-pressed'),'true');
+  const footer=await page.locator('.quick-add-footer').boundingBox();
+  assert(footer.y>=0&&footer.y+footer.height<=height,`footer fits ${width}x${height}`);
+  assert(await page.locator('#qa-add-btn').evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));}),'Add to Cart must be reachable');
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  await page.locator('.quick-add-close').click();
+ }
+ rows=normalRows;
+ await page.reload();await page.locator('[data-product=syrup]:not([disabled])').waitFor();
  // Campaign pages retain their URLs and use the same live selector and checkout.
  assert.equal(await page.locator('.catalog-product-link[href="/zero-syrup/"]').count(),1);
  assert.equal(await page.locator('.catalog-product-link[href="/zero-drops/"]').count(),1);
@@ -94,6 +126,28 @@ const row = (option,size,price,extra={}) => ({item_key:`syrup:${option}:${size}`
  rows=rows.map(r=>({...r,status:'inactive',available:false}));await page.reload();await page.locator('.catalog-availability').first().waitFor();assert.equal(await page.locator('[data-product=syrup]').isDisabled(),true);
  failure=true;await page.reload();await page.locator('.catalog-availability').first().waitFor();assert.match(await page.locator('.catalog-availability').first().innerText(),/Unable to load/);
  assert.deepEqual(errors,[]);
- console.log('Catalog / checkout browser checks passed: dynamic flavors, sizes, pricing, zero-price sale, hidden items, cart persistence, quantity, voucher, retry idempotency, WhatsApp handoff, refreshed prices, stock limits, API failure, focus restoration, four viewport sizes, dedicated campaign pages.');
+ // Touch must swipe the gallery horizontally and scroll the modal vertically from the image.
+ const touchContext=await browser.newContext({viewport:{width:390,height:664},hasTouch:true,isMobile:true});
+ await touchContext.route('**/api/catalog',route=>route.fulfill({json:{data:normalRows}}));
+ const touchPage=await touchContext.newPage();
+ await touchPage.goto(`${base}/catalog/`);await touchPage.locator('[data-product=syrup]:not([disabled])').click();
+ const cdp=await touchContext.newCDPSession(touchPage);
+ const swipe=async(from,to)=>{
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[from]});
+  for(let step=1;step<=10;step++){
+   await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:from.x+(to.x-from.x)*step/10,y:from.y+(to.y-from.y)*step/10}]});
+   await touchPage.waitForTimeout(25);
+  }
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+ };
+ const gallery=await touchPage.locator('.quick-add-gallery-viewport').boundingBox();
+ await swipe({x:gallery.x+gallery.width*.85,y:gallery.y+120},{x:gallery.x+gallery.width*.15,y:gallery.y+120});
+ await touchPage.waitForFunction(()=>document.querySelector('.quick-add-gallery-position').textContent==='2 / 4');
+ await swipe({x:gallery.x+gallery.width/2,y:gallery.y+240},{x:gallery.x+gallery.width/2,y:gallery.y+40});
+ await touchPage.waitForFunction(()=>document.querySelector('.quick-add-scroll').scrollTop>50);
+ const touchFooter=await touchPage.locator('.quick-add-footer').boundingBox();
+ assert(touchFooter.y+touchFooter.height<=664,'footer stays visible during touch scrolling');
+ await touchContext.close();
+ console.log('Catalog / checkout browser checks passed, including shared galleries, real wheel and keyboard scrolling with 36 flavors across six viewport sizes, mobile gallery swipes and vertical touch scrolling, and dedicated campaign pages.');
  }finally{await browser.close();}
 })().catch(e=>{console.error(e);process.exit(1);});

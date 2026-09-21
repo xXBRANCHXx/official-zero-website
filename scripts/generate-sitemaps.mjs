@@ -51,7 +51,8 @@ const extractScriptImages = (source) => {
     return images;
 };
 
-const productData = readFileSync(join(projectRoot, 'zero-products.js'), 'utf8');
+const productData = readFileSync(join(projectRoot, 'zero-products.js'), 'utf8')
+    + readFileSync(join(projectRoot, 'product-galleries.js'), 'utf8');
 
 const routeImages = routes.map((route) => {
     const html = readFileSync(join(projectRoot, route.file), 'utf8');
