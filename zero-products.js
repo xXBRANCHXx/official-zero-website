@@ -1,3 +1,4 @@
+import './commerce.css';
 const CART_KEY = 'zero_products_cart_v1';
 const WHATSAPP_PHONE = '6285842833973';
 const CONFIGURED_INVENTORY_API_BASE_URL = (import.meta.env.VITE_ZERO_INVENTORY_API_BASE_URL || '').replace(/\/$/, '');
@@ -219,7 +220,7 @@ const getInventoryCatalogUrls = () => {
             : `${value}/api/catalog`))];
 };
 
-export const loadZeroCatalog = async () => {
+const fetchZeroCatalog = async () => {
     const catalogUrls = getInventoryCatalogUrls();
 
     for (const catalogUrl of catalogUrls) {
@@ -228,10 +229,12 @@ export const loadZeroCatalog = async () => {
                 headers: { Accept: 'application/json' },
                 credentials: 'omit',
                 cache: 'no-store',
+                signal: AbortSignal.timeout(10000),
             });
             if (!response.ok) throw new Error(`Inventory API ${response.status}`);
             const payload = await response.json();
-            return Array.isArray(payload.data) ? payload.data : [];
+            if (!Array.isArray(payload.data)) throw new Error('Invalid catalog response');
+            return payload.data;
         } catch (error) {
             console.warn(`ZERO inventory catalog unavailable at ${catalogUrl}; trying fallback.`, error);
         }
@@ -240,26 +243,51 @@ export const loadZeroCatalog = async () => {
     return null;
 };
 
+let catalogRequest = null;
+let catalogLoadedAt = 0;
+export const loadZeroCatalog = (force = false) => {
+    if (!catalogRequest || force || Date.now() - catalogLoadedAt > 30000) {
+        catalogLoadedAt = Date.now();
+        catalogRequest = fetchZeroCatalog();
+    }
+    return catalogRequest;
+};
+
 export const applyCatalogToProduct = (product, catalogRows) => {
-    if (!Array.isArray(catalogRows)) return product;
-
-    const rowByKey = new Map(catalogRows.map((row) => [
-        `${row.product_slug}:${row.option_id}:${row.size_id}`,
-        row,
-    ]));
-
+    if (!Array.isArray(catalogRows)) return { ...product, catalogUnavailable: true };
+    const rows = catalogRows.filter(row => row.product_slug === product.slug);
+    const active = rows.filter(row => row.status !== 'inactive');
+    const rowByKey = new Map(rows.map(row => [`${row.product_slug}:${row.option_id}:${row.size_id}`, row]));
+    const knownOptions = new Map(product.options.map(option => [option.id, option]));
+    const knownSizes = new Map(product.sizes.map(size => [size.id, size]));
+    const optionIds = [...new Set([...product.options.map(option => option.id), ...active.map(row => row.option_id)])];
+    const sizeIds = [...new Set(active.map(row => row.size_id))].sort((a, b) => parseFloat(a) - parseFloat(b));
     return {
         ...product,
-        options: product.options.map((option) => ({
-            ...option,
-            sizes: option.sizes.filter((sizeId) => {
-                const row = rowByKey.get(`${product.slug}:${option.id}:${sizeId}`);
-                return !row || row.status !== 'inactive';
-            }),
-        })),
-        sizes: product.sizes,
+        options: optionIds.map(id => {
+            const optionRows = active.filter(row => row.option_id === id);
+            if (!optionRows.length) return null;
+            const known = knownOptions.get(id);
+            const row = optionRows[0];
+            const image = String(row.image_url || '');
+            return {
+                ...known, id, name: row.option_name || known?.name || id,
+                group: row.option_group || known?.group || 'Other Flavors',
+                image: /^(https:\/\/|\/(?!\/))/.test(image) ? image : known?.image || product.heroImage,
+                sizes: optionRows.map(row => row.size_id),
+            };
+        }).filter(Boolean),
+        sizes: sizeIds.map(id => ({ ...knownSizes.get(id), id, label: active.find(row => row.size_id === id)?.size_label || id,
+            price: Number(active.find(row => row.size_id === id)?.price || 0) })),
         inventoryRows: rowByKey,
+        catalogUnavailable: false,
     };
+};
+
+export const catalogSelectionPrice = (row, fallback = 0) => {
+    if (row?.sale_price != null && Number.isFinite(Number(row.sale_price)) && Number(row.sale_price) >= 0) return Number(row.sale_price);
+    if (row?.price != null && Number.isFinite(Number(row.price))) return Number(row.price);
+    return Number(fallback) || 0;
 };
 
 export const loadCart = () => {
@@ -524,7 +552,8 @@ export const createCartStore = () => {
             const existing = cart.find((entry) => entry.key === item.key);
 
             if (existing) {
-                existing.quantity += item.quantity || 1;
+                const quantity = Number(existing.quantity) + (item.quantity || 1);
+                Object.assign(existing, item, {quantity});
             } else {
                 cart.push({ ...item, quantity: item.quantity || 1 });
             }
@@ -536,6 +565,7 @@ export const createCartStore = () => {
             const item = cart.find((entry) => entry.key === itemKey);
             if (!item) return;
             item.quantity += delta;
+            if (Number.isFinite(item.stockAvailable)) item.unavailable = !item.catalogActive || item.quantity > item.stockAvailable;
             if (item.quantity <= 0) {
                 cart = cart.filter((entry) => entry.key !== itemKey);
             }
@@ -548,6 +578,20 @@ export const createCartStore = () => {
         clear() {
             cart = [];
             emit();
+        },
+        reconcileCatalog(rows) {
+            if (!Array.isArray(rows)) return;
+            const byKey = new Map(rows.map(row => [row.item_key || `${row.product_slug}:${row.option_id}:${row.size_id}`, row]));
+            const before = JSON.stringify(cart);
+            cart = cart.map(item => {
+                const row = byKey.get(item.itemKey || `${item.productSlug}:${item.optionId}:${item.sizeId}`);
+                if (!row) return {...item, unavailable: true};
+                return {...item, sku: row.sku_code || row.sku || item.sku,
+                    price: catalogSelectionPrice(row), basePrice: Number(row.price), discount: row.discount || null,
+                    stockAvailable: Number(row.stock), catalogActive: Boolean(row.available),
+                    unavailable: !row.available || Number(item.quantity) > Number(row.stock)};
+            });
+            if (JSON.stringify(cart) !== before) emit();
         },
         syncFromStorage() {
             cart = loadCart();
@@ -603,6 +647,7 @@ export const initUniversalCartDrawer = () => {
                             <button type="button" id="zero-cart-clear" class="n-btn">Clear Cart</button>
                             <a id="zero-cart-checkout" class="n-btn primary syrup-checkout-link disabled" href="#" target="_blank" aria-disabled="true">Checkout</a>
                         </div>
+                        <p id="zero-cart-refresh-status" class="zero-cart-refresh-status" role="status" aria-live="polite"></p>
                         <p class="zero-cart-note">${COMMERCE_CHECKOUT_ENABLED ? 'Shipping is quoted by Biteship. Payment is processed securely by Duitku.' : 'Checkout opens WhatsApp with your order and total already formatted.'}</p>
                     </div>
                 </div>
@@ -618,6 +663,7 @@ export const initUniversalCartDrawer = () => {
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
+                    <div class="zero-checkout-review"><span id="zero-checkout-review-count"></span><strong id="zero-checkout-review-total"></strong></div>
                     <label>
                         <span>Full Name</span>
                         <input id="zero-cart-full-name" type="text" autocomplete="name" maxlength="120" placeholder="Your full name">
@@ -890,6 +936,7 @@ export const initUniversalCartDrawer = () => {
                     <strong>${escapeHtml(item.label)}</strong>
                     ${renderDiscountRibbon(discount, 'zero-discount-ribbon-inline')}
                     <span>${formatPrice(item.price)} each${discount.active ? ` · was ${formatPrice(basePrice)}` : ''}</span>
+                    ${item.unavailable ? '<small class="zero-cart-unavailable">This quantity is unavailable. Update or remove this item.</small>' : ''}
                 </div>
                 <div class="syrup-cart-controls">
                     <button type="button" data-cart-action="decrease" data-item-key="${escapeHtml(item.key)}" aria-label="Decrease quantity by one">
@@ -925,11 +972,15 @@ export const initUniversalCartDrawer = () => {
         const voucherSavings = Math.max(0, subtotal - total);
         cartCount.textContent = `${count} item${count === 1 ? '' : 's'}`;
         cartTotal.textContent = formatPrice(total);
+        const reviewCount = document.getElementById('zero-checkout-review-count');
+        const reviewTotal = document.getElementById('zero-checkout-review-total');
+        if (reviewCount) reviewCount.textContent = cartCount.textContent;
+        if (reviewTotal) reviewTotal.textContent = formatPrice(total);
         if (voucherDiscount) voucherDiscount.hidden = !appliedVoucher || voucherSavings <= 0;
         if (voucherSaving) voucherSaving.textContent = `-${formatPrice(voucherSavings)}`;
         syncBubble();
 
-        if (!cart.length) {
+        if (!cart.length || cart.some(item => item.unavailable)) {
             checkoutLink?.setAttribute('aria-disabled', 'true');
             checkoutLink?.classList.add('disabled');
             if (checkoutLink) checkoutLink.href = '#';
@@ -940,7 +991,31 @@ export const initUniversalCartDrawer = () => {
         }
     };
 
+    let refreshingCatalog = null;
+    const refreshCartPrices = (force = false) => {
+        if (refreshingCatalog) return refreshingCatalog;
+        refreshingCatalog = (async () => {
+        const status = document.getElementById('zero-cart-refresh-status');
+        if (status) status.textContent = 'Checking current prices…';
+        try {
+            const rows = await loadZeroCatalog(force);
+            if (!rows) {
+                if (status) status.textContent = 'Unable to load current prices. Please reload and try again.';
+                return false;
+            }
+            store.syncFromStorage();
+            store.reconcileCatalog(rows);
+            render();
+            const unavailable = store.getCart().some(item => item.unavailable);
+            if (status) status.textContent = unavailable ? 'This quantity is unavailable. Update or remove this item.' : '';
+            return !unavailable;
+        } finally { refreshingCatalog = null; }
+        })();
+        return refreshingCatalog;
+    };
+
     const openDrawer = () => {
+        void refreshCartPrices();
         drawer?.classList.add('active');
         backdrop?.classList.add('active');
         drawer?.setAttribute('aria-hidden', 'false');
@@ -1089,13 +1164,13 @@ export const initUniversalCartDrawer = () => {
         }
     });
 
-    checkoutLink?.addEventListener('click', (event) => {
+    checkoutLink?.addEventListener('click', async (event) => {
         event.preventDefault();
         if (checkoutLink.classList.contains('disabled')) {
             return;
         }
 
-        openCheckoutDialog();
+        if (await refreshCartPrices(true)) openCheckoutDialog();
     });
 
     checkoutCloseButton?.addEventListener('click', closeCheckoutDialog);
@@ -1229,15 +1304,14 @@ export const initProductPage = ({
 
     if (!optionGrid || !sizeSelector || !addButton) return null;
 
-    let selectedOptionId = defaultOptionId || product.options[0]?.id;
+    let selectedOptionId = product.options.some(option => option.id === defaultOptionId) ? defaultOptionId : product.options[0]?.id;
     let selectedSizeId = defaultSizeId || product.sizes[0]?.id;
 
     const findOption = (optionId) => product.options.find((option) => option.id === optionId);
     const findSize = (sizeId) => product.sizes.find((size) => size.id === sizeId);
     const findInventoryRow = (optionId, sizeId) => product.inventoryRows?.get(`${product.slug}:${optionId}:${sizeId}`) || null;
     const priceForSelection = (size, inventoryRow) => {
-        const salePrice = Number(inventoryRow?.sale_price);
-        return Number.isFinite(salePrice) && salePrice > 0 ? salePrice : Number(size?.price || 0);
+        return catalogSelectionPrice(inventoryRow, size?.price);
     };
     const originalPriceForSelection = (inventoryRow, salePrice) => {
         const basePrice = Number(inventoryRow?.price);
@@ -1263,15 +1337,15 @@ export const initProductPage = ({
         sizeSelector.innerHTML = product.sizes.map((size) => {
             const isAvailable = availableSizeIds.includes(size.id);
             const inventoryRow = findInventoryRow(selectedOptionId, size.id);
-            const inStock = !inventoryRow || inventoryRow.available;
+            const inStock = !product.catalogUnavailable && Boolean(inventoryRow?.available);
             const disabled = !isAvailable || !inStock;
             const displayPrice = priceForSelection(size, inventoryRow);
             const originalPrice = originalPriceForSelection(inventoryRow, displayPrice);
             const discount = discountForSelection(inventoryRow, displayPrice);
             const sizeAriaLabel = `${product.name} ${size.label} ${formatPrice(displayPrice)}${disabled ? ' unavailable' : ''}`;
             return `
-                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}${discount.active ? ' has-discount' : ''}" data-size-id="${size.id}" aria-label="${escapeHtml(sizeAriaLabel)}" ${disabled ? 'disabled' : ''}>
-                    <strong>${size.label}</strong>
+                <button type="button" class="syrup-size-chip${size.id === selectedSizeId ? ' active' : ''}${discount.active ? ' has-discount' : ''}" data-size-id="${escapeHtml(size.id)}" aria-pressed="${size.id === selectedSizeId}" aria-label="${escapeHtml(sizeAriaLabel)}" ${disabled ? 'disabled' : ''}>
+                    <strong>${escapeHtml(size.label)}</strong>
                     <span class="zero-size-price-row">
                         <span class="zero-size-price">${formatPrice(displayPrice)}</span>
                         ${renderDiscountRibbon(discount)}
@@ -1287,7 +1361,13 @@ export const initProductPage = ({
         ensureValidSize();
         const option = findOption(selectedOptionId);
         const size = findSize(selectedSizeId);
-        if (!option || !size) return;
+        if (!option || !size) {
+            addButton.disabled = true;
+            addButton.textContent = 'Sold Out';
+            if (selectedPrice) selectedPrice.textContent = '';
+            if (selectedSizeNote) selectedSizeNote.textContent = 'No sizes are currently available.';
+            return;
+        }
 
         if (selectedName) selectedName.textContent = option.name;
         if (selectedDescription) selectedDescription.textContent = PRODUCT_STICK_TO_IT_COPY;
@@ -1307,23 +1387,24 @@ export const initProductPage = ({
             `;
         }
         if (selectedSizeNote) {
-            selectedSizeNote.textContent = '';
+            selectedSizeNote.textContent = product.catalogUnavailable ? 'Unable to load current prices. Please reload and try again.' : '';
         }
         if (addButton) {
-            addButton.disabled = Boolean(inventoryRow && !inventoryRow.available);
-            addButton.textContent = inventoryRow && !inventoryRow.available ? 'Sold Out' : 'Add To Cart';
+            addButton.disabled = product.catalogUnavailable || !inventoryRow?.available;
+            addButton.textContent = addButton.disabled ? 'Sold Out' : 'Add To Cart';
         }
 
         Array.from(optionGrid.querySelectorAll('[data-option-id]')).forEach((button) => {
             button.classList.toggle('active', button.dataset.optionId === selectedOptionId);
+            button.setAttribute('aria-pressed', String(button.dataset.optionId === selectedOptionId));
         });
 
         renderSizeSelector();
     };
 
     optionGrid.innerHTML = product.options.map((option) => `
-        <button type="button" class="syrup-choice-card" data-option-id="${option.id}" aria-label="Choose ${escapeHtml(option.name)} ${escapeHtml(product.name)}">
-            <strong>${option.name}</strong>
+        <button type="button" class="syrup-choice-card" data-option-id="${escapeHtml(option.id)}" aria-label="Choose ${escapeHtml(option.name)} ${escapeHtml(product.name)}">
+            <strong>${escapeHtml(option.name)}</strong>
         </button>
     `).join('');
 
@@ -1348,7 +1429,7 @@ export const initProductPage = ({
         const size = findSize(selectedSizeId);
         if (!option || !size) return;
         const inventoryRow = findInventoryRow(option.id, size.id);
-        if (inventoryRow && !inventoryRow.available) return;
+        if (product.catalogUnavailable || !inventoryRow?.available) return;
         const selectedSku = inventoryRow?.sku_code || inventoryRow?.sku || buildZeroSku(product.slug, option.id, size.id);
         const selectedPrice = priceForSelection(size, inventoryRow);
 

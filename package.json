@@ -10,9 +10,11 @@
     "test:articles": "node tests/articles-ui-test.cjs",
     "build": "node scripts/generate-sitemaps.mjs && node scripts/sync-root-routes.mjs && vite build && node scripts/clean-routes.mjs",
     "preview": "vite preview",
-    "start": "vite"
+    "start": "vite",
+    "test:catalog": "node tests/catalog-checkout.cjs"
   },
   "devDependencies": {
+    "playwright": "^1.63.0",
     "vite": "^5.0.0"
   },
   "dependencies": {

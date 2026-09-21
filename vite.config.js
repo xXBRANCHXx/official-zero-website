@@ -2,6 +2,15 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
+  server: {
+    proxy: {
+      '/api/catalog': {
+        target: 'https://admin.jenanggemi.com',
+        changeOrigin: true,
+        rewrite: () => '/api/zero-store/?action=catalog',
+      },
+    },
+  },
   build: {
     rollupOptions: {
       input: {
