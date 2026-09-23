@@ -283,6 +283,9 @@ if (app) {
   const load = async () => {
     updateRouteLinks();
     document.querySelector('[data-sandbox-banner]').hidden = !isSandbox;
+    // The production server already resolved publication state and rendered the
+    // complete page. Keep that content if the browser cannot reach the API.
+    if (app.dataset.serverRendered === 'true') return;
     try {
       const url = new URL(endpoint, window.location.href);
       if (isSandbox) url.searchParams.set('sandbox', '1');

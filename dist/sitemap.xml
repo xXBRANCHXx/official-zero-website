@@ -6,4 +6,7 @@
   <sitemap>
     <loc>https://zerofoods.id/sitemap-images.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>https://zerofoods.id/sitemap-articles.xml</loc>
+  </sitemap>
 </sitemapindex>

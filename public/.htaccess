@@ -1,6 +1,11 @@
 RewriteEngine On
 
-# Keep clean, shareable topic and article URLs on the static Articles app.
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^articles(?:/.*)?$ /articles/index.html [L]
+# Render published content and metadata before crawlers run JavaScript.
+# These rules also cover the existing articles directory and its HTML alias.
+RewriteRule ^articles(?:/.*)?$ /articles.php [END]
+RewriteRule ^articles\.html$ /articles.php [END]
+RewriteRule ^sitemap-articles\.xml$ /sitemap-articles.php [END]
+
+<Files "article-delivery.php">
+    Require all denied
+</Files>

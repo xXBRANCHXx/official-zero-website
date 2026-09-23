@@ -113,6 +113,9 @@ const indexXml = `<?xml version="1.0" encoding="UTF-8"?>
   <sitemap>
     <loc>${siteUrl}/sitemap-images.xml</loc>
   </sitemap>
+  <sitemap>
+    <loc>${siteUrl}/sitemap-articles.xml</loc>
+  </sitemap>
 </sitemapindex>
 `;
 
